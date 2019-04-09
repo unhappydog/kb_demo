@@ -54,7 +54,7 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
+logs/log.log
 local_settings.py
 db.sqlite3
 
@@ -104,6 +104,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-online_processor/.idea/
-online_processor/resources/ltp_data_v3.4.0/
-online_processor/logs/
+resources/ltp_data_v3.4.0/
+.idea
