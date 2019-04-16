@@ -1,7 +1,7 @@
 from utils.MongoMapTags import query,delete,update, DataMap
 from utils.Tags import return_type
 from data_access.base.BaseMongoController import BaseMongoController
-from services.MongoService import mgservice
+from services.tool_services.MongoService import mgService as mgservice
 
 
 @DataMap(_schema="kb_demo",_table="CV")

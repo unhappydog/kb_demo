@@ -1,7 +1,7 @@
 class CV:
-    def __init__(self, photo="", name="", gender="", age="", birthday="", nativePlace="",
+    def __init__(self, photo="", name="", jobTitle="", gender="", age="", birthday="", nativePlace="",
                  phone="", email="", blogs="", nation="", domicilePlace="", currentAddress="",
-                 marital="", IDcard="", contactAddres="", highestEducationDegree="",
+                 marital="", IDcard="", contactAddress="", highestEducationDegree="", highestEducationBackground="",
                  highestEducationAcademy="", highestEducationMajor="", graduationDate="",
                  startWorkingDate="", workYear="", recentCompany="", recentIndustry="",
                  recentPosition="", currentSalary="", politicsStatus="",
@@ -24,7 +24,8 @@ class CV:
                  hobby=[],
                  advantage="",
                  _id="", insertTime="", updateTime="", source="", fileFormat="",
-                 filePath="", attachmentPath="", plainText="", sameCVid="", md5=""):
+                 filePath="", attachmentPath="", plainText="", sameCVid="", md5="", zhilianLabels=[],
+                 cv_url=""):
         self.phone = phone
         self.birthday = birthday
         self.age = age
@@ -39,7 +40,7 @@ class CV:
         self.currentAddress = currentAddress
         self.marital = marital
         self.IDcard = IDcard
-        self.contactAddress = contactAddres
+        self.contactAddress = contactAddress
         self.highestEducationDegree = highestEducationDegree
         self.highestEducationAcademy = highestEducationAcademy
         self.highestEducationMajor = highestEducationMajor
@@ -84,3 +85,7 @@ class CV:
         self.plainText = plainText
         self.sameCVid = sameCVid
         self.md5 = md5
+        self.jobTitle = jobTitle
+        self.highestEducationBackground = highestEducationBackground
+        self.zhilianLabels = zhilianLabels
+        self.cv_url = cv_url

@@ -1,7 +1,7 @@
 from utils.Tags import Singleton
 import pymysql
 from DBUtils.PooledDB import PooledDB
-from online_processor import settings
+import settings
 
 
 @Singleton
@@ -32,10 +32,10 @@ class MysqlService:
             conn.close()
 
 
-mysql = MysqlService()
+mysqlService = MysqlService()
 
 if __name__ == '__main__':
-    print(mysql.execute("show databases;"))
-    print(mysql.execute("use jiaotong;","show tables;"))
+    print(mysqlService.execute("show databases;"))
+    print(mysqlService.execute("use jiaotong;", "show tables;"))
     # print(mysql.execute("show tables;"))
     # print(MysqlService.execute.__name__)

@@ -6,3 +6,5 @@ from . import inf_restful
     methods=["GET"])
 def get_article(firstgrade, categoryid, uid, pageno, pagesize):
     return "hellow world"
+
+

@@ -2,9 +2,10 @@ from utils.MapTags import DataMap, sql
 from utils.Tags import return_type
 from data_access.base.BaseController import BaseController
 from data_access.models.KB_Academy import kb_academy
+from settings import mysql_db
 
 
-@DataMap(_schema="kb_demo", _table="kb_academy")
+@DataMap(_schema=mysql_db, _table="kb_academy")
 class KB_AcademyController(BaseController):
 
     @return_type(kb_academy)

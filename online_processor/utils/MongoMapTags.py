@@ -1,5 +1,5 @@
-from services.MongoService import mgservice
-from online_processor.settings import mongo_db
+from settings import mongo_db
+from services.tool_services.MongoService import mgService as mgservice
 
 
 def DataMap(_schema=mongo_db, _table=''):
@@ -25,7 +25,10 @@ def DataMap(_schema=mongo_db, _table=''):
 def insert():
     def wrapper(func):
         def _sql(self, data, *args, **kargs):
-            doc = parse_data(data)
+            if type(data) == dict:
+                doc = data
+            else:
+                doc = parse_data(data)
             mgservice.insert(doc, self._schema, self._table)
             return True
 
@@ -91,6 +94,8 @@ def parse_data(data):
             doc[key] = []
             for value_item in value:
                 if type(value_item) == dict:
+                    doc[key].append(value_item)
+                elif type(value_item) == str:
                     doc[key].append(value_item)
                 else:
                     doc[key].append(value_item.__dict__)

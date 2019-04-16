@@ -1,14 +1,17 @@
 from data_access.controller.KBAcademyController import KB_AcademyController
-from data_access.controller.KB_AcademyController4Mongo import KB_AcademyController4Mongo
+from data_access.controller.KBAcademyController4Mongo import KBAcademyController4Mongo
 from data_access.controller.KBCompanyController import KBCompanyController
+from data_access.controller.KBTerminologyController4Mongo import KBTerminologyController4Mongo
+from data_access.controller.KBTerminologyController import KBTerminologyController
 import datetime
-from services.MongoService import mgservice
+# from services.MongoService import mgservice
+from services.tool_services.MongoService import mgService as mgservice
 import re
 
 
 def syn_academy():
     kb_mysql = KB_AcademyController()
-    kb_mongo = KB_AcademyController4Mongo()
+    kb_mongo = KBAcademyController4Mongo()
 
     datas = kb_mysql.get_datas()
     for data in datas:
@@ -37,6 +40,20 @@ def syn_company():
         format_date_data(doc)
         print(doc)
         mgservice.insert(doc, 'kb_demo', 'kb_company')
+
+
+def syn_terminology():
+    kb_terminal_mysql = KBTerminologyController()
+    kb_terminal_mongo = KBTerminologyController4Mongo()
+    datas = kb_terminal_mysql.get_datas()
+    for data in datas:
+        # print(data.__dict__)
+        doc = data.__dict__
+        if doc['cnName'] is not None:
+            doc['cnName'] = doc['cnName'].split(';')
+        if doc['engName'] is not None:
+            doc['engName'] = doc['engName'].split(';')
+        kb_terminal_mongo.insert_data(data)
 
 
 def exetract_info(doc, col_names):
@@ -114,4 +131,5 @@ def extract_mem_info(doc):
 
 if __name__ == '__main__':
     # syn_academy()
-    syn_company()
+    # syn_company()
+    syn_terminology()

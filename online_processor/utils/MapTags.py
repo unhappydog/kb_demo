@@ -1,5 +1,5 @@
-from services.mysql_service import mysql
-from online_processor.settings import mysql_db
+from services import mysqlService as mysql
+from settings import mysql_db
 
 
 def DataMap(_schema=mysql_db , _table=''):
