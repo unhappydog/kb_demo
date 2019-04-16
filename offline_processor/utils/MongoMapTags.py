@@ -1,5 +1,5 @@
-from services.MongoService import mgservice
-from online_processor.settings import mongo_db
+from settings import mongo_db
+from services.tool_services.MongoService import mgService as mgservice
 
 
 def DataMap(_schema=mongo_db, _table=''):
@@ -25,7 +25,10 @@ def DataMap(_schema=mongo_db, _table=''):
 def insert():
     def wrapper(func):
         def _sql(self, data, *args, **kargs):
-            doc = parse_data(data)
+            if type(data) == dict:
+                doc = data
+            else:
+                doc = parse_data(data)
             mgservice.insert(doc, self._schema, self._table)
             return True
 
@@ -57,7 +60,28 @@ def update():
             del doc["_id"]
             mgservice.update(spec, doc, self._schema, self._table)
             return True
+
         return _sql
+
+    return wrapper
+
+
+def query_as_gen(by={"_id": "_id"}):
+    def wrapper(func):
+        def _sql(self, *args, **kwargs):
+            # spec = {"_id": _id}
+            loc = locals()
+            spec = {}
+            if by is None:
+                datas = mgservice.query_as_gen({}, self._schema, self._table)
+            else:
+                for k, v in by.items():
+                    spec[k] = loc['kwargs'][v]
+                datas = mgservice.query_as_gen(spec, self._schema, self._table)
+            return datas
+
+        return _sql
+
     return wrapper
 
 
@@ -68,12 +92,12 @@ def query(by={"_id": "_id"}):
             loc = locals()
             spec = {}
             if by is None:
-                data = mgservice.query({}, self._schema, self._table)
+                datas = mgservice.query({}, self._schema, self._table)
             else:
                 for k, v in by.items():
                     spec[k] = loc['kwargs'][v]
-                data = mgservice.query(spec, self._schema, self._table)
-            return data
+                datas = mgservice.query(spec, self._schema, self._table)
+                return datas
 
         return _sql
 
@@ -91,6 +115,8 @@ def parse_data(data):
             doc[key] = []
             for value_item in value:
                 if type(value_item) == dict:
+                    doc[key].append(value_item)
+                elif type(value_item) == str:
                     doc[key].append(value_item)
                 else:
                     doc[key].append(value_item.__dict__)

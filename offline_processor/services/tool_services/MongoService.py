@@ -1,6 +1,6 @@
 import pymongo
 from utils.Tags import Singleton
-from online_processor.settings import mongo_host, mongo_port, mongo_db
+from settings import mongo_host, mongo_port, mongo_db
 
 
 @Singleton
@@ -18,15 +18,38 @@ class MongoService:
     def delete(self, query_cond, db, table):
         self.client[db][table].delete_many(query_cond)
 
-    def query(self, query_cond, db, table):
+    def query_as_gen(self, query_cond, db, table, projection=None, skip=None, limit=None):
         if query_cond is None or query_cond == {}:
-            query_result = self.client[db][table].find()
+            if skip is None:
+                query_result = self.client[db][table].find(projection=projection)
+            else:
+                query_result = self.client[db][table].find(projection=projection).skip(skip).limit(limit)
         else:
-            query_result = self.client[db][table].find(query_cond)
+            if skip is None:
+                query_result = self.client[db][table].find(query_cond, projection=projection)
+            else:
+                query_result = self.client[db][table].find(query_cond, projection=projection).skip(skip).limit(limit)
+            # x = [doc for doc in query_result]
+        # for doc in query_result:
+        #     print(doc)
+        #     yield doc
+        return query_result
+
+    def query(self, query_cond, db, table, projection=None, skip=None, limit=None):
+        if query_cond is None or query_cond == {}:
+            if skip is None:
+                query_result = self.client[db][table].find(projection=projection)
+            else:
+                query_result = self.client[db][table].find(projection=projection).skip(skip).limit(limit)
+        else:
+            if skip is None:
+                query_result = self.client[db][table].find(query_cond, projection=projection)
+            else:
+                query_result = self.client[db][table].find(query_cond, projection=projection).skip(skip).limit(limit)
         x = [doc for doc in query_result]
         return x
 
-    def query_sort(self, query_cond,table, db, sort_by='', ascending=-1, page=1,
+    def query_sort(self, query_cond, table, db, sort_by='', ascending=-1, page=1,
                    size=10):
         skip = (page - 1) * size
         if query_cond is None or query_cond == {}:
@@ -65,7 +88,7 @@ class MongoService:
         return x
 
 
-mgservice = MongoService()
+mgService = MongoService()
 
 if __name__ == '__main__':
     # data = {"name": 'tabao', 'alexa': 100, 'url': 'https://www.baidu.com', 'type': 3}
@@ -78,16 +101,10 @@ if __name__ == '__main__':
     import time
 
     a = time.time()
-    # ms.delete_one({
-    #     "datatype": "paper",
-    #     "Source": "arxiv"
-    # })
-    # print(ms.query_sort({
-    #     "datatype": "paper",
-    #     "Source": "arxiv"
-    # }, sort_by='pubtime', size=1))
-    # print(ms.query({"_id": 1474022}))
-    ms.delete_one({"tags": 'topic_172'})
-    # print(ms.query_sort({"Pdf2Png": {"$exists": True}}, sort_by='pubtime'))
-    print(ms.count_column_with_cond({"PaperClassification": "Conference"}, "Conference"))
+
+    data = mgService.query({"schoolName": "武汉大学"},
+                           'kb_demo',
+                           'kb_academy')
+    print(data)
+
     print(time.time() - a)

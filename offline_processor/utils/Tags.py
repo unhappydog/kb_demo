@@ -18,7 +18,7 @@ def Singleton(cls):
     return _singleton
 
 
-def return_type(cls_type):
+def return_type(cls_type, generate=False):
     """
     covert the return of a special func to cls_type
     :param cls_type:

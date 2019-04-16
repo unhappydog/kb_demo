@@ -1,7 +1,8 @@
-from online_processor import settings
-from py2neo import Graph,Node
+import settings
+from py2neo import Graph, Node
 from utils.Tags import Singleton
 from threading import Lock
+
 
 @Singleton
 class NeoService():
@@ -10,6 +11,7 @@ class NeoService():
         self.port = port
         self.graph = None
         self.lock = Lock()
+        self.connectDB()
 
     def connectDB(self):
         if self.graph is None:
@@ -126,5 +128,4 @@ class NeoService():
         self.graph.create(node)
 
 
-neo4j = NeoService()
-neo4j.connectDB()
+neoService = NeoService()

@@ -1,5 +1,5 @@
 import os
-from logging import WARN,ERROR,FATAL,CRITICAL,DEBUG,INFO
+from logging import WARN, ERROR, FATAL, CRITICAL, DEBUG, INFO
 
 import os
 
@@ -22,3 +22,6 @@ mongo_db = "kb_demo"
 log_file = "log.log"
 error_log_file = "error.log"
 log_level = DEBUG
+
+redis_host = ""
+redis_port = ""

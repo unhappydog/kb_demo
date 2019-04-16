@@ -1,7 +1,7 @@
 from utils.Tags import Singleton
 import pymysql
 from DBUtils.PooledDB import PooledDB
-from online_processor import settings
+import settings
 
 
 @Singleton
@@ -15,6 +15,23 @@ class MysqlService:
                              user=user,
                              passwd=passwd,
                              db=db)
+
+    def execute_as_gen(self, *sqls):
+        conn = self.pool.connection()
+        # conn.set
+        cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
+        try:
+            for sql in sqls:
+                cursor.execute(sql)
+            datas_source = cursor.fetchmany(100)
+            while datas_source:
+                datas = [data for data in datas_source]
+                yield datas
+                datas_source = cursor.fetchmany(100)
+        finally:
+            conn.commit()
+            cursor.close()
+            conn.close()
 
     def execute(self, *sqls):
         conn = self.pool.connection()
@@ -32,10 +49,10 @@ class MysqlService:
             conn.close()
 
 
-mysql = MysqlService()
+mysqlService = MysqlService()
 
 if __name__ == '__main__':
-    print(mysql.execute("show databases;"))
-    print(mysql.execute("use jiaotong;","show tables;"))
+    print(mysqlService.execute("show databases;"))
+    print(mysqlService.execute("use jiaotong;", "show tables;"))
     # print(mysql.execute("show tables;"))
     # print(MysqlService.execute.__name__)

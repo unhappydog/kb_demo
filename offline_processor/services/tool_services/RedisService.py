@@ -1,6 +1,6 @@
 import redis as pyrdis
 import threading
-from online_processor.settings import settings
+import settings
 
 
 def Singleton(cls):
@@ -33,4 +33,4 @@ class RedisService:
             jedis.set(name=key, value=value)
 
 
-redis = RedisService()
+# redisService = RedisService()

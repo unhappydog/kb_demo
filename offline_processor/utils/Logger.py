@@ -1,7 +1,7 @@
 import logging
-from online_processor import settings
+import settings
 import sys
-from online_processor.settings import BASE_DIR
+from settings import BASE_DIR
 import os
 
 log_file = os.path.join(BASE_DIR, "logs", settings.log_file)
@@ -23,26 +23,27 @@ error_log.setLevel(logging.ERROR)
 error_log.setFormatter(formatter)
 logging.getLogger().addHandler(error_log)
 
+logging = logging
 
-def info(msg):
-    logging.info(msg)
-
-
-def debug(msg):
-    logging.debug(msg)
-
-
-def waring(msg):
-    logging.warning(msg)
-
-
-def error(msg, e=None):
-    logging.error(msg,e, exc_info=True, stack_info=True)
-    # logging.exception(msg,e)
-
-
-def exception():
-    logging.exception(sys.exc_info())
+# def info(msg):
+#     logging.info(msg)
+#
+#
+# def debug(msg):
+#     logging.debug(msg)
+#
+#
+# def waring(msg):
+#     logging.warning(msg)
+#
+#
+# def error(msg, e=None):
+#     logging.error(msg,e, exc_info=True, stack_info=True)
+#     # logging.exception(msg,e)
+#
+#
+# def exception():
+#     logging.exception(sys.exc_info())
 
 
 if __name__ == '__main__':

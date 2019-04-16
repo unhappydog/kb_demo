@@ -1,5 +1,5 @@
-from services.mysql_service import mysql
-from online_processor.settings import mysql_db
+from services.tool_services.mysql_service import mysqlService as mysql
+from settings import mysql_db
 
 
 def DataMap(_schema=mysql_db , _table=''):
@@ -22,10 +22,35 @@ def DataMap(_schema=mysql_db , _table=''):
     return wrapper
 
 
+def sql_as_gen(sql,*parameters):
+    """
+    execute sql with parameters.
+    :param sql: a sql str in format of python format string.st: "select * from {0}"
+    :param parmeters: parameter's name of every parameter in parameters, for example:
+    @sql("select * from _table where id = {0}", "_id")
+    def get_by_id(_id)
+    :return: a list of data, which is the result of executing provided sql
+    """
+
+    def wrapper(func):
+        def _sql(self, *args, **kargs):
+            # print(locals())
+            loc = locals()
+            paras = [loc['kargs'][para] for para in parameters]
+            acture_sql = sql.format(*paras).replace("_table", self._table)
+            if '_schema' in self.__dict__:
+                for datas in  mysql.execute_as_gen("use {0}".format(self._schema), acture_sql):
+                    yield datas
+            else:
+                for datas in mysql.execute(acture_sql):
+                    yield datas
+        return _sql
+
+    return wrapper
 
 
 
-def sql(sql, *parameters):
+def sql(sql,*parameters):
     """
     execute sql with parameters.
     :param sql: a sql str in format of python format string.st: "select * from {0}"
