@@ -11,7 +11,7 @@ from services.DataService import dataService
 def link_cv():
     """
     linking academies, companies, majors in cv
-    :return:
+    :return: json format cv
     """
     if request.method == 'POST':
         # json_data = dict(request.form)
@@ -28,6 +28,15 @@ def link_cv():
         result['terminologys'] = terminologys
         # JSONEncoder().encode)
         return json.dumps(result, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route('/online/kgize')
+def kgize():
+    """
+    covert a cv into a knowlege graph
+    :return: json format cv represent as k,v pairs
+    """
+    pass
 
 
 @inf_restful.route("/hellow", methods=['GET'])

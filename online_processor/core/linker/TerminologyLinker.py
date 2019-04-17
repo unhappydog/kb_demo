@@ -103,6 +103,8 @@ class TerminologyLinker:
                 # text[start_index:end_index] = ["s"]
                 text = text[:start_index] + "_" * len(word) + text[end_index:]
                 word_detail = self.kb_terminology_controller.get_data_by_id(self.name_to_id[word])
+                if word_detail:
+                    word_detail = word_detail[0].__dict__
                 result.append({'name': word, 'start_index': start_index, 'end_index': end_index,
                                'terminology_detail': word_detail})
 
@@ -117,6 +119,8 @@ class TerminologyLinker:
                 text_en = text_en[:start_index] + "_" * len(en_word) + text_en[end_index:]
 
                 word_detail = self.kb_terminology_controller.get_data_by_id(self.enname_to_id[en_word])
+                if word_detail:
+                    word_detail = word_detail[0].__dict__
                 result.append({'name': en_word, 'start_index': start_index,
                                'end_index': end_index, 'terminology_detail': word_detail})
 

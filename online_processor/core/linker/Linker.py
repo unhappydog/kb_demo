@@ -25,7 +25,7 @@ class Linker:
         for school in schools:
             data = self.academy_controller.get_data_by_name(school)
             if data:
-                result[school] = data[0]
+                result[school] = data[0].__dict__
             else:
                 # Logger.waring("{0} is not in database.".format(school))
                 logging.warning("{0} is not in database".format(school))
@@ -44,7 +44,7 @@ class Linker:
         for company in companys:
             data = self.company_controller.get_data_by_name(company)
             if data:
-                result[company] = data[0]
+                result[company] = data[0].__dict__
             else:
                 # Logger.waring("{0} is not in database.".format(company))
                 logging.warning("{0} is not in database".format(company))

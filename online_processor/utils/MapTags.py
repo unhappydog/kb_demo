@@ -1,8 +1,8 @@
-from services import mysqlService as mysql
+from services.tool_services.mysql_service import mysqlService as mysql
 from settings import mysql_db
 
 
-def DataMap(_schema=mysql_db , _table=''):
+def DataMap(_schema=mysql_db, _table=''):
     """
     map a class to table
     :param _schema: db
@@ -20,9 +20,6 @@ def DataMap(_schema=mysql_db , _table=''):
         return _dataMap
 
     return wrapper
-
-
-
 
 
 def sql(sql, *parameters):
@@ -60,11 +57,17 @@ def update():
 
     def wrapper(func):
         def _sql(self, data, *args, **kargs):
-            _id = data._id
+            if type(data) == dict:
+                temp_dict = data
+                _id = data['_id']
+            else:
+                temp_dict = data.__dict__
+                _id = data._id
+            # _id = data._id
             # mysql.execute("update {0} set ")
             update_format = "{0}={1}"
             update_list = []
-            for k, v in data.__dict__.items():
+            for k, v in temp_dict:
                 if k != '_id':
                     update_list.append(update_format.format(k, v))
             actual_sql = "update {0} set {1} where id={2}".format(self._table, ",".join(update_list), _id)
@@ -81,7 +84,11 @@ def insert():
         def _sql(self, data, *args, **kargs):
             keys = []
             values = []
-            for key,value in data.__dict__.items:
+            if type(data) == dict:
+                temp_dict = data
+            else:
+                temp_dict = data.__dict__
+            for key, value in temp_dict.items:
                 if key == "_id":
                     keys.append("id")
                 else:

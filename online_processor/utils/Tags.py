@@ -31,9 +31,14 @@ def return_type(cls_type):
             result = []
             for data in datas:
                 temp_instance = cls_type()
+                if '_id' in data.keys():
+                    pass
+                else:
+                    if 'id' in data.keys():
+                        data['_id'] = data['id']
                 for key, value in data.items():
-                    if key == '﻿id' or key == 'id':
-                        key = '_id'
+                    # if key == '﻿id' or key == 'id':
+                    #     key = '_id'
                     temp_instance.__dict__[key] = value
                 result.append(temp_instance)
             return result

@@ -10,6 +10,13 @@ class MongoService:
         self.db = db
 
     def insert(self, doc, db, table):
+        """
+        插入操作
+        :param doc:文档字典
+        :param db:数据库
+        :param table:表格名称
+        :return:
+        """
         self.client[db][table].insert(doc, continue_on_error=True)
 
     def update(self, spec, doc, db, table):
@@ -19,6 +26,14 @@ class MongoService:
         self.client[db][table].delete_many(query_cond)
 
     def query(self, query_cond, db, table, projection=None):
+        """
+        查询数据库
+        :param query_cond:
+        :param db:
+        :param table:
+        :param projection: 保留字段，字典类型
+        :return:
+        """
         if query_cond is None or query_cond == {}:
             query_result = self.client[db][table].find(projection=projection)
         else:
@@ -28,6 +43,17 @@ class MongoService:
 
     def query_sort(self, query_cond, table, db, sort_by='', ascending=-1, page=1,
                    size=10):
+        """
+        按顺序返回
+        :param query_cond:
+        :param table:
+        :param db:
+        :param sort_by:
+        :param ascending:
+        :param page:
+        :param size:
+        :return:
+        """
         skip = (page - 1) * size
         if query_cond is None or query_cond == {}:
             query_result = self.client[db][table].find().sort(sort_by, ascending).skip(skip).limit(size)
@@ -37,6 +63,15 @@ class MongoService:
         return x
 
     def count_tag(self, tag_column, db, table, limit=10, cond=None):
+        """
+        统计标签出现的次数
+        :param tag_column:
+        :param db:
+        :param table:
+        :param limit:未使用到
+        :param cond: 条件
+        :return:
+        """
         if cond == None:
             query_result = self.client[db][table].aggregate([{"$unwind": "${0}".format(tag_column)},
                                                              {"$group": {"_id": "${0}".format(tag_column),
@@ -79,7 +114,7 @@ if __name__ == '__main__':
 
     a = time.time()
 
-    data = mgservice.query({"schoolName": "武汉大学"},
+    data = mgService.query({"schoolName": "武汉大学"},
                            'kb_demo',
                            'kb_academy')
     print(data)

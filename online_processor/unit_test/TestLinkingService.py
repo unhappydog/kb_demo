@@ -1,5 +1,6 @@
 import unittest
 from services.LinkerService import linkerService
+from services.KgizeService import kgService
 from settings import BASE_DIR
 import os
 
@@ -16,6 +17,8 @@ class TestLinkIngService(unittest.TestCase):
         result = linkerService.link_company(self.cv)
         print(result)
         result = linkerService.link_terminology(self.cv)
+        print(result)
+        result = kgService.kgsizer(self.cv, result)
         print(result)
 
 

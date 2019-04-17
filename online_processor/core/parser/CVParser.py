@@ -4,6 +4,7 @@ from data_access.models.properties.WorkExperience import WorkExperience
 from data_access.models.properties.EducationExperience import EducationExperience
 from data_access.models.properties.ProjectExperience import ProjectExperience
 from data_access.models.properties.TrainingExperience import TrainingExperience
+from data_access.models.properties.Skill import Skill
 from data_access.models.properties.AssociationExperience import AssociationExperience
 import re
 
@@ -54,10 +55,12 @@ class CVParser:
                 zhilianLabels=data.get('label', None))
         educationExperiences = []
         for experience in data["educationExperience"]:
+            school_name = experience.get('SchoolName', "")
+            school_name = re.sub('\(.+\)$|（.+）$', '', school_name)
             educationExperience = EducationExperience(educationStartTime=experience.get('DateStart', None),
                                                       educationEndTime=experience.get('DateEnd', None),
                                                       educationDegree=experience.get('EducationLevel', None),
-                                                      educationSchool=experience.get('SchoolName', None),
+                                                      educationSchool=school_name,
                                                       educationMajor=experience.get('MajorName', None),
                                                       majorBigType=experience.get('MajorBigType', None),
                                                       majorSmallType=experience.get('MajorSmallType', None))
@@ -77,4 +80,15 @@ class CVParser:
 
         cv.workExperience = workExperiences
         cv.educationExperience = educationExperiences
+        _skills = []
+        if type(data["skill"] == str):
+            cv.skill = data["skill"]
+        else:
+            for skill in data["skill"]:
+                _skill = Skill(name=skill.get('name'),
+                               skillMastery=skill.get('skillMastery'),
+                               skillUseTime=skill.get('skillUseTime'))
+                _skills.append(_skill)
+            cv.skill = _skills
+
         return cv
