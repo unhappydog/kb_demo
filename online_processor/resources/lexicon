@@ -1,1548 +1,1548 @@
-factorization method
-语音编码
-迁移学习
-灾难恢复和备份
-lisp
-卷积神经网络
-web应用框架
-discriminator
-machine translation
-scrum
-chi-squared automatic interaction detection
-数学形态学
-nilearn
-part-of-speech tagging
-非凸优化
-annoy
-matlab
-非负矩阵分解
-社交媒体处理
-data sorting
-deep learning
-amazon aurora
-数据访问
-bi-directional long-short term memory
-kdb+
-概率图模型
-css3
-shogun
-time step
-microsoft azure sql data warehouse
-流形学习
-microsoft azure cosmos db
-robot control
-berkeley db
-domain adaption
-动态融合
-image representation
-情绪分析
-集成学习
-tpu
-传递式迁移学习
-随机森林算法
-因子分解法
-人工神经网络
-隐藏层
-chef
-foshub
-logistic回归
-声学模型
-nce
-gaussian processes
-active learning
-polarity detection
-关系数据库
-convnetjs
-图形处理单元/图形处理器
-averaged one-dependence estimators
-kylin
-weka
-进化计算
-vanishing gradient problem
-docker
-非参数回归
-web框架
-loss
-注意机制
-naive bayes classifier
-机器翻译
-negative log likelihood
-computational learning theory
-apache cassandra
-google
-判别器
-hierarchical temporal memory
-birch
-ria
-opencv
-云机器人
-riak
-特征脸
-gradient descent
-differentiable neural computer
-dcgan
-平均一依赖性评估
-语言建模
-信号处理
-bson
-numpy
-k-nearest neighbors classification
-线性分类
-mean-shift
-关系提取
-dragonfly
-最小生成树
-自编码
-最大公共子序列
-id3算法
-jdk 工具
-时间差分学习
-co-training
-pattern recognition
-principal component analysis
-dbm
-声纹识别
-特征选择
-决策树
-accumulo
-openid开发包
-ladder logic
-robot kit
-关系模型
-移动机器人
-microsoft azure table storage
-wsd
-apache
-插入排序
-贝叶斯
-smoothing curves
-平均移
-non-parametric learning
-correspondence analysis
-gossip
-文本聚类
-并行编程
-状态-行动-回馈-状态-行动
-线性判别分析
-感知机
-稳健性
-quantum computer
-self-driving
-cluster analysis
-异常检测
-pymvpa
-群体算法智能
-pmi
-language technology
-decision stump
-rl
-presto
-边缘检测
-bootstrap aggregating 
-fisher’s linear discriminant
-microservices
-有监督学习
-ocr
-php
-crystal
-wordnet
-optics算法
-radial basis function network
-随机梯度下降
-bionics
-sentry
-hypertable
-rss
-generator
-optics algorithm
-vue
-constraint grammar
-关联分析
-t-distribution stochastic neighbour embedding
-sphinx
-回归模型
-caffe
-openblas
-核逼近
-3d rendering
-一次性学习
-tomcat
-dremel
-机械制图
-backpropagation through time
-graphics processing unit
-pso
-document clustering
-pynlpl
-期望最大化
-情感分析
-动态规划
-单连锁聚类
-残差映射
-bigtable
-project voldemort
-简单贝叶斯
-rust
-quadratic discriminant
-vr
-机器人集群
-表征
-fireworks
-industrial robot
-语义搜索
-computational neuroscience
-agent
-视频描述生成
-标记化
-decision support system
-多项逻辑回归
-因子分解
-词义消歧
-fiddler
-自适应共振理论
-fudannlp
-som
-xen
-全局优化
-neural turing machine
-推荐引擎
-深度神经网络
-ehcache
-multimodal learning
-最小二乘法
-科学可视化
-adversarial networks
-条件随机域/场
-arangodb
-线性回归
-bayesian network
-dbase
-predictionio
-cache miss
-netbeans
-treapdb
-amazon redshift
-gbrt
-data visualization
-分类和回归树
-迭代dichotomiser 3
-id3 algorithm
-灰度发布
-rethinkdb
-text corpus
-state-action-reward-state-action
-sas
-聚类
-mxnet
-目标识别
-asr
-thulac
-gradient boosting machine
-aws ml
-non-negative matrix factorization
-文本挖掘
-oauth
-生物特征识别
-fisher的线性判别
-高斯过程
-hidden layer
-graph-based methods
-javascript
-oauth开发包
-c
-eclat算法
-链表
-极性检测
-low-level vision
-google cloud firestore
-deep voice conversion
-bn
-异构计算
-dynamic programming
-crunch
-梯度消失问题
-量子化神经网络
-cloudera manager
-nlu
-语言表征
-simultaneous localization and mapping
-对话系统
-盲解卷积
-awk
-feature learning
-向量自回归
-microsoft azure sql database
-知识发现
-spark
-aws sqs
-概念漂移
-说话人识别
-linear-quadratic regulator 
-lda
-可用性设计
-bazel
-data preprocessing
-神经图灵机
-即插即用生成网络
-机器视觉
-数据层架构设计
-cognitive linguistics
-objective function
-machine reading conprehension
-c4.5算法
-静态化
-statsmodels
-lua
-sliverlight
-bagging
-deep q-network
-international conference for machine learning
-离策略
-图像处理
-quantized neural network
-vehicle kinematics
-labview
-paxos
-vim
-genetic programming
-视觉问答
-statistical natural language processing
-同步定位与地图构建
-atom编辑器
-teradata
-树库
-视频分类
-object recognition
-synset
-robotic manipulator
-遗传规划
-word segmentation
-self-organizing map
-单点登录
-chainer
-non-saturating game
-堆叠自动编码器
-coreos
-jast
-rbf
-奇异值分解
-eclat algorithm
-高斯贝叶斯
-temporal difference learning
-对数几率回归（lr）
-bias-variance dilemma
-关联代码优化
-voiceprint recognition
-excel
-latent semantic analysis
-foxpro
-word2vec
-对应分析
-red
-transact-sql
-最小最大博弈
-自动问答
-k-means
-extreme learning machine
-chrome dev tools
-informix
-self organised map
-speech-to-speech translation
-global optimization
-deep belief machines
-brackets
-oracle coherence
-目标检测
-machine learning algorithm
-神经机器翻译
-adaptive resonance theory
-状态估计与滤波
-概念聚类
-通用人工智能
-计算语言学
-generative adversarial network
-neo4j
-cost function
-mesos
-前馈神经网络
-kibana
-orientdb
-dimensionality reduction algorithm
-expectation-maximization
-named entity recognition
-隐动态模型
-深度学习
-js引擎
-lasagne
-neon
-形状分析
-数据分析
-concept drift
-hbase
-naive bayes
-firecookie
-the least square method
-id3
-bi
-传感器融合
-paddlepaddle
-特征提取
-hack
-超限学习机
-线性修正单元/线性修正函数
-feedforward neural networks
-logo
-事件抽取
-tflearn
-多重对应分析
-影子 master 架构
-统计自然语言处理
-memcached
-蓝绿部署
-phoenix
-gaussian mixture model
-apache eagle?
-impala
-cudnn
-未登录词识别
-unsupervised learning
-gnu savannah
-bptt
-篇章理解
-人工智能
-队列
-prolog
-v2x device
-aerospike
-互信息
-深度信念网络
-隐马尔可夫模型
-hue
-多层感知器
-conditional random field
-bitbucket
-saddle point
-smalltalk
-学习器
-couchdb
-matlab/simulink
-gimp
-泊松回归
-markov process
-logic learning machine
-link analysis
-决策支持系统
-zeromq
-mysql
-character recognition
-scipy
-a*
-openid
-sql server
-c5.0算法
-数据库设计
-data warehouse
-classification and regression tree 
-mathematical morphology
-em
-k-均值聚类
-knn
-orc
-虚拟化
-citrusleaf database
-dnn
-高可用
-linear regression
-aws autoscaling
-dl
-mobile robot
-station-time 2d model
-elasticsearch
-自动文本摘要
-内存池
-dynamic fusion
-parquet
-gitlab
-single sign on
-affine layer
-relu
-rmi
-光学成像
-万普尼克-泽范兰杰斯理论
-多模态学习
-javascript引擎
-hama
-rbm
-场景理解
-图像拼接
-parse tree
-motion planning
-c++
-vertica
-语言模型
-hdfs
-firebase realtime database
-computational linguistics
-clustering
-decision boundary
-时间步骤
-textmate
-隐含狄利克雷分布
-医疗与康复机器人
-fingerprint recognition
-sqoop
-潜在语义分析
-gesture recognition
-dao & orm
-数据集成
-tf-idf
-数据离散化
-node.js
-hypersql
-lexical analysis
-polyglot
-emacs emacswiki
-hoo!
-ica
-openstack
-feature vector
-abap
-rnn
-可微分神经计算机
-平均池化
-agi
-mq
-oracle data mining
-冯·诺伊曼架构/结构
-fp-growth算法
-ajax
-字符识别
-actionscript
-whirr
-restful
-sass
-deep neural network
-spss
-自动驾驶
-去中心化
-eli5
-deeplearning4j
-attention mechanism
-数据异常检测
-约束文法
-线控车辆
-social media processing
-模糊逻辑
-jieba
-认知语言学
-数据挖掘
-discrimination learning
-spark streaming
-dropout
-facebook artificial intelligence research
-fuzzy clustering
-image reconstruction
-后台管理系统
-db4o
-storm
-signal processing
-最短路径
-q学习
-k-means算法
-html
-频繁项集挖掘
-事务处理
-轮询与通知
-ensemble learning
-生成式对抗网络
-自然语言处理
-python
-cloud9 ide
-redis
-多元线性回归
-关系数据库管理系统
-学习自动
-pascal
-仿人机器人
-特征学习
-增强现实
-opendrive
-batch normalization
-vector autoregression
-概率数学模型
-facebook人工智能研究所
-data access
-a priori probability
-supervised learning
-同义词集
-artificial general intelligence
-语音合成
-robotic mapping
-linear classifier
-residual network
-并发
-image analysis
-omr
-speaker recognition
-webdav
-制动系统控制
-less
-business analytics
-yolo
-语义标注
-knowledge graph
-多项朴素贝叶斯
-haproxy
-图灵机
-decision tree
-语音语料库
-iterative dichotomiser 3
-learning automata
-k-nn
-deeplearning4j?
-二次判别分析
-random forest
-angularjs
-generative adversarial networks
-计算智能
-阙值
-一致性设计
-贝叶斯算法
-html5
-归纳转移
-dqn
-sqlite
-scratch
-data integration
-平均梯度
-deep boltzmann machine
-代理/智能体
-手势识别
-maximum likelihood
-generalization
-生成模型
-微服务框架
-hanlp
-gprof
-seg
-先验概率
-长短期记忆
-momentum
-websocket开发包
-逆向汽车动力学模型
-information recommendation
-ntm
-path analysis
-mariadb
-知识表征
-residual mapping
-虹膜识别
-scientific visualization
-aws opsworks
-gmm
-mahout
-thin plate spline
-evolutionary computation
-sgd
-multilayer perceptron
-薄板样条
-linear discriminant analysis
-tuple space
-数据降维
-遥感图像处理
-delphi
-automatic speech recognition
-联合训练
-梯度爆炸问题
-链接分析
-强化学习
-treebank
-neural machine translation
-pl/i
-discriminative model
-原型聚类
-规则引擎
-memcache
-keyspace
-microsoft sql server
-time delay neural network
-object tracking
-multilinear subspace learning
-sql
-hidden dynamic model
-词法分析
-perl
-sso
-K均值
-径向基函数
-softmax回归
-角色标注
-computational intelligence
-简单对象访问协议
-hypervisor
-visual studio code
-动静态分离
-zero-data learning
-数字图像处理
-graph theory
-快速排序
-3d printing
-inductive transfer
-api
-随机森林
-指纹识别
-erlang
-图像重建
-储备池计算
-hopfield network
-generative models
-medical imaging
-二叉树
-无监督学习
-nuclide
-basex
-video processing
-贝叶斯网络
-photogrammetry
-text clustering
-ada
-single-linkage clustering
-mlp
-gradient boosted decision tree
-ann
-carbondata
-conceptual clustering
-kvm
-lvs
-拉普拉斯特征映射
-k-medians
-行人重识别
-scribe
-t-分布随机近邻嵌入
-hibari
-信息检索
-shell
-learner
-ppgn
-zeppelin
-cnn
-relational model
-brain
-cart
-cassandra
-表征学习
-julia
-perceptron
-alpha-beta pruning
-debugbar
-层次聚类
-模糊聚类
-受限玻尔兹曼机
-自然语言生成
-数据预处理
-深度递归神经网络
-监督学习
-局部异常因子
-semantic analysis
-pyml
-面向服务的架构
-ai
-ca
-深度玻尔兹曼机
-张量处理单元
-poisson regression
-词向量
-线性模型
-多项logistic回归
-unixlxc
-jsd
-adaboost
-lightgbm
-特征向量
-dynamo
-realm
-image compression
-生成器
-自动编码器
-串行化技术
-双向长短期记忆
-log likelihood
-textrank
-动量
-singular value decomposition
-long short term memory
-浅层句法分析
-threshold
-data mining
-probabilistic neural network
-question answering
-lr
-textblob
-共适应
-条件随机场
-单点登录框架
-convergence
-flink
-词性标注
-kernel approximation
-semantic search
-数据排序
-池化
-零数据学习
-text mining
-分布式计算
-protobuf
-local outlier factor
-cache 对齐
-数据仓库
-mllib
-文本协议
-信息抽取
-遗传算法
-speech corpus
-multinomial naive bayes
-greenplum
-genetic algorithm
-图像分割
-iris recognition
-visual studio
-anaconda
-multinomial logistic regression
-分支预测
-gaussian naive bayes
-support vector machine
-relational database
-fuzzy logic
-k近邻
-visual tracking
-通过时间的反向传播
-梯度提升决策树
-k-最近邻算法
-pid basic control theory
-exploding gradient problem
-raft
-语音处理
-computer animation
-句法分析
-目标函数
-autosar
-association analysis
-scheme
-视频处理
-scikit-learn
-zsl
-受限玻耳兹曼机
-can card
-ibm spss modeler
-ar
-deconvolution
-leveldb
-recurrent neural network
-通讯机制
-hadoop
-指代消解
-avro
-朴素贝叶斯
-局部线性嵌入
-端到端
-模块化
-简象访协
-关联规则学习
-cntk
-谷歌神经机器翻译
-计算机视觉
-speech technology
-f5
-google bigquery
-elm
-双主架构
-chukwa
-cobol
-浅层语义分析
-残差网络
-orange3
-ml
-负对数似然
-robustness
-概率神经网络
-低密度分离
-average gradient
-rpc
-json
-quantum computing
-基于图形的方法
-image segmentation
-atom
-分层聚类
-multi-document summarization
-仿射层
-launchpad
-jensen-shannon divergence
-高级模式挖掘
-teamforge
-hybrid computing
-计算机动画
-java
-红黑树
-natural language processing
-nll
-ingres
-montylingua
-判别模型
-dart
-机器学习
-内联优化
-featured learning
-图像表示
-face recognition
-artificial intelligence
-极端学习机
-odata
-c4.5 algorithm
-thrift
-lime text
-pagerank
-长短时记忆网络
-google fusion tables
-yslow
-连接池
-意图识别
-influxdb
-datastax enterprise
-mpc
-多线性主成分分析
-css
-data analysis
-三维计算机图形
-词汇分析
-语言表示
-ruby
-stylus
-主题提取
-循环神经网络
-图像配准
-序列模式挖掘
-主成分回归
-torch
-bigtop
-speech synthesis
-flume
-最大池化
-数据检索
-xgboost
-re
-vapnik–chervonenkis theory
-d3.js
-assembly language
-max-pooling
-3d成像
-home automation
-clipper
-非参数学习
-asp
-icml
-图像压缩
-machine vision
-eigenface
-仿生学
-filemaker
-predictive analytics
-graphlab
-editplus
-bbn
-辨别学习
-独立成分分析
-异步
-pylearn2
-average-pooling
-tensorflow
-wgan
-b树
-知识表示
-dnc
-websocket
-firebug
-google neural machine translation
-先验算法
-backpropagation
-分词
-知识库
-spacy
-stochastic gradient descent
-k-位数
-lsa
-komodo ide
-for planning focused:basic motion planning technique
-目标跟踪
-数据预读
-on-policy
-game theory
-分批标准化
-隐马尔科夫
-可靠性设计
-粒子群优化算法
-nosql
-visual basic .net
-charles
-tokenization
-oozie
-运动规划
-cross entropy
-visual basic
-microsoft access
-javascript mvc
-feedforward neurral network
-db2
-进化算法
-aws lambda
-shark
-shape analysis
-转向系统控制
-probability graphical model
-偏差/方差困境
-knowledge base
-高斯混合模型
-超参数
-q-learning
-puppet
-gnmt
-aws cloudformation
-泛化
-zero-shot learning
-representation learning
-家庭自动化
-derby
-vc theory
-c/c++
-ierarchical clustering
-贝叶斯信念网络
-transfer learning
-最大子树组
-ansible
-light table
-gensim
-社会媒体处理
-neocognitron
-光学标记识别
-word sense disambiguation
-microsoft azure search
-splunk
-groovy
-frequent mining
-scala
-interactive computing
-latent dirichlet allocation
-cron
-decision trees
-deep belief network
-qnn
-最大似然
-d语言
-sap adaptive server
-hololens
-soa
-自动语音识别
-人脸识别
-automatic summarization
-量子计算机
-knowledge discovery
-heuristic
-端到端驾驶模型
-powershell
-basic control theory
-neovim
-logistic regressive
-"pos,part-of-speech taggers"
-回归神经网络
-riak kv
-bayesian
-sensor fusion
-信息可视化
-aws sws
-分层时序记忆
-信息提取
-lstm
-语义分析
-深度卷积生成对抗网络
-fdd
-swift
-三维重建
-关联规则
-hcatalog
-语言现象
-sap sql anywhere
-机器人机械手
-autoencoder
-solr
-computation geometry
-hurricane
-视觉跟踪
-database design
-运动行为分析
-α-β剪枝
-深度卷积神经网络
-图形学与视觉几何
-语料库
-数据清洗
-velocity
-word embedding
-scene understanding
-路径分析
-主动学习
-optical mark recognition
-orange
-二值化算法
-交叉熵
-最优化问题求解
-language representation
-css框架
-crf
-半监督学习
-自然语言理解
-hd map
-反向代理
-evolutionary algorithm
-rapidminer
-spdy
-对数似然
-图像检索
-end-to-end
-feature extraction
-copy on write
-versant
-过载保护设计
-光学符号识别
-postgresql
-rest
-主从同步
-azkaban
-feature selection
-nltk
-pattern
-oracle essbase
-gitorious
-rpg
-paas
-知识图谱
-bp
 事实检索
-rattle
-3d computer graphic
-隐狄利克雷分布
-svn
-principal component regression
-xmlrpc
-restricted boltzmann machine
-coffeescript
-云服务
-rocketmq
-mdp
-neural gas
-digital image processing
-shallow parsing
-dubbo
-mongodb
-image retrieval
-hidden markov model
-clojure
-vowpal wabbit
-cache
-业务分析
-data modeling
-3d打印
-percona server
-text classification
-nlg
-nmt
-dynamodb
-independent component analysis
-决策系统
-机器人控制
-依存句法分析
-memlink
-regression
-jstorm
-tensor
-读写分离
-long-short term memory
-gbm
-医学成像
-robot operating system
-非监督学习
-deep recurrent neural networks
-延迟计算
-pcr
-digital signal processing
-fair
-缓存优化
-从文本到语音
-hyper-v
-k-means clustering
-marklogic
-speech enhancemen
-图像分析
-感知器
-贝叶斯模型
-sublime text2
-sybase
-fp-growth algorithm
-spectral clustering
-二进制协议
-kudu
-径向基函数网络
-舆情分析
-时延神经网络
-knime
-vbscript
-cuda
-non-convex optimization
-object pascal
-语言技术
-hmm
-noise-contrastive estimation
-数据建模
-feedforward neural network
-散列表
-lighttpd
-go
-akka
-svm
-venkman
-stacked boltzmann machine
-ravendb
-aode
-噪音对比估计
-heron
-language modeling
-文字识别
-canary 部署
-核近似
-国际机器学习大会
-车辆电子控制系统
-notepad++
-couchbase
-edge detection
-认知机
-particle swarm optimization
-增强学习
-hbuilder
-saas
-交互式计算
-rm
-hopfield网络
-chaid
-本体提取
-keras
-co-occurrence
-tableau
-kubernetes
-降维算法
-spiking neural network
-对抗网络
-个性化推荐
-ignite
-generative model
-场景分析
-feature engineering
-low-density separation
-共现
-领域自适应
-反褶积
-非饱和博弈
-配置中心
-sliq
-git
-解析树
-scrapy
-devops
-数据变换
-隐马尔科夫模型
-自编码器
-计算学习理论
-动力系统控制
-radial basis function
-sap iq
-机器人操作系统
-分层时间记忆
-ros
-﻿kotlin
-负载均衡设计
-oracle
-语音系统
-启发式
-codebox
-ietester
-basic
-pybrain
-speech coding
-K均值聚类算法
-topic model
-数字信号处理
-regularization
-data anomaly detection
-model predictive control
-paser
-one shot learning
-逻辑学习机
-dbscan
-swarm intelligence
-任务对话系统
-emotional analysis
-3d imaging
-syntactic parsing
-kb
-平滑样条
-dmtk
-quadratic programming
-corpus linguistics
-栈
-堆排序
-blind deconvolution
-ner
-logistic regression
-edit
-flash
-sentiment analysis
-speech processing
-multiple linear regression
-representation
-主题模型
-文献检索
-alluxio
-hmi device
-phonetic system
-文本分类
-玻尔兹曼机
-sewedbias
-3d渲染
-分布式存储
-multi layered perceptron
-semi-supervised learning
-ga
-摄影测量
-微服务架构
-cloud robotics
-深度q网络
-梯度下降
-multiboost
-nlpir
-多文档摘要
-ambari
-.net
-cap 理论
-r
-framed data
-认知模型
-off-policy
-虚拟现实
-associate rule
-laas
-natural language generation
-车载语音交互系统
-protocol buffers
-typescript
-鞍点
-regression model
-knowledge representation
-dialog system
-人机对话
-信息推荐
-smoothing spline
-语料库语言学
-金丝雀发布
-bi-lstm
-interbase
-kafla
-因子分析
-工业机器人
-giraph
-text-to-speech
-natural language understanding
-von neumann architecture
-eclipse
-n-gram搜索
-神经网络
-自组织映射
-尖峰神经网络
-convolutional neural network
-springmvc
-主成分分析
-factorization
-sketch
-vala
-reservoir computing
-tokyo tyant
-biometric features recognition
-github
-hdm
-激活函数
-activation function
-random forest algorithm
-mallet
-turing machine
-nlp
-数据可视化
-二次规划
-rbfn
-收敛
-h2
-nginx
-objective-c
-mt
-hazelcast
-language phenomena
-probability math models
-man-machine interaction
-表示定理
-递归神经网络
-图像生成描述
-elk
-style2paints
-zookeeper
-haskell
-支持向量机
-语音识别
-pjax
-factor analysis
-lqr
-parallel programming
-tokyo cabinet
-firebird
-co-adapting
-fortran
-flare
-spark mllib
-语音翻译
-决策边界
-multiple correspondence analysis
-频繁模式挖掘
-深度q学习
-反向传播
-hive
-cdn
-memcachedb
-artificial neural network
-bayesian belief network
-gan
-卡方自动交互检测
-representer theorem
-零次学习
-google cloud datastore
-数据归约
-semantic labeling
-扩展性设计
-混合计算
-phoenix 部署
-聚类分析
-语音增强
-文档聚类
-谱聚类
-deep q-learning
-商业智能
-t-sne
-rabbitmq
-问答系统
-dns 轮询
-特征工程
-oprofile
-图论
-sarsa
-activemq
-决策残端
-朴素贝叶斯分类器
-博弈论
-slam
-yarn
-c5.0 algorithm
-rectified linear unit
-在策略
-损失
-计算神经科学
-optical imaging
-multilinear principal component analysis
-anomaly detection
-sap hana
-独立分量分析
-推荐系统
-aws elb
-transitive transfer learning
-自动摘要
-soap
-tts
-预测分析
-纳什均衡
-conversational agent
-pig
-caffe2
-netezza
-image processing
-nupic
-感知
-nonparametric regression
-association rule learning
-批量写入
-magenta?
-j2ee
-information visualization
-hyperparameter
-dbn
-机器人设备
-humanoid robot
-多线性子空间学习
-模式识别
-relational database management system
-成本函数
-mercurial
-梯度提升机
-gpu
-命名实体识别
-量子计算
-nash equilibrium
-paint.net
 正则化
-minimax game
-boltzmann machine
-fuel
-reinforcement learning
-自动文摘
-transaction processing
-spark sql
-java-ml
-pymc
-apriori algorithm
-近邻算法
-pooling
-logstash
-会话代理
-人机交互
-逻辑回归
-词嵌入
-linux
-wasserstein gan
-张量
-acoustic model
-iedevelopertoolbar
-pytorch
-桶排序
-deep convolutional neural networks
-restfull
-机器阅读理解
-c#
+chaid
+约束文法
+感知机
+bi
+cluster analysis
+机器翻译
+光学标记识别
+copy on write
+潜在语义分析
+lighttpd
+时延神经网络
+场景分析
+图形处理单元/图形处理器
+运动规划
+形状分析
+平均池化
+zookeeper
+spark streaming
+aws autoscaling
+hopfield network
+业务分析
+coffeescript
+international conference for machine learning
+scene understanding
+cuda
+泊松回归
 rule engine
-echart
-js距离
-pl/sql
-webstorm
-sourceforge
-bash
-逆概率
-theano
-tensor processing units
-deep convolutional generative adversarial network
-机器学习算法
-information extraction
-svd
-plug and play generative network
+generative adversarial networks
+决策残端
+数据挖掘
+go
+discrimination learning
+快速排序
+dragonfly
+influxdb
+generative adversarial network
+K均值
+elk
+t-distribution stochastic neighbour embedding
+logistic regression
+二次规划
+薄板样条
+knowledge graph
+unixlxc
+缓存优化
+全局优化
+非饱和博弈
+gaussian mixture model
+图像表示
+openblas
+parallel programming
+learner
+语言技术
+optics算法
+microsoft access
+ietester
+fuel
+vertica
+rbf
+kvm
+声纹识别
+cache 对齐
+bson
+角色标注
+bn
+损失
+数据库设计
+流形学习
+解析树
 pca
+文献检索
+自然语言生成
+鞍点
+id3
+关系模型
+visual basic
+pjax
+alpha-beta pruning
+字符识别
+特征脸
+特征工程
+推荐系统
+clustering
+数据离散化
+ajax
+average-pooling
+kibana
+object pascal
+feedforward neural networks
+异步
+vala
+tokyo cabinet
+lua
+c4.5 algorithm
+couchbase
+adversarial networks
+relational model
+github
+noise-contrastive estimation
+html5
+oracle essbase
+re
+舆情分析
+图像拼接
+奇异值分解
+cloudera manager
+机器学习
+text-to-speech
+语音处理
+quantum computing
+三维重建
+概率神经网络
+language modeling
+loss
+coreos
+transitive transfer learning
+梯度爆炸问题
+principal component analysis
+memcached
+dialog system
+隐狄利克雷分布
+粒子群优化算法
+co-training
+odata
+information extraction
+activemq
+activation function
+multiple linear regression
+决策支持系统
+张量
+线性分类
+语音识别
+卡方自动交互检测
+google fusion tables
+gmm
+jensen-shannon divergence
+贝叶斯算法
+可靠性设计
+lqr
+sliverlight
+dremel
+extreme learning machine
+k-means算法
+xgboost
+feedforward neurral network
+microsoft azure table storage
+one shot learning
+shape analysis
+卷积神经网络
+bias-variance dilemma
 business intelligence
+自动编码器
 spark dataframe
+预测分析
+edit
+主题提取
+激活函数
+reinforcement learning
+hdfs
+自动摘要
+词向量
+model predictive control
+convergence
+c#
+lsa
+自编码器
+non-saturating game
+bagging
+omr
+分布式存储
+launchpad
+aws ml
+线性修正单元/线性修正函数
+generalization
+atom
+3d computer graphic
+ladder logic
+softmax回归
+multi layered perceptron
+径向基函数
+d语言
+即插即用生成网络
+fingerprint recognition
+asr
+3d imaging
+api
+nll
+图像检索
+语料库语言学
+特征提取
+affine layer
+ehcache
+指纹识别
+隐马尔科夫模型
+webstorm
+q-learning
+生成模型
+featured learning
+语义分析
+径向基函数网络
+群体算法智能
+mpc
+指代消解
+反向代理
+deep convolutional generative adversarial network
+sketch
+红黑树
+最大子树组
+knowledge representation
+半监督学习
+数据变换
+领域自适应
+知识库
+ppgn
+jieba
+text mining
+correspondence analysis
+长短期记忆
+digital image processing
+因子分解法
+restfull
+backpropagation through time
+语义搜索
+soap
+end-to-end
+图像生成描述
+灰度发布
+dcgan
+image reconstruction
+机器人操作系统
+relational database
+automatic speech recognition
+树库
+openid
+autoencoder
+brain
+svn
+对抗网络
+textrank
+knn
+lstm
+dqn
+序列模式挖掘
+深度玻尔兹曼机
+hcatalog
+iterative dichotomiser 3
+negative log likelihood
+citrusleaf database
+机械制图
+gradient boosting machine
+basic control theory
+foxpro
+thrift
+主题模型
+词性标注
+evolutionary algorithm
+neural machine translation
+梯度提升决策树
+qnn
+计算神经科学
+spdy
+ambari
+mesos
+factor analysis
+nlu
+核近似
+向量自回归
+sentry
+vc theory
+sarsa
+dynamic fusion
+c5.0 algorithm
+pooling
+语言表示
+hmm
+emacs emacswiki
+eli5
+path analysis
+ner
+f5
+spacy
+k-nearest neighbors classification
+深度q学习
+data warehouse
+biometric features recognition
+hd map
+遗传规划
+elm
+纳什均衡
+dl
+thin plate spline
+国际机器学习大会
+boltzmann machine
+信息可视化
+apriori algorithm
+data integration
+ml
+openid开发包
+sap adaptive server
+generative model
+kdb+
+rpc
+recurrent neural network
+平滑样条
+异构计算
+图像处理
+gan
+fp-growth算法
+spark sql
+深度信念网络
+sqoop
+evolutionary computation
+cassandra
+thulac
+视觉问答
+目标跟踪
+负载均衡设计
+hive
+高斯混合模型
+gpu
+gnu savannah
+amazon redshift
+websocket
+scala
+知识图谱
+anomaly detection
+flume
+在策略
+最小最大博弈
+独立成分分析
+generative models
+lightgbm
+朴素贝叶斯分类器
+velocity
+共现
+vehicle kinematics
+非凸优化
+data access
+principal component regression
+二叉树
+statsmodels
+统计自然语言处理
+logistic回归
+graphlab
+learning automata
+orc
+﻿kotlin
+question answering
+visual studio
+阙值
+face recognition
+feature learning
+eclat算法
+ann
+fuzzy clustering
+convnetjs
+docker
+多重对应分析
+clipper
+topic model
+sap iq
+knime
+support vector machine
+nuclide
+statistical natural language processing
+k-nn
+信号处理
+acoustic model
+springmvc
+zsl
+场景理解
+giraph
+cudnn
+fudannlp
+conversational agent
+visual basic .net
+logstash
+motion planning
+regularization
+constraint grammar
+bootstrap aggregating 
+高斯过程
+mallet
+wsd
+mysql
+netezza
+情绪分析
+核逼近
+增强学习
+robotic mapping
+图像分析
+optical imaging
+eigenface
+循环神经网络
+optics algorithm
+lda
+fireworks
+slam
+依存句法分析
+词法分析
+隐动态模型
+multinomial logistic regression
+google neural machine translation
+javascript mvc
+单点登录框架
+atom编辑器
+hypertable
+yslow
+r
+threshold
+xmlrpc
+条件随机场
+game theory
+rbm
+sphinx
+时间差分学习
+量子计算
+回归模型
+mobile robot
+集成学习
+gaussian naive bayes
+radial basis function
+greenplum
+收敛
+dnc
+cognitive linguistics
+non-negative matrix factorization
+pig
+multiple correspondence analysis
+sourceforge
+wasserstein gan
+深度递归神经网络
+篇章理解
+stacked boltzmann machine
+feature vector
+nupic
+spiking neural network
+非参数学习
+医学成像
+multinomial naive bayes
+alluxio
+css框架
+关系提取
+gossip
+h2
+icml
+知识表征
+目标函数
+简单对象访问协议
+rust
+工业机器人
+autosar
+random forest algorithm
+视频处理
+adaboost
+visual studio code
+decision trees
+hama
+冯·诺伊曼架构/结构
+paddlepaddle
+orange3
+restricted boltzmann machine
+mt
+内存池
+time step
+oauth
+dynamo
+tokyo tyant
+语言模型
+mdp
+ntm
+迁移学习
+文字识别
+hybrid computing
+局部异常因子
+language technology
+datastax enterprise
+language phenomena
+notepad++
+eclat algorithm
+随机森林算法
+pattern
+fair
+启发式
+hdm
+链接分析
+tflearn
+面向服务的架构
+独立分量分析
+mlp
+tf-idf
+fiddler
+分布式计算
+一致性设计
+数据异常检测
+flare
+keyspace
+隐含狄利克雷分布
+supervised learning
+ibm spss modeler
+学习自动
+json
+vector autoregression
+regression model
+the least square method
+spectral clustering
+堆排序
+scientific visualization
+vr
+emotional analysis
+ignite
+jstorm
+车辆电子控制系统
+层次聚类
+logic learning machine
+oozie
+k-最近邻算法
+tensorflow
+线性模型
+deep voice conversion
+mongodb
+关系数据库
+机器视觉
+模糊聚类
+机器人设备
+chi-squared automatic interaction detection
+computer animation
+串行化技术
+edge detection
+arangodb
+data anomaly detection
+microsoft azure sql data warehouse
+low-density separation
+state-action-reward-state-action
+text clustering
+rethinkdb
+语音语料库
+手势识别
+echart
+polyglot
+lasagne
+websocket开发包
+shell
+zeppelin
+概念聚类
+计算语言学
+bp
+gaussian processes
+计算学习理论
+hoo!
+图论
+词汇分析
+data sorting
+maximum likelihood
+贝叶斯模型
+turing machine
+ansible
+image processing
+apache cassandra
+nlpir
+拉普拉斯特征映射
+representation learning
+混合计算
+wgan
+盲解卷积
+文本分类
+概率数学模型
+frequent mining
+从文本到语音
+sensor fusion
+bi-directional long-short term memory
+akka
+rectified linear unit
+分支预测
+flash
+动态融合
+最大公共子序列
+.net
+sas
+vbscript
+隐马尔可夫模型
+家庭自动化
+voiceprint recognition
+浅层语义分析
+万普尼克-泽范兰杰斯理论
+关系数据库管理系统
+隐马尔科夫
+red
+深度卷积神经网络
+anaconda
+rmi
+dynamic programming
+machine learning algorithm
+robot control
+scrapy
+平均梯度
+递归神经网络
+photogrammetry
+云服务
+超参数
+人工智能
+后台管理系统
+machine reading conprehension
+js距离
+feedforward neural network
+raft
+tuple space
+同义词集
+chrome dev tools
+fisher的线性判别
+cache
+filemaker
+temporal difference learning
+semantic labeling
+abap
+移动机器人
+concept drift
+hibari
+dnn
+双主架构
+genetic algorithm
+语音合成
+金丝雀发布
+predictive analytics
+共适应
+无监督学习
+c4.5算法
+markov process
+随机森林
+off-policy
+orientdb
+apache eagle?
+hopfield网络
+id3 algorithm
+oauth开发包
+for planning focused:basic motion planning technique
+angularjs
+video processing
+制动系统控制
+debugbar
+powershell
+transfer learning
+scribe
+perceptron
+说话人识别
+自然语言理解
+crunch
+image compression
+数据集成
+kubernetes
+pymc
+foshub
+artificial intelligence
+端到端
+互信息
+ingres
+gimp
+charles
+latent dirichlet allocation
+aerospike
+问答系统
+判别器
+stylus
+科学可视化
+robotic manipulator
+montylingua
+data modeling
+t-分布随机近邻嵌入
+信息检索
+rl
+lime text
+ar
+lexical analysis
+ca
+artificial neural network
+time delay neural network
+vapnik–chervonenkis theory
+simultaneous localization and mapping
+3d rendering
+队列
+成本函数
+smoothing spline
+parquet
+关联分析
+accumulo
+hidden markov model
+深度卷积生成对抗网络
+crystal
+paser
+deconvolution
+web框架
+光学成像
+ria
+原型聚类
+认知模型
+自编码
+data mining
+自动驾驶
+多文档摘要
+objective function
+decision boundary
+vanishing gradient problem
+chef
+nlg
+deep learning
+cdn
+automatic summarization
+零数据学习
+multiboost
+bash
+灾难恢复和备份
+贝叶斯网络
+codebox
+nlp
+dart
+高级模式挖掘
+对话系统
+rest
+blind deconvolution
+数据排序
+配置中心
+memcachedb
+频繁项集挖掘
+knowledge base
+objective-c
+神经图灵机
+语音增强
+max-pooling
+特征学习
+gbm
+频繁模式挖掘
+hanlp
+dmtk
+本体提取
+teamforge
+java
+phonetic system
+rabbitmq
+读写分离
+polarity detection
+erlang
+named entity recognition
+bigtable
+自动语音识别
+spark mllib
+probability math models
+决策树
+js引擎
+perl
+数据分析
+komodo ide
+线性回归
+扩展性设计
+插入排序
+feature engineering
+assembly language
+关联代码优化
+dynamodb
+opendrive
+计算智能
+k-均值聚类
+linear classifier
+agent
+认知机
+回归神经网络
+associate rule
+分词
+意图识别
+3d打印
+期望最大化
+eclipse
+延迟计算
+数据降维
+gesture recognition
+仿人机器人
+classification and regression tree 
+wordnet
+仿生学
+artificial general intelligence
+批量写入
+restful
+gradient boosted decision tree
+mathematical morphology
+dropout
+语音翻译
+data analysis
+图像分割
+梯度提升机
+主成分分析
+cost function
+svd
+berkeley db
+iedevelopertoolbar
+heron
+双向长短期记忆
+inductive transfer
+迭代dichotomiser 3
+最大池化
+动静态分离
+特征选择
+robustness
+自然语言处理
+词嵌入
+db2
+cache miss
+quantized neural network
+speech-to-speech translation
+computational learning theory
+最小生成树
+presto
+delphi
+paint.net
+先验概率
+hyper-v
+fortran
+机器人控制
+神经机器翻译
+facebook人工智能研究所
+carbondata
+radial basis function network
+低密度分离
+word sense disambiguation
+id3算法
+document clustering
+行人重识别
+ruby
+xen
+object tracking
+som
+avro
+microsoft azure cosmos db
+人工神经网络
+azkaban
+人脸识别
+增强现实
+ai
+textmate
+feature extraction
+impala
+exploding gradient problem
+通过时间的反向传播
+reservoir computing
+nltk
+视频分类
+annoy
+postgresql
+whirr
+随机梯度下降
+css3
+oracle
+零次学习
+影子 master 架构
+adaptive resonance theory
+时间步骤
+dbase
+cross entropy
+information recommendation
+hyperparameter
+非负矩阵分解
+deep boltzmann machine
+辨别学习
+数据层架构设计
+deeplearning4j
+protocol buffers
+n-gram搜索
+aode
+singular value decomposition
+station-time 2d model
+nonparametric regression
+高斯贝叶斯
+因子分解
+桶排序
+residual network
+link analysis
+数据清洗
+sqlite
+mahout
+venkman
+marklogic
+tts
+machine vision
+graphics processing unit
+受限玻耳兹曼机
+a priori probability
+图灵机
+db4o
+对数似然
+business analytics
+hazelcast
+tableau
+进化计算
+离策略
+microsoft azure sql database
+归纳转移
+fisher’s linear discriminant
+rm
+hmi device
+自适应共振理论
+speech coding
+概率图模型
+机器学习算法
+特征向量
+shallow parsing
+gbrt
+博弈论
+nmt
+image analysis
+车载语音交互系统
+pylearn2
+分层时间记忆
+对应分析
+联合训练
+haskell
+长短时记忆网络
+zero-shot learning
+生物特征识别
+仿射层
+ros
+rbfn
+数字信号处理
+natural language generation
+speech corpus
+散列表
+linear regression
+linear discriminant analysis
+rattle
+平均移
+ga
+pcr
+j2ee
+决策边界
+actionscript
+自动文本摘要
+on-policy
+storm
+多项logistic回归
+matlab
+sublime text2
+riak
+word embedding
+计算机视觉
+hierarchical temporal memory
+hack
+medical imaging
+saddle point
+image retrieval
+style2paints
+data visualization
+异常检测
+对数几率回归（lr）
+逆概率
+probability graphical model
+momentum
+tensor
+pid basic control theory
+虚拟现实
+treebank
+c
+聚类分析
+先验算法
+受限玻尔兹曼机
+asp
+gitorious
+computation geometry
+poisson regression
+bptt
+digital signal processing
+bayesian network
+dbscan
+can card
+semantic analysis
+gnmt
+hidden dynamic model
+kb
+sql
+conceptual clustering
+分批标准化
+labview
+text classification
+brackets
+光学符号识别
+单连锁聚类
+标记化
+社会媒体处理
+同步定位与地图构建
+交互式计算
+representer theorem
+java-ml
+尖峰神经网络
+bigtop
+数据归约
+语料库
+non-parametric learning
+连接池
+neocognitron
+haproxy
+caffe2
+pascal
+parse tree
+self-organizing map
+image representation
+3d printing
+paxos
+机器人集群
+数据可视化
+条件随机域/场
+decision tree
+pyml
+devops
+图像配准
+sewedbias
+nilearn
+最优化问题求解
+信息提取
+最大似然
+multi-document summarization
+数据检索
+三维计算机图形
+swift
+aws opsworks
+node.js
+information visualization
+yolo
+firebird
+speech processing
+deep convolutional neural networks
+less
+deep q-learning
+泛化
+single sign on
+groovy
+leveldb
+逆向汽车动力学模型
+动力系统控制
+scipy
+贝叶斯
+路径分析
+图像压缩
+dubbo
+动态规划
+多元线性回归
+prolog
+因子分析
+aws sqs
+apache
+二值化算法
+线控车辆
+事务处理
+humanoid robot
+lvs
+transaction processing
+html
+文档聚类
+pso
+phoenix 部署
+speaker recognition
+自组织映射
+matlab/simulink
+非监督学习
+man-machine interaction
+逻辑回归
+梯度消失问题
+表示定理
+通讯机制
+global optimization
+知识表示
+low-level vision
+long short term memory
+javascript
+神经网络
+lr
+b树
+隐藏层
+pymvpa
+expectation-maximization
+tpu
+puppet
+可微分神经计算机
+自动问答
+摄影测量
+语言表征
+amazon aurora
+非参数回归
+netbeans
+hololens
+torch
+quantum computer
+linux
+computational intelligence
+corpus linguistics
+视觉跟踪
+cart
+magenta?
+机器人机械手
+hadoop
+去中心化
+mxnet
+判别模型
+谱聚类
+mean-shift
+computational linguistics
+bi-lstm
+玻尔兹曼机
+α-β剪枝
+c/c++
+信息推荐
+robot operating system
+传感器融合
+任务对话系统
+graph theory
+文本聚类
+稳健性
+多项朴素贝叶斯
+并发
+kafla
+self organised map
+deeplearning4j?
+逻辑学习机
+average gradient
+情感分析
+超限学习机
+predictionio
+laas
+association rule learning
+dbm
+遗传算法
+强化学习
+rocketmq
+kernel approximation
+转向系统控制
+von neumann architecture
+log likelihood
+facebook artificial intelligence research
+splunk
+memlink
+ica
+jast
+hurricane
+fp-growth algorithm
+pmi
+nce
+主从同步
+深度q网络
+database design
+numpy
+蓝绿部署
+genetic programming
+relational database management system
+couchdb
+php
+pagerank
+industrial robot
+负对数似然
+pl/i
+aws sws
+data preprocessing
+表征学习
+nash equilibrium
+关联规则学习
+支持向量机
+cnn
+tomcat
+多线性子空间学习
+c5.0算法
+word2vec
+semi-supervised learning
+neural gas
+long-short term memory
+dbn
+vowpal wabbit
+oracle data mining
+rapidminer
+domain adaption
+co-adapting
+朴素贝叶斯
+虚拟化
+realm
+状态-行动-回馈-状态-行动
+fdd
+active learning
+降维算法
+sso
+redis
+语音系统
+versant
+计算机动画
+d3.js
+google bigquery
+rnn
+知识发现
+数据访问
+二进制协议
+表征
+栈
+project voldemort
+chukwa
+偏差/方差困境
+lisp
+local outlier factor
+firebase realtime database
+分类和回归树
+监督学习
+caffe
+jdk 工具
+sass
+framed data
+dimensionality reduction algorithm
+signal processing
+computational neuroscience
+聚类
+smalltalk
+speech enhancemen
+pl/sql
+stochastic gradient descent
+riak kv
+hbase
+neo4j
+firebug
+概念漂移
+简象访协
+discriminative model
+商业智能
+css
+命名实体识别
+贝叶斯信念网络
+语言建模
+深度学习
+目标检测
+多层感知器
+量子化神经网络
+multilayer perceptron
+池化
+注意机制
+c++
+character recognition
+声学模型
+推荐引擎
+vue
+association analysis
+probabilistic neural network
+conditional random field
+teradata
+数据预处理
+sap hana
+极端学习机
+医疗与康复机器人
+synset
+orange
+residual mapping
+噪音对比估计
+pynlpl
+会话代理
+feature selection
+basic
+有监督学习
+naive bayes
+语音编码
+regression
+microsoft azure search
+zero-data learning
+微服务架构
+多项逻辑回归
+q学习
+heuristic
+tensor processing units
+syntactic parsing
+yarn
+backpropagation
+aws elb
+flink
+deep q-network
+一次性学习
+局部线性嵌入
+plug and play generative network
+firecookie
+最短路径
+pybrain
+基于图形的方法
+phoenix
+memcache
+scikit-learn
+zeromq
+k近邻
+bayesian
+hypervisor
+平均一依赖性评估
+javascript引擎
+数据建模
+数字图像处理
+kylin
+canary 部署
+deep recurrent neural networks
+视频描述生成
+spss
+tokenization
+cron
+decision stump
+多模态学习
+可用性设计
+mq
+数据仓库
+分层时序记忆
+未登录词识别
+感知
+mllib
+bayesian belief network
+dao & orm
+neural turing machine
+残差网络
+cloud robotics
+K均值聚类算法
+agi
+multimodal learning
+主动学习
+生成式对抗网络
+social media processing
+句法分析
+链表
+swarm intelligence
+ada
+rpg
+mercurial
+分层聚类
+relu
+basex
+cap 理论
+决策系统
+neon
+interbase
+人机对话
+particle swarm optimization
+k-means clustering
+neovim
+gprof
+protobuf
+google cloud firestore
+vim
+nginx
+线性判别分析
+language representation
+内联优化
+iris recognition
+co-occurrence
+规则引擎
+目标识别
+图像重建
+google cloud datastore
+scheme
+数学形态学
+k-means
+julia
+张量处理单元
+静态化
+speech technology
+运动行为分析
+遥感图像处理
+single-linkage clustering
+认知语言学
+状态估计与滤波
+awk
+端到端驾驶模型
+graph-based methods
+hidden layer
+svm
+linear-quadratic regulator 
+社交媒体处理
+通用人工智能
+ocr
+naive bayes classifier
+谷歌神经机器翻译
+学习器
+visual tracking
+k-位数
+堆叠自动编码器
+natural language processing
+近邻算法
+k-medians
+differentiable neural computer
+shogun
+saas
+factorization method
+人机交互
+random forest
+"pos,part-of-speech taggers"
+代理/智能体
+hbuilder
+deep belief machines
+文本挖掘
+typescript
+cntk
+gensim
+机器阅读理解
+感知器
+浅层句法分析
+latent semantic analysis
+robot kit
+bitbucket
+过载保护设计
+home automation
+文本协议
+v2x device
+theano
+sliq
+主成分回归
+边缘检测
+openstack
+最小二乘法
+keras
+object recognition
+nosql
+深度神经网络
+independent component analysis
+轮询与通知
+简单贝叶斯
+logo
+informix
+云机器人
+信息抽取
+模糊逻辑
+multilinear principal component analysis
+sql server
+speech synthesis
+derby
+极性检测
+ravendb
+seg
+clojure
+语言现象
+light table
+个性化推荐
+a*
+deep neural network
+gitlab
+模块化
+ierarchical clustering
+crf
+bionics
+python
+opencv
+semantic search
+shark
+oracle coherence
+paas
+scrum
+aws cloudformation
+多线性主成分分析
+量子计算机
+averaged one-dependence estimators
+bbn
+text corpus
+editplus
+webdav
+percona server
+scratch
+sap sql anywhere
+deep belief network
+ensemble learning
+虹膜识别
+二次判别分析
+hypersql
+cloud9 ide
+machine translation
+生成器
+em
+事件抽取
+image segmentation
+microservices
+excel
+hue
+logistic regressive
+generator
+交叉熵
+jsd
+knowledge discovery
+储备池计算
+进化算法
+sybase
+solr
+并行编程
+microsoft sql server
+图形学与视觉几何
+动量
+rss
+残差映射
+模式识别
+aws lambda
+gradient descent
+微服务框架
+bazel
+discriminator
+part-of-speech tagging
+web应用框架
+chainer
+unsupervised learning
+decision support system
+weka
+mariadb
+word segmentation
+关联规则
+batch normalization
+自动文摘
+cobol
+google
+语义标注
+sgd
+3d成像
+quadratic discriminant
+elasticsearch
+数据预读
+representation
+kudu
+反向传播
+treapdb
+单点登录
+self-driving
+反褶积
+smoothing curves
+词义消歧
+convolutional neural network
+non-convex optimization
+oprofile
+soa
+factorization
+attention mechanism
+interactive computing
+multilinear subspace learning
+git
+高可用
+textblob
+传递式迁移学习
+transact-sql
+dns 轮询
+natural language understanding
+梯度下降
+spark
+3d渲染
+fuzzy logic
+quadratic programming
+minimax game
+birch
+sentiment analysis
+pattern recognition
+optical mark recognition
+t-sne
+前馈神经网络
+pytorch

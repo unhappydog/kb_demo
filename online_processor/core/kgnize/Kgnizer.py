@@ -1,3 +1,6 @@
+from core.kgnize.KgPropertyList.KgPropertyList import KgPropertyList
+
+
 class Kgnizer:
     def __init__(self):
         self.name = "kgnizer"
@@ -9,13 +12,23 @@ class Kgnizer:
         # self.all_skills = []
 
     def kgnize(self, cv, link_text, link_academy={}, link_company={}):
-        cv_kg = {'基础信息': {
-            '年龄': cv.age,
-            '学历': cv.highestEducationDegree,
-            '工作年限': cv.workYear,
-            '邮箱': cv.email,
-            '婚姻状况': cv.marital
-        },
+        """
+        简历数据图谱化
+        :param cv:
+        :param link_text:
+        :param link_academy:
+        :param link_company:
+        :return:
+        """
+        cv_kg = {
+            'name': cv.name,
+            '基础信息': {
+                '年龄': cv.age,
+                '学历': cv.highestEducationDegree,
+                '工作年限': cv.workYear,
+                '邮箱': cv.email,
+                '婚姻状况': cv.marital
+            },
             '求职意向': {
                 '求职职位': cv.expectedOccupation,
                 '期望薪资': cv.expectedSalary,
@@ -25,7 +38,7 @@ class Kgnizer:
                 self.process_education_experience(cv.educationExperience, link_academy)
             ,
             '工作经历':
-                self.process_work_experience(cv.workExperience, link_text['workExperience'],link_company)
+                self.process_work_experience(cv.workExperience, link_text['workExperience'], link_company)
             ,
             '项目经历':
                 self.process_project_experience(cv.projectExperience, link_text['projectExperience'])
@@ -112,9 +125,11 @@ class Kgnizer:
         for projectExperience, linked_experience in experience_and_linked_info:
             start_time = projectExperience.projectStartTime
             end_time = projectExperience.projectEndTime
+            name = projectExperience.projectName
             linked_columns = self.link_dict['projectExperience']
             termnologys = self.extract_termnologys_from_linked_experiences(linked_columns, linked_experience)
             result.append({
+                "项目名称": name,
                 "开始时间": start_time,
                 "结束时间": end_time,
                 "术语": termnologys
@@ -189,3 +204,74 @@ class Kgnizer:
         result = [experience['terminology_detail'] for experience in result]
         # result.append(link_text[experience][column])
         return result
+
+    def json_to_4tupe(self, kg_cv):
+        kg_property_list = KgPropertyList()
+        root_id = kg_property_list.push_property(kg_cv['name'])
+        for base_property in kg_cv.keys():
+            if base_property == 'name':
+                continue
+            property_id = kg_property_list.push_property(base_property)
+            kg_property_list.push_path(property_id, root_id, '', '')
+            if base_property == "基础信息":
+                for child_propery, child_value in kg_cv[base_property].items():
+                    child_propery_id = kg_property_list.push_property(child_value)
+                    kg_property_list.push_path(child_propery_id, property_id, child_propery, '')
+            elif base_property == "求职意向":
+                for child_propery, child_value in kg_cv[base_property].items():
+                    child_propery_id = kg_property_list.push_property(child_value)
+                    kg_property_list.push_path(child_propery_id, property_id, child_propery, '')
+            elif base_property == "教育经历":
+                for child_propery, child_value in kg_cv[base_property].items():
+                    child_propery_id = kg_property_list.push_property(child_value['学校名称'])
+                    kg_property_list.push_path(child_propery_id, property_id, child_propery, child_value.get('悬浮', ''))
+                    for child_propery_1, child_value_1 in child_value.items():
+                        if child_propery_1 == "悬浮":
+                            continue
+                        child_propery_id_1 = kg_property_list.push_property(child_value_1)
+                        kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, "")
+            elif base_property == "工作经历":
+                for experience in kg_cv[base_property]:
+                    child_propery_id = kg_property_list.push_property(experience['公司名称'])
+                    kg_property_list.push_path(child_propery_id, property_id, '', experience.get('悬浮', ''))
+                    for child_propery_1, child_value_1 in experience.items():
+                        if child_propery_1 == "悬浮":
+                            continue
+                        if child_propery_1 != "术语":
+                            child_propery_id_1 = kg_property_list.push_property(child_value_1)
+                            kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, '')
+                        else:
+                            for termnolgoy in child_value_1:
+                                child_propery_id_2 = kg_property_list.push_property(termnolgoy['术语'])
+                                kg_property_list.push_path(child_propery_id_2, child_propery_id_1, '',
+                                                      termnolgoy.get('悬浮', ''))
+            elif base_property == "项目经历":
+                for experience in kg_cv[base_property]:
+                    child_propery_id = kg_property_list.push_property(experience['项目名称'])
+                    kg_property_list.push_path(child_propery_id, property_id, '', '')
+                    for child_propery_1, child_value_1 in experience.items():
+                        if child_propery_1 == "悬浮":
+                            continue
+                        if child_propery_1 != "术语":
+                            child_propery_id_1 = kg_property_list.push_property(child_value_1)
+                            kg_property_list.push_path(child_propery_id_1, child_propery_id, child_value_1, '')
+                        else:
+                            for termnolgoy in child_value_1:
+                                child_propery_id_2 = kg_property_list.push_property(termnolgoy['术语'])
+                                kg_property_list.push(child_propery_id_2, child_propery_id_1, '',
+                                                      termnolgoy.get('悬浮', ''))
+            elif base_property == "技能":
+                for skill in kg_cv[base_property]:
+                    skill_id = kg_property_list.push_property(skill['术语'])
+                    kg_property_list.push_path(skill_id, property_id, '',skill.get('悬浮',''))
+                    for child_propery_1, child_value_1 in skill.items():
+                        if child_propery_1 == "悬浮":
+                            continue
+                        child_propery_id_1 = kg_property_list.push_property(child_propery_1)
+                        kg_property_list.push_path(child_propery_id_1, skill_id, child_propery_1, '')
+
+        return {
+            "ids": kg_property_list.id_table,
+            "edges": kg_property_list.property_list
+        }
+

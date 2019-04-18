@@ -16,9 +16,11 @@ class TestLinkIngService(unittest.TestCase):
         print(result_academy)
         result_company = linkerService.link_company(self.cv)
         print(result_company)
-        result = linkerService.link_terminology(self.cv)
+        result_linked = linkerService.link_terminology(self.cv)
+        print(result_linked)
+        result = kgService.kgsizer(self.cv, result_linked, result_academy, result_company)
         print(result)
-        result = kgService.kgsizer(self.cv, result, result_academy, result_company)
+        result = kgService.kgsizer_4tupe(self.cv, result_linked, result_academy, result_company)
         print(result)
 
 

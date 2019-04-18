@@ -1,0 +1,344 @@
+{"academies": {
+        "北京联合大学": {
+            "_id": "5cab2d901228a3439cc0bbf7",
+            "id": "54",
+            "schoolName": "北京联合大学",
+            "identificationCode": "4111011417",
+            "competentAuthority": "北京市",
+            "city": "北京市",
+            "educationLevel": "本科",
+            "isPrivate": None,
+            "foreignName": None,
+            "alias": None,
+            "schoolType": None,
+            "province": None,
+            "country": None,
+            "speciality": None,
+            "introduction": None,
+            "createDate": None,
+            "url": None,
+            "beCertificated": None,
+            "superiorOrgID": None,
+            "md5": None,
+            "logoImg": None
+        }
+    },
+    "companies": {},
+    "terminologys": {
+        "skills": [],
+        "selfEvaluation": [],
+        "educationExperience": [{
+            "tmp": "tmp",
+            "educationMajorDescription": []
+        }],
+        "workExperience": [{
+            "tmp": "tmp",
+            "workDescription": [{
+                "name": "人工智能",
+                "start_index": 4,
+                "end_index": 8,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 47,
+                "end_index": 51,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 72,
+                "end_index": 76,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 153,
+                "end_index": 157,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 184,
+                "end_index": 188,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 216,
+                "end_index": 220,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 251,
+                "end_index": 255,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 283,
+                "end_index": 287,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }],
+            "workDuty": [],
+            "workSummary": []
+        }, {
+            "tmp": "tmp",
+            "workDescription": [{
+                "name": "人工智能",
+                "start_index": 102,
+                "end_index": 106,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 208,
+                "end_index": 212,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "java",
+                "start_index": 213,
+                "end_index": 217,
+                "terminology_detail": {
+                    "_id": "5cad56aa1228a304fc665f34",
+                    "id": 1017,
+                    "cnName": None,
+                    "engName": ["java"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "14",
+                    "baikeName": None
+                }
+            }, {
+                "name": "人工智能",
+                "start_index": 242,
+                "end_index": 246,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc6660d0",
+                    "id": 1429,
+                    "cnName": ["人工智能"],
+                    "engName": ["artificial intelligence", "ai"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "13",
+                    "baikeName": None
+                }
+            }, {
+                "name": "tensorflow",
+                "start_index": 248,
+                "end_index": 258,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc66617f",
+                    "id": 1606,
+                    "cnName": None,
+                    "engName": ["tensorflow"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "1;22",
+                    "baikeName": None
+                }
+            }, {
+                "name": "java",
+                "start_index": 266,
+                "end_index": 270,
+                "terminology_detail": {
+                    "_id": "5cad56aa1228a304fc665f34",
+                    "id": 1017,
+                    "cnName": None,
+                    "engName": ["java"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "14",
+                    "baikeName": None
+                }
+            }, {
+                "name": "java",
+                "start_index": 307,
+                "end_index": 311,
+                "terminology_detail": {
+                    "_id": "5cad56aa1228a304fc665f34",
+                    "id": 1017,
+                    "cnName": None,
+                    "engName": ["java"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "14",
+                    "baikeName": None
+                }
+            }, {
+                "name": "python",
+                "start_index": 400,
+                "end_index": 406,
+                "terminology_detail": {
+                    "_id": "5cad56aa1228a304fc665f3a",
+                    "id": 1023,
+                    "cnName": None,
+                    "engName": ["python"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "14",
+                    "baikeName": None
+                }
+            }],
+            "workDuty": [],
+            "workSummary": []
+        }, {
+            "tmp": "tmp",
+            "workDescription": [{
+                "name": "sqlite",
+                "start_index": 154,
+                "end_index": 160,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc66607b",
+                    "id": 1344,
+                    "cnName": None,
+                    "engName": ["sqlite"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "16",
+                    "baikeName": None
+                }
+            }, {
+                "name": "javascript",
+                "start_index": 216,
+                "end_index": 226,
+                "terminology_detail": {
+                    "_id": "5cad56aa1228a304fc665f44",
+                    "id": 1033,
+                    "cnName": None,
+                    "engName": ["javascript"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "14;19",
+                    "baikeName": None
+                }
+            }, {
+                "name": "html5",
+                "start_index": 227,
+                "end_index": 232,
+                "terminology_detail": {
+                    "_id": "5cad56aa1228a304fc665f5b",
+                    "id": 1056,
+                    "cnName": None,
+                    "engName": ["html5"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "19",
+                    "baikeName": None
+                }
+            }, {
+                "name": "css3",
+                "start_index": 233,
+                "end_index": 237,
+                "terminology_detail": {
+                    "_id": "5cad56ab1228a304fc66623d",
+                    "id": 1796,
+                    "cnName": None,
+                    "engName": ["css3"],
+                    "breif": None,
+                    "alias": None,
+                    "fieldId": "19",
+                    "baikeName": None
+                }
+            }],
+            "workDuty": [],
+            "workSummary": []
+        }, {
+            "tmp": "tmp",
+            "workDescription": [],
+            "workDuty": [],
+            "workSummary": []
+        }, {
+            "tmp": "tmp",
+            "workDescription": [],
+            "workDuty": [],
+            "workSummary": []
+        }],
+        "projectExperience": [],
+        "trainingExperience": [],
+        "associationExperience": []
+    }
+}
