@@ -11,7 +11,7 @@ echo $!>$APP_PID
 echo "starting at pid"$(cat $APP_PID)
 }
 stop(){
-ehco "stoping pid"$(cat $APP_PID)
+echo "stoping pid"$(cat $APP_PID)
 sudo kill -9 $(cat $APP_PID)
 }
 case $1 in

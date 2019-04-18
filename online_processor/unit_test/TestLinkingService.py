@@ -12,13 +12,13 @@ class TestLinkIngService(unittest.TestCase):
             self.json_str = f.read()
         self.cv = linkerService.parse(self.json_str)
         print(self.cv.__dict__)
-        result = linkerService.link_academy(self.cv)
-        print(result)
-        result = linkerService.link_company(self.cv)
-        print(result)
+        result_academy = linkerService.link_academy(self.cv)
+        print(result_academy)
+        result_company = linkerService.link_company(self.cv)
+        print(result_company)
         result = linkerService.link_terminology(self.cv)
         print(result)
-        result = kgService.kgsizer(self.cv, result)
+        result = kgService.kgsizer(self.cv, result, result_academy, result_company)
         print(result)
 
 

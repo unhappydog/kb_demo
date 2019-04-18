@@ -15,4 +15,5 @@ class CVController4Mongo(BaseMongoController):
 
 if __name__ == '__main__':
     controller = CVController4Mongo()
-    controller.get_datas_order_by("")
+    # controller.get_datas_order_by("")
+    controller.delete_by_id("")

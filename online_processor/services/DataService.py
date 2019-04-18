@@ -8,7 +8,10 @@ class DataService:
         self.cv_controller = CVController4Mongo()
 
     def save(self, cv):
-        self.cv_controller.insert_data(cv)
+        if self.cv_controller.get_data_by_id(_id=cv._id):
+            self.cv_controller.update_by_id(cv)
+        else:
+            self.cv_controller.insert_data(cv)
 
 
 dataService = DataService()

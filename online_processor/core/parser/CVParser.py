@@ -22,7 +22,9 @@ class CVParser:
     def parse(json_str):
         data = json.loads(json_str)
         if "id" in data.keys():
+            data["_id"] = data["id"]
             del data["id"]
+
         cv = CV(**data)
         for key, value in class_dict.items():
             experience_list = cv.__dict__[key]
@@ -35,6 +37,7 @@ class CVParser:
     @staticmethod
     def parse_zhilian(json_str):
         data = json.loads(json_str)
+        print(data)
         # data = json_str
         cv = CV(name=data.get('userName', None),
                 gender=data.get('gender', None),
