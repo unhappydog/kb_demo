@@ -7,15 +7,33 @@ class LtpService:
     def __init__(self):
         self.kb_terminology_controller = KBTerminologyController4Mongo()
         id_names = self.kb_terminology_controller.get_name_ids()
-        user_dict = []
+        self.user_dict = []
         for data in id_names:
             if data['cnName']:
                 for name in data['cnName']:
-                    user_dict.append(name)
+                    self.user_dict.append(name)
             if data['engName']:
                 for name in data['engName']:
-                    user_dict.append(name)
-        self.ltp = Ltp(user_dict=user_dict)
+                    self.user_dict.append(name)
+        self.ltp = Ltp(user_dict=self.user_dict)
+
+    def reload_dict(self, user_dict=[]):
+        """
+        使用提供的列表重新载入分词字典
+        :param user_dict:
+        :return:
+        """
+        self.user_dict= user_dict
+        self.ltp.reload_dict(self.user_dict)
+
+    def add_dict(self, user_dict=[]):
+        """
+        加入 新的 字典并重新载入
+        :param user_dict:
+        :return:
+        """
+        self.user_dict.extend(user_dict)
+        self.ltp.reload_dict(self.user_dict)
 
     def segment(self, doc):
         return self.ltp.segment(doc)

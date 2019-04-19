@@ -212,63 +212,63 @@ class Kgnizer:
             if base_property == 'name':
                 continue
             property_id = kg_property_list.push_property(base_property)
-            kg_property_list.push_path(property_id, root_id, '', '')
+            kg_property_list.push_path(property_id, root_id, '', None)
             if base_property == "基础信息":
                 for child_propery, child_value in kg_cv[base_property].items():
                     child_propery_id = kg_property_list.push_property(child_value)
-                    kg_property_list.push_path(child_propery_id, property_id, child_propery, '')
+                    kg_property_list.push_path(child_propery_id, property_id, child_propery, None)
             elif base_property == "求职意向":
                 for child_propery, child_value in kg_cv[base_property].items():
                     child_propery_id = kg_property_list.push_property(child_value)
-                    kg_property_list.push_path(child_propery_id, property_id, child_propery, '')
+                    kg_property_list.push_path(child_propery_id, property_id, child_propery, None)
             elif base_property == "教育经历":
                 for child_propery, child_value in kg_cv[base_property].items():
                     child_propery_id = kg_property_list.push_property(child_value['学校名称'])
-                    kg_property_list.push_path(child_propery_id, property_id, child_propery, child_value.get('悬浮', ''))
+                    kg_property_list.push_path(child_propery_id, property_id, child_propery, child_value.get('悬浮', None))
                     for child_propery_1, child_value_1 in child_value.items():
                         if child_propery_1 == "悬浮":
                             continue
                         child_propery_id_1 = kg_property_list.push_property(child_value_1)
-                        kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, "")
+                        kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, None)
             elif base_property == "工作经历":
                 for experience in kg_cv[base_property]:
                     child_propery_id = kg_property_list.push_property(experience['公司名称'])
-                    kg_property_list.push_path(child_propery_id, property_id, '', experience.get('悬浮', ''))
+                    kg_property_list.push_path(child_propery_id, property_id, '', experience.get('悬浮', None))
                     for child_propery_1, child_value_1 in experience.items():
                         if child_propery_1 == "悬浮":
                             continue
                         if child_propery_1 != "术语":
                             child_propery_id_1 = kg_property_list.push_property(child_value_1)
-                            kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, '')
+                            kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, None)
                         else:
                             for termnolgoy in child_value_1:
                                 child_propery_id_2 = kg_property_list.push_property(termnolgoy['术语'])
                                 kg_property_list.push_path(child_propery_id_2, child_propery_id_1, '',
-                                                      termnolgoy.get('悬浮', ''))
+                                                      termnolgoy.get('悬浮', None))
             elif base_property == "项目经历":
                 for experience in kg_cv[base_property]:
                     child_propery_id = kg_property_list.push_property(experience['项目名称'])
-                    kg_property_list.push_path(child_propery_id, property_id, '', '')
+                    kg_property_list.push_path(child_propery_id, property_id, '', None)
                     for child_propery_1, child_value_1 in experience.items():
                         if child_propery_1 == "悬浮":
                             continue
                         if child_propery_1 != "术语":
                             child_propery_id_1 = kg_property_list.push_property(child_value_1)
-                            kg_property_list.push_path(child_propery_id_1, child_propery_id, child_value_1, '')
+                            kg_property_list.push_path(child_propery_id_1, child_propery_id, child_value_1, None)
                         else:
                             for termnolgoy in child_value_1:
                                 child_propery_id_2 = kg_property_list.push_property(termnolgoy['术语'])
                                 kg_property_list.push(child_propery_id_2, child_propery_id_1, '',
-                                                      termnolgoy.get('悬浮', ''))
+                                                      termnolgoy.get('悬浮', None))
             elif base_property == "技能":
                 for skill in kg_cv[base_property]:
                     skill_id = kg_property_list.push_property(skill['术语'])
-                    kg_property_list.push_path(skill_id, property_id, '',skill.get('悬浮',''))
+                    kg_property_list.push_path(skill_id, property_id, '',skill.get('悬浮',None))
                     for child_propery_1, child_value_1 in skill.items():
                         if child_propery_1 == "悬浮":
                             continue
                         child_propery_id_1 = kg_property_list.push_property(child_propery_1)
-                        kg_property_list.push_path(child_propery_id_1, skill_id, child_propery_1, '')
+                        kg_property_list.push_path(child_propery_id_1, skill_id, child_propery_1, None)
 
         return {
             "ids": kg_property_list.id_table,
