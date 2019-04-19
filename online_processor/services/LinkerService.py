@@ -24,5 +24,8 @@ class LinkerService:
     def parse(self, cv_json):
         return self.parser.parse(cv_json)
 
+    def recongnize_terminology(self, word_list, language='cn'):
+        return self.terminology.recongnize_termnology(word_list,language)
+
 
 linkerService = LinkerService()

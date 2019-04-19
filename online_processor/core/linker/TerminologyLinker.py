@@ -127,3 +127,13 @@ class TerminologyLinker:
         result = sorted(result, key=lambda x: x['start_index'], reverse=False)
 
         return result
+
+    def recongnize_termnology(self, word_list, language='cn'):
+        if language == 'cn':
+            return [word for word in word_list if word in self.name_to_id.keys()]
+        elif language =='en':
+            return [word for word in word_list if word in self.enname_to_id.keys()]
+        else:
+            logging.error("unrecongnize language")
+            return None
+

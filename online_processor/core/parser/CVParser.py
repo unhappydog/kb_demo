@@ -30,7 +30,7 @@ class CVParser:
         else:
             logging.error("json str format cant recongnized {0}".format(json_str))
 
-        if "id" in data.keys() and (data["_id"] == "" or data["_id"] is None):
+        if "id" in data.keys() and "_id" in data.keys() and (data["_id"] == "" or data["_id"] is None):
             data["_id"] = data["id"]
             del data["id"]
         elif "id" in data.keys():
