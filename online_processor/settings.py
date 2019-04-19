@@ -14,7 +14,7 @@ mysql_user = "root"
 mysql_password = '111111'
 mysql_db = "kb_demo"
 
-mongo_host = "centos1"
+mongo_host = "172.16.6.10"
 mongo_port = 32317
 mongo_db = "kb_demo"
 # mongo_table="kb_tablent_table"

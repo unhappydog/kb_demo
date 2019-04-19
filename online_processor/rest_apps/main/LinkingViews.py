@@ -5,7 +5,6 @@ from utils.Encoder import JSONEncoder
 from services.LinkerService import linkerService
 from services.DataService import dataService
 
-
 @inf_restful.route('/online/link',
                    methods=["POST"])
 def link_cv():
