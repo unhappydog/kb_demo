@@ -6,7 +6,6 @@ from services.LinkerService import linkerService
 from services.DataService import dataService
 from services.KgizeService import kgService
 
-
 @inf_restful.route('/online/link',
                    methods=["POST"])
 def link_cv():

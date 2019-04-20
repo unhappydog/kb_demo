@@ -4,12 +4,35 @@ import json
 from utils.Encoder import JSONEncoder
 from services.LinkerService import linkerService
 from services.DataService import dataService
+from services.PaintService import paintService
 
 # @inf_restful.route("/hellow", methods=['GET'])
 # def hellow():
 #     return "hellow"
-@inf_restful.route('/online/dataviews', methods=['POST'])
-def get_data_vews():
-    if request.method == 'POST':
-        return ''
 
+
+@inf_restful.route('/online/paint',
+                   methods=["POST"])
+def paint_cv():
+    """
+    statistic and visualize a cv by diagram
+    :return: json format
+    """
+    if request.method == 'POST':
+        cv_id = request.form["json"]
+        paint_result = paintService.paint_cv(cv_id)
+        return paint_result
+
+
+@inf_restful.route('/online/paint',
+                   methods=["POST"])
+def paint_cv():
+    """
+    statistic and visualize a cv by diagram
+    :return: json format
+    """
+    if request.method == 'POST':
+        cv_id = request.form["json"]
+        print(cv_id)
+        paint_result = paintService.paint_cv(cv_id)
+        return paint_result
