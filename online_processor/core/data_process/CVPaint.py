@@ -1,5 +1,6 @@
 from utils.Logger import logging
 from data_access.controller.CVController4Mongo import CVController4Mongo
+from services.tool_services.MongoService import mgService
 from utils.Constants import REGEX_CN
 import re
 import json
@@ -19,7 +20,6 @@ class CVPaint:
 
     def data_label(self, cv):
         '''
-
         :param cv:
         :return:
         '''
@@ -250,12 +250,18 @@ class CVPaint:
         en_skill_words = linkerService.recongnize_terminology(en_words, 'en')
         words = en_words + cn_words
         skill_words = cn_skill_words + en_skill_words
-        return Counter(words), Counter(skill_words)
+        # return dict(Counter(words)), dict(Counter(skill_words).most_common(10))
+        count_words = Counter(words)
+        count_skill_words = Counter(skill_words).most_common(10)
+        count_words = [{'texts': k, 'weights': v} for k, v in count_words.items()]
+        count_skill_words = [{'texts': k, 'weights': v} for k, v in count_skill_words]
+        return count_words, count_skill_words
 
 
 if __name__ == "__main__":
     controller = CVController4Mongo()
-    cv = controller.get_data_by_id(_id=ObjectId("5cb718c192a9e90c4f81fe03"))[0]
+    cv = controller.get_data_by_id(_id=ObjectId("5cb718a792a9e90c4f81fe02"))[0]
+    # cv = mgService.query({'_id': ObjectId("5cb814f8e70357ebccadf25b")}, 'kb_demo', 'kb_CV')[0]
     cv_paint = CVPaint()
     cv = cv_paint.parser.parse(cv)
     # cv_paint.data_label(cv)

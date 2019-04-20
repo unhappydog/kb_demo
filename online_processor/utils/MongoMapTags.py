@@ -39,9 +39,9 @@ def insert():
 
 def delete(by=None):
     def wrapper(func):
-        def _sql(self, data, *args, **kwargs):
+        def _sql(self, _id, *args, **kwargs):
             if by == None:
-                spec = {"_id": data}
+                spec = {"_id": _id}
             else:
                 spec = by
             mgservice.delete(spec, self._schema, self._table)
