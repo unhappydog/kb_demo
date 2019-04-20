@@ -13,18 +13,19 @@ from services.LinkerService import linkerService
 from collections import Counter
 from utils.Encoder import JSONEncoder
 
+
 class CVPaint:
     def __init__(self):
         self.cv_controller = CVController4Mongo()
         self.parser = CVParser()
 
-    def year_to_char(self,year):
+    def year_to_char(self, year):
         if year < 1:
             return "{}个月".format(str(round(year * 12)))
         else:
-            return "{}年{}个月".format(str(int(year)),str(round((year - int(year))*12)))
+            return "{}年{}个月".format(str(int(year)), str(round((year - int(year)) * 12)))
 
-    def data_label(self,cv):
+    def data_label(self, cv):
         '''
         :param cv:
         :return:
@@ -48,7 +49,6 @@ class CVPaint:
             education_time_tuple.append((education_start_time, education_end_time))
             education_time.append({"start_time": education_start_time, "end_time": education_end_time})
 
-
         for workExperience in work_experience:
             work_start_time = workExperience.workStartTime
             if workExperience.workEndTime != None:
@@ -57,48 +57,45 @@ class CVPaint:
                 work_end_time = update_time
 
             work_time_tuple.append((work_start_time, work_end_time))
-            work_time.append({"start_time":work_start_time,"end_time":work_end_time})
+            work_time.append({"start_time": work_start_time, "end_time": work_end_time})
 
         # 工龄
-        work_total_time = sum([(i["end_time"]-i["start_time"]).days for i in work_time])/365
+        work_total_time = sum([(i["end_time"] - i["start_time"]).days for i in work_time]) / 365
         work_total_time_char = self.year_to_char(work_total_time)
 
         # 跳槽次数
-        job_hopping_time = len(work_experience)-1
+        job_hopping_time = len(work_experience) - 1
         job_hopping_time_char = "{0}次".format(str(job_hopping_time))
 
-
         # 平均工作经历时间
-        job_hopping_freq = work_total_time/len(work_experience)
+        job_hopping_freq = work_total_time / len(work_experience)
         job_hopping_freq_char = self.year_to_char(job_hopping_freq)
 
-        #平均工作空档期 最大工作空档期
+        # 平均工作空档期 最大工作空档期
         if len(work_experience) <= 1:
             job_interval_ave = "-"
             job_interval_max = "-"
         else:
             start_list = [i[0] for i in work_time_tuple][:-1]
             end_list = [i[1] for i in work_time_tuple][1:]
-            job_interval_list = [(start_list[i]-end_list[i]).days for i in range(job_hopping_time)]
-            job_interval_ave = sum(job_interval_list)/len(job_interval_list)
+            job_interval_list = [(start_list[i] - end_list[i]).days for i in range(job_hopping_time)]
+            job_interval_ave = sum(job_interval_list) / len(job_interval_list)
             job_interval_max = max(job_interval_list)
-            job_interval_ave = "{}个月".format(str(round(job_interval_ave/30)))
-            job_interval_max = "{}个月".format(str(round(job_interval_max/30)))
+            job_interval_ave = "{}个月".format(str(round(job_interval_ave / 30)))
+            job_interval_max = "{}个月".format(str(round(job_interval_max / 30)))
 
-        #项目数量
+        # 项目数量
         project_num = "{0}个".format(str(len(project_experience)))
 
-
-        result = {  "工龄":work_total_time_char,
-                    "跳槽次数":job_hopping_time_char,
-                    "平均工作经历时间":job_hopping_freq_char,
-                    "平均工作空档期":job_interval_ave,
-                    "最大工作空档期":job_interval_max,
-                    "项目数量":project_num
-                    }
+        result = {"工龄": work_total_time_char,
+                  "跳槽次数": job_hopping_time_char,
+                  "平均工作经历时间": job_hopping_freq_char,
+                  "平均工作空档期": job_interval_ave,
+                  "最大工作空档期": job_interval_max,
+                  "项目数量": project_num
+                  }
         # print(result)
         return result
-
 
     def timeline(self, cv):
         '''
@@ -111,7 +108,6 @@ class CVPaint:
         work_experience = cv.workExperience
         project_experience = cv.projectExperience
         training_experience = cv.trainingExperience
-
 
         result = []
 
@@ -176,15 +172,15 @@ class CVPaint:
             company = workExperience.workCompany
             salary = workExperience.workSalary
             if salary == None or salary == "保密":
-                top , bottom = "-","-"
+                top, bottom = "-", "-"
             else:
-                if re.match("([0-9]*)-([0-9]*)元/月",salary):
-                    top =  re.match("([0-9]*)-([0-9]*)元/月",salary).group(1)
-                    bottom = re.match("([0-9]*)-([0-9]*)元/月",salary).group(2)
-                elif re.match("([0-9]*)元/月 以下",salary):
+                if re.match("([0-9]*)-([0-9]*)元/月", salary):
+                    top = re.match("([0-9]*)-([0-9]*)元/月", salary).group(1)
+                    bottom = re.match("([0-9]*)-([0-9]*)元/月", salary).group(2)
+                elif re.match("([0-9]*)元/月 以下", salary):
                     top = re.match("([0-9]*)元/月 以下", salary).group(1)
                     bottom = 0
-                elif re.match("([0-9]*)元/月 以上",salary):
+                elif re.match("([0-9]*)元/月 以上", salary):
                     bottom = re.match("([0-9]*)元/月 以上", salary).group(1)
                     top = bottom + 1000
                 else:
@@ -193,7 +189,7 @@ class CVPaint:
             salary_top.append(top)
             salary_bottom.append(bottom)
             companys.append(company)
-        result = {"companys":companys , "salarytop":salary_top , "salarybottom":salary_bottom}
+        result = {"companys": companys, "salarytop": salary_top, "salarybottom": salary_bottom}
 
         # print(result)
         return result
@@ -212,7 +208,7 @@ class CVPaint:
             position = workExperience.workPosition
             work_start_time = workExperience.workStartTime
             if workExperience.workEndTime != None:
-                work_end_time =  workExperience.workEndTime
+                work_end_time = workExperience.workEndTime
             else:
                 work_end_time = cv.updateTime
             work_days = (work_end_time - work_start_time).days
@@ -225,7 +221,7 @@ class CVPaint:
             if position not in position_dict.keys():
                 position_dict[position] = work_days
             else:
-                position_dict[position]+=work_days
+                position_dict[position] += work_days
 
         result = {"industry": [], "positon": []}
         result["industry"] = [{"value": value, "name": name} for name, value in industry_dict.items()]
@@ -234,8 +230,7 @@ class CVPaint:
         # print(result)
         return result
 
-
-    def skill_radar(self,cv):
+    def skill_radar(self, cv):
 
         '''
 
@@ -243,14 +238,15 @@ class CVPaint:
         :return:
         '''
         result = {"skill": [
-                                {"text": '办公软件', "max": 100},
-                                {"text": '编程语言', "max": 100},
-                                {"text": '数据库', "max": 100},
-                                {"text": '算法', "max": 100},
-                                {"text": '开发工具', "max": 100}],
-                 "value": [85, 90, 90, 95, 95],}
+            {"text": '办公软件', "max": 100},
+            {"text": '编程语言', "max": 100},
+            {"text": '数据库', "max": 100},
+            {"text": '算法', "max": 100},
+            {"text": '开发工具', "max": 100}],
+            "value": [85, 90, 90, 95, 95], }
         return result
-    def cv_word_cloud(self,cv):
+
+    def cv_word_cloud(self, cv):
 
         '''
 
@@ -258,7 +254,7 @@ class CVPaint:
         :return:
         '''
         result = ""
-        return  result
+        return result
 
     def terms_bar(self, cv):
         '''
@@ -268,13 +264,12 @@ class CVPaint:
         '''
         # link_result = TerminologyLinker.link(cv)
 
-        result = {"terms":['机器学习','深度学习','python','java','自然语言处理','文本聚类'],
-                  "terms_freq":[8, 5, 4, 4, 3, 2]}
+        result = {"terms": ['机器学习', '深度学习', 'python', 'java', '自然语言处理', '文本聚类'],
+                  "terms_freq": [8, 5, 4, 4, 3, 2]}
         # print(result)
         return result
 
-
-    def cv_paint(self,cv):
+    def cv_paint(self, cv):
         '''
         :param cv: get from mongodb by id
         :return:
@@ -288,7 +283,7 @@ class CVPaint:
         result["skill_radar"] = self.skill_radar(cv)
         result["cv_word_cloud"] = self.cv_word_cloud(cv)
         result["terms_bar"] = self.terms_bar(cv)
-        json.dumps(result,cls=JSONEncoder)
+        json.dumps(result, cls=JSONEncoder)
         return result
 
     def term_cloud(self, cv):
@@ -343,4 +338,3 @@ if __name__ == "__main__":
     print(cv_paint.term_cloud(cv))
 
     # print(cvpaint.data_label())
-

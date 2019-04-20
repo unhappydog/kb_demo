@@ -16,7 +16,7 @@ class TestRestApi(unittest.TestCase):
         with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
             self.json_str = f.read()
         # json.loads(self.json_str, encoding='utf8')
-        result = requests.post('http://centos1:18081/online/link', data={'json': self.json_str})
+        result = requests.post('http://localhost:18081/online/link', data={'json': self.json_str})
         print(result.json())
 
 

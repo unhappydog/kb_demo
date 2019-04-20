@@ -33,6 +33,9 @@ class CVParser:
         if "id" in data.keys() and "_id" in data.keys() and (data["_id"] == "" or data["_id"] is None):
             data["_id"] = data["id"]
             del data["id"]
+        elif "id" in data.keys() and "_id" not in data.keys():
+            data["_id"] = data["id"]
+            del data["id"]
         elif "id" in data.keys():
             del data["id"]
 
