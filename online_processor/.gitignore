@@ -106,3 +106,4 @@ venv.bak/
 .mypy_cache/
 resources/ltp_data_v3.4.0/
 .idea
+resources/lexicon
