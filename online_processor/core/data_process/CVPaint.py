@@ -154,7 +154,7 @@ class CVPaint:
 
         for r in result:
             r["start"].strftime("%Y-%m")
-            r["eng"].strftime("%Y-%m")
+            r["end"].strftime("%Y-%m")
 
         return result
 
@@ -242,13 +242,20 @@ class CVPaint:
         :param cv:
         :return:
         '''
-        result = {"skill": [
-                                {"text": '办公软件', "max": 100},
-                                {"text": '编程语言', "max": 100},
-                                {"text": '数据库', "max": 100},
-                                {"text": '算法', "max": 100},
-                                {"text": '开发工具', "max": 100}],
-                 "value": [85, 90, 90, 95, 95],}
+        scale_list = {"精通":["精通"],
+                      "熟练": ["熟练","熟悉","熟练使用","擅长","深入","熟练掌握"],
+                      "掌握": ["能够应用","能够使用","可以","掌握","良好","具备 能力","有 能力"],
+                      "了解": ["了解","一般","知道","认识"],}
+
+
+
+        result = [
+            {'text': '办公软件', 'value': 100},
+            {'text': '编程语言', 'value': 100},
+            {'text': '数据库', 'value': 100},
+            {'text': '算法', 'value': 100},
+            {'text': '开发工具', 'value': 100}
+        ]
         return result
     def cv_word_cloud(self,cv):
 
@@ -322,6 +329,8 @@ class CVPaint:
         en_skill_words = linkerService.recongnize_terminology(en_words, 'en')
         words = en_words + cn_words
         skill_words = cn_skill_words + en_skill_words
+        print(Counter(words))
+        print(Counter(skill_words))
         return Counter(words), Counter(skill_words)
 
 
@@ -334,7 +343,7 @@ if __name__ == "__main__":
     # cv_paint.data_label(cv)
     # testtime = cv.workExperience[0].workStartTime
     # print(testtime.timetuple().tm_year)
-    print(cv_paint.term_cloud(cv))
-
+    # print(cv_paint.term_cloud(cv))
+    cv_paint.term_cloud(cv)
     # print(cvpaint.data_label())
 
