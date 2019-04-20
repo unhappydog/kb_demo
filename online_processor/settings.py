@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 neo_host = "centos1"
 neo_port = 32474
 
-mysql_host = "centos1"
+mysql_host = "172.16.6.10"
 mysql_port = 32306
 mysql_user = "root"
 mysql_password = '111111'

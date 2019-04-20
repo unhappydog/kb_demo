@@ -6,23 +6,10 @@ from services.LinkerService import linkerService
 from services.DataService import dataService
 from services.PaintService import paintService
 
-
 # @inf_restful.route("/hellow", methods=['GET'])
 # def hellow():
 #     return "hellow"
 
-@inf_restful.route('/online/paint',
-                   methods=["POST"])
-def paint_cv():
-    """
-    statistic and visualize a cv by diagram
-    :return: json format
-    """
-    if request.method == 'POST':
-        cv_id = request.form["json"]
-        paint_result = paintService.paint_cv(cv_id)
-        return paint_result
-
 
 @inf_restful.route('/online/paint',
                    methods=["POST"])
@@ -32,7 +19,7 @@ def paint_cv():
     :return: json format
     """
     if request.method == 'POST':
-        cv_id = request.form["json"]
-        print(cv_id)
+        cv_id = request.form["_id"]
         paint_result = paintService.paint_cv(cv_id)
-        return paint_result
+        return json.dumps(paint_result,ensure_ascii=False,cls=JSONEncoder)
+
