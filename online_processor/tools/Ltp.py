@@ -31,6 +31,14 @@ class Ltp:
         else:
             self.labeller.load(os.path.join(LTP_DIR, "pisrl.model"))
 
+    def reload_dict(self, user_dict):
+        LTP_DIR = os.path.join(BASE_DIR, 'resources', 'ltp_data_v3.4.0')
+        user_dict_path = os.path.join(BASE_DIR, 'resources', 'lexicon')
+        # 确定所有技术词已经在词典中了
+        if user_dict is not None:
+            self.verify_dict(user_dict_path, user_dict)
+        self.segmentor.load_with_lexicon(os.path.join(LTP_DIR, "cws.model"), user_dict_path)
+
     def segment(self, doc):
         return self.segmentor.segment(doc)
 

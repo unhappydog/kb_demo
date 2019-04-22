@@ -110,8 +110,8 @@ class TerminologyLinker:
 
         # 检查一个术语是否作为独立的单词存在
         text_en = text.lower()
-        text_en_pure = re.sub("({0}|,|;|，|。|；)+".format(REGEX_CN), '_', text_en)
-        for en_word in text_en_pure.split("_"):
+        text_en_pure = re.sub("({0}|,|;|，|。|；|、|,|;)+".format(REGEX_CN), '__', text_en)
+        for en_word in text_en_pure.split("__"):
             en_word = en_word.strip(" ")
             if en_word in self.enname_to_id.keys():
                 start_index = text_en.rfind(en_word)
@@ -127,3 +127,13 @@ class TerminologyLinker:
         result = sorted(result, key=lambda x: x['start_index'], reverse=False)
 
         return result
+
+    def recongnize_termnology(self, word_list, language='cn'):
+        if language == 'cn':
+            return [word for word in word_list if word in self.name_to_id.keys()]
+        elif language =='en':
+            return [word for word in word_list if word in self.enname_to_id.keys()]
+        else:
+            logging.error("unrecongnize language")
+            return None
+

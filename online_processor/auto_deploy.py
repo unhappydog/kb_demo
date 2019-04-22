@@ -1,8 +1,8 @@
 from fabric import Connection
 import os
 
-update_list = ['core', 'data_access', 'logs', 'resources','rest_apps', 'scripts', 'services',
-               'tools','unit_test','utils','main.py', 'bin','pid']
+update_list = ['core', 'data_access', 'logs','rest_apps', 'scripts', 'services',
+               'tools','unit_test','utils','main.py']
 # update_list = ['Recommand.py']
 # update_list = ['app']
 

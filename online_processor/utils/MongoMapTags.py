@@ -39,9 +39,9 @@ def insert():
 
 def delete(by=None):
     def wrapper(func):
-        def _sql(self, data, *args, **kwargs):
+        def _sql(self, _id, *args, **kwargs):
             if by == None:
-                spec = {"_id": data._id}
+                spec = {"_id": _id}
             else:
                 spec = by
             mgservice.delete(spec, self._schema, self._table)
@@ -86,8 +86,8 @@ def query(by={"_id": "_id"}):
 def parse_data(data):
     doc = {}
     for key, value in data.__dict__.items():
-        if key == "_id":
-            key = "id"
+        # if key == "_id":
+        #     key = "id"
         if type(value) != list:
             doc[key] = value
         else:
