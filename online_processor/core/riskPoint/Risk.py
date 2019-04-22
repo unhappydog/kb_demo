@@ -15,7 +15,6 @@ class riskPoint(object):
         self.updatetime=''
 
     def identification(self,cvdata):
-             # self.cv_data=basicdata().get_cvdata()
              self.cv_data=cvdata
              self.updatetime = self.cv_data['updateTime']
              self.workStrattime, self.workEndtime, self.eduStarttime, self.eduEndtime = basicdata().clopsetime(self.cv_data)
