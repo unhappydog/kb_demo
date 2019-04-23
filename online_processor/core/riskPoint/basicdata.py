@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from data_access.controller.KBAcademyController4Mongo import KBAcademyController4Mongo
 from data_access.controller.CVController4Mongo import CVController4Mongo
 
@@ -53,7 +52,8 @@ class basicdata(object):
     def worktimedata(self, singaldata):
         worktimedata = []
         for wo in singaldata['workExperience']:
-            worktimedata.append(wo['workTimePeriod'])
+            if wo['workTimePeriod']:
+                 worktimedata.append(wo['workTimePeriod'])
         return worktimedata
 
     def salarydata(self, singaldata):
@@ -64,7 +64,8 @@ class basicdata(object):
                 worksalar.append(sa['workSalary'].strip(' '))
             except:
                 worksalar.append(' ')
-        return exceptsalar, worksalar
+
+        return exceptsalar,worksalar
 
     def get_cvdata(self):
         data = self.cvinfo.get_datas()
