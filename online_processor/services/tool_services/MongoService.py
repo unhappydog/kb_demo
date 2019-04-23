@@ -99,6 +99,18 @@ class MongoService:
         x = [doc for doc in query_result]
         return x
 
+    def remove_dul(self, dul_col, db, table):
+        dul_ids = self.client[db][table].aggregate([
+            {"$group": {
+                "_d_id": {"$min": '$_id'},
+                "_id": {"id": "${0}".format(dul_col)},
+                "num": {"$sum": 1},
+            }}
+            # {"$project": {"_id": 0, dul_col: "$_id", "num": 1}}
+        ])
+        x = [doc for doc in dul_ids]
+        return x
+
 
 mgService = MongoService()
 
@@ -114,9 +126,10 @@ if __name__ == '__main__':
 
     a = time.time()
 
-    data = mgService.query({"schoolName": "武汉大学"},
-                           'kb_demo',
-                           'kb_academy')
+    # data = mgService.query({"schoolName": "武汉大学"},
+    #                        'kb_demo',
+    #                        'kb_academy')
+    data = mgService.remove_dul('id', 'kb_demo', 'kb_terminology')
     print(data)
 
     print(time.time() - a)

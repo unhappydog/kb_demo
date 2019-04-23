@@ -53,6 +53,8 @@ def syn_terminology():
             doc['cnName'] = doc['cnName'].split(';')
         if doc['engName'] is not None:
             doc['engName'] = doc['engName'].split(';')
+        if mgservice.query({"id":data.id}, 'kb_demo','kb_terminology'):
+            mgservice.delete({'id': data.id}, 'kb_demo', 'kb_terminology')
         kb_terminal_mongo.insert_data(data)
 
 

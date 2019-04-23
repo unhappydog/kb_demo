@@ -14,7 +14,11 @@ class DataService:
             self.cv_controller.insert_data(cv)
 
     def get(self, id):
-        return self.cv_controller.get_data_by_id(_id=id)
+        data = self.cv_controller.get_data_by_id(_id=id)
+        if data:
+            return data[0]
+        else:
+            return None
 
     def delete(self, id):
         return self.cv_controller.delete_by_id(_id=id)

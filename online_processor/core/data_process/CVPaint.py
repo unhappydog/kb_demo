@@ -8,6 +8,9 @@ from services.NLPService import nlpService
 from services.LinkerService import linkerService
 from collections import Counter
 from utils.Encoder import JSONEncoder
+# import zhon
+from zhon import hanzi
+import string
 
 
 class CVPaint:
@@ -21,15 +24,14 @@ class CVPaint:
         else:
             return "{}年{}个月".format(str(int(year)), str(round((year - int(year)) * 12)))
 
-
-    def conver_null_time(self,start_time,end_time,update_time):
-        if start_time == None :
+    def conver_null_time(self, start_time, end_time, update_time):
+        if start_time == None:
             start_time = update_time
         if end_time == None:
             end_time = update_time
-        return start_time ,end_time
+        return start_time, end_time
 
-    def extract_terminology(self,text):
+    def extract_terminology(self, text):
         stop_words = ['', '\uf06c']
         cn_sentences = nlpService.sentencesize(text)
         cn_words = [word for doc in cn_sentences for word in nlpService.seg_words(doc)]
@@ -42,9 +44,9 @@ class CVPaint:
         en_words = [word for word in en_words if word not in stop_words]
         en_skill_words = linkerService.recongnize_terminology(en_words, 'en')
         skill_words = cn_skill_words + en_skill_words
-        return  skill_words
+        return skill_words
 
-    def data_label(self,cv):
+    def data_label(self, cv):
         '''
         :param cv:
         :return:
@@ -62,7 +64,8 @@ class CVPaint:
         for educationExperience in education_experiences:
             education_start_time = educationExperience.educationStartTime
             education_end_time = educationExperience.educationEndTime
-            education_start_time, education_end__time =self.conver_null_time(education_start_time,education_end_time,update_time)
+            education_start_time, education_end__time = self.conver_null_time(education_start_time, education_end_time,
+                                                                              update_time)
 
             education_time_tuple.append((education_start_time, education_end_time))
             education_time.append({"start_time": education_start_time, "end_time": education_end_time})
@@ -70,7 +73,7 @@ class CVPaint:
         for workExperience in work_experience:
             work_start_time = workExperience.workStartTime
             work_end_time = workExperience.workEndTime
-            work_start_time, work_end_time = self.conver_null_time(work_start_time,work_end_time,update_time)
+            work_start_time, work_end_time = self.conver_null_time(work_start_time, work_end_time, update_time)
 
             work_time_tuple.append((work_start_time, work_end_time))
             work_time.append({"start_time": work_start_time, "end_time": work_end_time})
@@ -131,7 +134,7 @@ class CVPaint:
         for educationExperience in education_experiences:
             start_time = educationExperience.educationStartTime
             end_time = educationExperience.educationEndTime
-            start_time,end_time = self.conver_null_time(start_time,end_time,update_time)
+            start_time, end_time = self.conver_null_time(start_time, end_time, update_time)
 
             school_name = educationExperience.educationSchool
             major = educationExperience.educationMajor
@@ -154,7 +157,7 @@ class CVPaint:
         for projectExperience in project_experience:
             start_time = projectExperience.projectStartTime
             end_time = projectExperience.projectEndTime
-            start_time, end_time = self.conver_null_time(start_time,end_time,update_time)
+            start_time, end_time = self.conver_null_time(start_time, end_time, update_time)
 
             project = projectExperience.projectName
             text = project
@@ -164,7 +167,7 @@ class CVPaint:
         for trainingExperience in training_experience:
             start_time = trainingExperience.trainingStartTime
             end_time = trainingExperience.trainingEndTime
-            start_time, end_time = self.conver_null_time(start_time,end_time,update_time)
+            start_time, end_time = self.conver_null_time(start_time, end_time, update_time)
             if start_time == update_time and end_time == update_time:
                 continue
             training = trainingExperience.trainingCourse
@@ -256,8 +259,7 @@ class CVPaint:
         # print(result)
         return result
 
-
-    def skill_radar(self,cv):
+    def skill_radar(self, cv):
 
         '''
 
@@ -265,10 +267,10 @@ class CVPaint:
         :return:
         '''
 
-        scale_list = {"精通":["精通"],
-                      "熟练": ["熟练","熟悉","熟练使用","擅长","深入","熟练掌握"],
-                      "掌握": ["能够应用","能够使用","可以","掌握","良好","具备 能力","有 能力"],
-                      "了解": ["了解","一般","知道","认识","有 使用经验"]}
+        scale_list = {"精通": ["精通"],
+                      "熟练": ["熟练", "熟悉", "熟练使用", "擅长", "深入", "熟练掌握"],
+                      "掌握": ["能够应用", "能够使用", "可以", "掌握", "良好", "具备 能力", "有 能力"],
+                      "了解": ["了解", "一般", "知道", "认识", "有 使用经验"]}
         null_result = [
             {'text': '办公软件', 'value': 0},
             {'text': '编程语言', 'value': 0},
@@ -295,13 +297,12 @@ class CVPaint:
         elif type(cv.skill) == str:
             result = null_result
 
-        elif cv.skill== None:
+        elif cv.skill == None:
             result = null_result
-
 
         return result
 
-    def cv_paint(self,cv):
+    def cv_paint(self, cv):
         '''
         :param cv: get from mongodb by id
         :return:
@@ -315,7 +316,7 @@ class CVPaint:
         result["skill_radar"] = self.skill_radar(cv)
         result["cv_word_cloud"] = self.term_cloud(cv)[0]
         result["terms_bar"] = self.term_cloud(cv)[1]
-        json.dumps(result,cls=JSONEncoder)
+        json.dumps(result, cls=JSONEncoder)
         return result
 
     def term_cloud(self, cv):
@@ -343,7 +344,13 @@ class CVPaint:
 
         text_en = all_text.lower()
         text_en = "".join(text_en.split())
-        text_en_pure = re.sub("({0}|,|;|，|。|；|\\n'|、)+".format(REGEX_CN), '__', text_en)
+        # text_en_pure = re.sub("({0}|,|;|，|。|；|\\n'|、|》|《)+".format(REGEX_CN), '__', text_en)
+        # reg_str = "|".join(list(hanzi.punctuation) + [REGEX_CN])
+        # text_en_pure = re.sub("({0})".format(reg_str), '__', text_en)
+        text_en_pure = re.sub(r"[%s]+" % (hanzi.punctuation + re.sub('(\.|#)','',string.punctuation)), "__", text_en)
+        text_en_pure = re.sub(REGEX_CN,'__',text_en_pure)
+
+        # text_en_pure = re.sub("({0})")
         en_words = text_en_pure.split("__")
         en_words = [word for word in en_words if word not in stop_words]
         en_skill_words = linkerService.recongnize_terminology(en_words, 'en')
@@ -352,23 +359,34 @@ class CVPaint:
         # return dict(Counter(words)), dict(Counter(skill_words).most_common(10))
         count_words = Counter(words)
         count_skill_words = Counter(skill_words).most_common(10)
-        count_words = [{'texts': k, 'weights': v} for k, v in count_words.items()]
-        count_skill_words = [{'texts': k, 'weights': v} for k, v in count_skill_words]
+        count_words = [{'text': k, 'weight': v} for k, v in count_words.items() if self.is_bad_words(k)]
+        count_words = sorted(count_words, key=lambda x:x['weight'], reverse=True)[:50]
+        count_skill_words = [{'name': k, 'weights': v} for k, v in count_skill_words]
         return count_words, count_skill_words
 
+    def is_bad_words(self, word):
+        word = re.sub(r"[%s]+" % (hanzi.punctuation + string.punctuation), "", word)
+        word = re.sub(r"[0-9]+", "", word)
+        if len(word) > 1:
+            return True
+        else:
+            return False
 
 
 if __name__ == "__main__":
     cv_paint = CVPaint()
     cv = cv_paint.cv_controller.get_data_by_id(_id="N7p7DBeE6lKOrYKUoDC(WA")[0]
-    result = cv_paint.cv_paint(cv)
-    print(result)
+    # result = cv_paint.cv_paint(cv)
+    # print(result)
 
     cv = cv_paint.parser.parse(cv)
     # cv_paint.data_label(cv)
     # testtime = cv.workExperience[0].workStartTime
     # print(testtime.timetuple().tm_year)
-    print(cv_paint.term_cloud(cv))
+    # print(cv_paint.term_cloud(cv))
+    cw, sw = cv_paint.term_cloud(cv)
+    print(cw)
+    print("\n")
+    print(sw)
 
     # print(cvpaint.data_label())
-
