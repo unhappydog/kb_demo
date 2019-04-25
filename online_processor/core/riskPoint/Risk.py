@@ -129,24 +129,7 @@ class riskPoint(object):
                     temp['label'] = '本科异常'
                     temp['error'] = '候选人本科读了' + str(year + 1) + '年'
                     eduerror.append(temp)
-<<<<<<< HEAD
-            if ed == '硕士':
-                temp = {}
-                if "香港" in en or bool(re.search('[a-z]', en)):
-                    if year < 1:
-                        temp['label'] = '硕士异常'
-                        temp['error'] = '候选人硕士读了不到' + str(month) + '个月'
-                        eduerror.append(temp)
-                else:
-                    if (year <= 1 and month < 11):
-                        temp['label'] = '硕士异常'
-                        temp['error'] = '候选人硕士读了不到2年'
-                        eduerror.append(temp)
-            if ed == '其他':
-                temp = {}
-                temp['label'] = '学历异常'
-                temp['error'] = '候选人学历不明'
-=======
+
             if ed=='硕士':
                     temp={}
                     if "香港" in en or bool(re.search('[a-z]', en)):
@@ -163,7 +146,6 @@ class riskPoint(object):
                 temp={}
                 temp['label']='学历异常'
                 temp['error']='候选人学历不明'
->>>>>>> 81399608ce9b54a9d210fbed2a3a477284bd7ff7
                 eduerror.append(temp)
             if em == '其他':
                 temp = {}
@@ -177,17 +159,11 @@ class riskPoint(object):
                 temp['label'] = '高校异常'
                 temp['error'] = '候选人在第' + str(count) + '段教育经历所就读的高校可能不存在'
                 eduerror.append(temp)
-<<<<<<< HEAD
-        if '本科' in educationDegree:
-            temp = {}
-            temp['label'] = '专升本'
-            temp['error'] = '候选人本科之前读了专科'
-=======
+
         if '大专' in educationDegree:
             temp={}
             temp['label']='专升本'
             temp['error']='候选人本科之前读了专科'
->>>>>>> 81399608ce9b54a9d210fbed2a3a477284bd7ff7
             eduerror.append(temp)
         if len(eduerror) > 0:
             return eduerror
