@@ -4,10 +4,15 @@ from datetime import datetime
 class util(object):
     # 时间差
     def time_difference(self, starttime, endtime):
-        if starttime > endtime:
-            temp = starttime
-            starttime = endtime
-            endtime = temp
+
+        if starttime>endtime:
+            temp=starttime
+            starttime=endtime
+            endtime=temp
+        if isinstance(endtime,str):
+            endtime=datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
+        if isinstance(starttime,str):
+            starttime=datetime.strptime(starttime,"%Y-%m-%d %H:%M:%S")
         diff = (endtime - starttime).days
         start = int("".join(datetime.strftime(starttime, '%Y')))
         end = int("".join(datetime.strftime(endtime, '%Y')))

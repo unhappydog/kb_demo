@@ -129,7 +129,14 @@ if __name__ == '__main__':
     # data = mgService.query({"schoolName": "武汉大学"},
     #                        'kb_demo',
     #                        'kb_academy')
-    data = mgService.remove_dul('id', 'kb_demo', 'kb_terminology')
-    print(data)
+    # data = mgService.remove_dul('id', 'kb_demo', 'kb_terminology')
+    import datetime
 
-    print(time.time() - a)
+    a = datetime.datetime(2018, 1, 1)
+    doc = {'test_time1': a, 'cn_code': "我是中国人".encode("gbk").decode("gbk"),
+           'cn_utf8': "我不是日本人".encode("utf8").decode("utf8")}
+
+    mgService.insert(doc, 'kb_demo','datetime_test')
+
+    # print(data)
+
