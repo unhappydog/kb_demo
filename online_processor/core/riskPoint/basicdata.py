@@ -14,22 +14,23 @@ class basicdata(object):
         workEndtime = []
         eduStarttime = []
         eduEndtime = []
+
         for si in signaldata['workExperience']:
-            workStrattime.append(si['workStartTime'])
-            if isinstance(si['workEndTime'], datetime):
-                workEndtime.append(si['workEndTime'])
-            else:
-                workEndtime.append(signaldata['updateTime'])
+
+                workStrattime.append(si['workStartTime'])
+                if isinstance(si['workEndTime'],datetime):
+                    workEndtime.append(si['workEndTime'])
+                else:
+                    workEndtime.append(signaldata['updateTime'])
         for ed in signaldata['educationExperience']:
-            eduStarttime.append(ed['educationStartTime'])
-            if ed['educationEndTime'] != '':
-                eduEndtime.append(ed['educationEndTime'])
-            else:
-                eduEndtime.append(signaldata['updateTime'])
+                eduStarttime.append(ed['educationStartTime'])
+                if ed['educationEndTime'] != '':
+                    eduEndtime.append(ed['educationEndTime'])
+                else:
+                    eduEndtime.append(signaldata['updateTime'])
+        return workStrattime,workEndtime,eduStarttime,eduEndtime
 
-        return workStrattime, workEndtime, eduStarttime, eduEndtime
-
-    def educationdata(self, singaldata):
+    def educationdata(self,singaldata):
         educationDegree = []
         eduname = []
         edumajor = []
