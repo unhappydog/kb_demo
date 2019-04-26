@@ -2,7 +2,6 @@ from data_access.controller.CVController4Mongo import CVController4Mongo
 from utils.Constants import REGEX_CN
 import re
 import json
-from bson import ObjectId
 from core.parser.CVParser import CVParser
 from services.NLPService import nlpService
 from services.LinkerService import linkerService

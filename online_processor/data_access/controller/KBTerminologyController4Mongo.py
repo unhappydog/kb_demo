@@ -16,6 +16,7 @@ class KBTerminologyController4Mongo(BaseMongoController):
                                 projection={'_id': True, 'cnName': True, 'engName': True})
         return datas
 
+
     @return_type(KB_Terminology)
     def get_data_by_id(self, _id=''):
         """

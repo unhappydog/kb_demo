@@ -23,3 +23,5 @@ def paint_cv():
         paint_result = paintService.paint_cv(cv_id)
         return json.dumps(paint_result,ensure_ascii=False,cls=JSONEncoder)
 
+
+
