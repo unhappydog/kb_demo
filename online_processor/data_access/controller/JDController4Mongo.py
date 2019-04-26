@@ -47,4 +47,5 @@ if __name__ == '__main__':
     controller = JDController4Mongo()
     controller.get_datas_order_by("")
     # controller.delete_by_id("")
+    print(controller.get_datas())
 

@@ -27,6 +27,8 @@ class KBTerminologyController4Mongo(BaseMongoController):
             cond = {"_id":ObjectId(_id)}
         elif type(_id) == ObjectId:
             cond = {"_id": _id}
+        elif type(_id) == int:
+            cond = {"_id": _id}
         else:
             logging.error("message _id should be type str or objectId")
         datas = mgservice.query(query_cond=cond, db=self._schema, table=self._table)

@@ -6,6 +6,12 @@ from data_access.models.properties.ProjectExperience import ProjectExperience
 from data_access.models.properties.TrainingExperience import TrainingExperience
 from data_access.models.properties.Skill import Skill
 from data_access.models.properties.AssociationExperience import AssociationExperience
+from data_access.models.properties.Language import Language
+from data_access.models.properties.Certificate import Certificate
+from data_access.models.properties.Book import Book
+from data_access.models.properties.Award import Award
+from data_access.models.properties.Patent import Patent
+from data_access.models.properties.Paper import Paper
 from utils.Utils import convert_str_2_date
 from utils.Logger import logging
 import datetime
@@ -16,7 +22,14 @@ class_dict = {
     'workExperience': WorkExperience,
     'projectExperience': ProjectExperience,
     'trainingExperience': TrainingExperience,
-    'associationExperience': AssociationExperience
+    'associationExperience': AssociationExperience,
+    'skill': Skill,
+    'certificate': Certificate,
+    'language': Language,
+    'publishBook':Book,
+    'award':Award,
+    'publishPatent':Patent,
+    'publishPaper': Paper
 }
 
 
@@ -31,6 +44,9 @@ class CVParser:
             logging.error("json str format cant recongnized {0}".format(json_str))
 
         if "id" in data.keys() and "_id" in data.keys() and (data["_id"] == "" or data["_id"] is None):
+            data["_id"] = data["id"]
+            del data["id"]
+        elif "id" in data.keys() and "_id" not in data.keys():
             data["_id"] = data["id"]
             del data["id"]
         elif "id" in data.keys():
@@ -59,7 +75,7 @@ class CVParser:
         for key, value in class_dict.items():
             experience_list = cv.__dict__[key]
             cv.__dict__[key] = []
-            if experience_list:
+            if experience_list and experience_list != "":
                 for experience in experience_list:
                     cv.__dict__[key].append(value(**experience))
 
@@ -128,7 +144,7 @@ class CVParser:
         workExperiences = []
         for experience in data["workExperience"]:
             company_name = experience.get('CompanyName', "")
-            company_name = re.sub('\(.+\)$|（.+）$', '', company_name)
+            # company_name = re.sub('\(.+\)$|（.+）$', '', company_name)
             workExperience = WorkExperience(workStartTime=CVParser.parse_time(experience.get('DateStart', None)),
                                             workEndTime=CVParser.parse_time(experience.get('DateEnd', None)),
                                             workCompany=company_name,

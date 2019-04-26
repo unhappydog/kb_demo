@@ -11,6 +11,7 @@ from services.PaintService import paintService
 #     return "hellow"
 
 
+
 @inf_restful.route('/online/paint',
                    methods=["POST"])
 def paint_cv():

@@ -258,7 +258,7 @@ class Kgnizer:
                         else:
                             for termnolgoy in child_value_1:
                                 child_propery_id_2 = kg_property_list.push_property(termnolgoy['术语'])
-                                kg_property_list.push(child_propery_id_2, child_propery_id_1, '',
+                                kg_property_list.push_path(child_propery_id_2, child_propery_id_1, '',
                                                       termnolgoy.get('悬浮', None))
             elif base_property == "技能":
                 for skill in kg_cv[base_property]:
