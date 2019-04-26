@@ -42,7 +42,7 @@ class MongoService:
         return x
 
     def query_sort(self, query_cond, table, db, sort_by='', ascending=-1, page=1,
-                   size=10):
+                   size=10, projection=None):
         """
         按顺序返回
         :param query_cond:
@@ -56,9 +56,9 @@ class MongoService:
         """
         skip = (page - 1) * size
         if query_cond is None or query_cond == {}:
-            query_result = self.client[db][table].find().sort(sort_by, ascending).skip(skip).limit(size)
+            query_result = self.client[db][table].find(projection=projection).sort(sort_by, ascending).skip(skip).limit(size)
         else:
-            query_result = self.client[db][table].find(query_cond).sort(sort_by, ascending).skip(skip).limit(size)
+            query_result = self.client[db][table].find(query_cond, projection=projection).sort(sort_by, ascending).skip(skip).limit(size)
         x = [doc for doc in query_result]
         return x
 
@@ -105,10 +105,13 @@ class MongoService:
                 "_d_id": {"$min": '$_id'},
                 "_id": {"id": "${0}".format(dul_col)},
                 "num": {"$sum": 1},
+            }},
+            {"$match": {
+                "num": {"$gt": 1}
             }}
             # {"$project": {"_id": 0, dul_col: "$_id", "num": 1}}
         ])
-        x = [doc for doc in dul_ids]
+        x = [data for data in dul_ids]
         return x
 
 
@@ -126,17 +129,8 @@ if __name__ == '__main__':
 
     a = time.time()
 
-    # data = mgService.query({"schoolName": "武汉大学"},
-    #                        'kb_demo',
-    #                        'kb_academy')
-    # data = mgService.remove_dul('id', 'kb_demo', 'kb_terminology')
-    import datetime
-
-    a = datetime.datetime(2018, 1, 1)
-    doc = {'test_time1': a, 'cn_code': "我是中国人".encode("gbk").decode("gbk"),
-           'cn_utf8': "我不是日本人".encode("utf8").decode("utf8")}
-
-    mgService.insert(doc, 'kb_demo','datetime_test')
-
-    # print(data)
+    data = mgService.remove_dul('ID', 'kb_demo', 'kb_talent')
+    print(data)
+    # [mgService.delete({'_id':x['_d_id']}, 'kb_demo', 'kb_talent') for x in data]
+    print(len(data))
 

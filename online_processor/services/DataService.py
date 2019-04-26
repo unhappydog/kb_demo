@@ -1,11 +1,17 @@
 from utils.Tags import Singleton
 from data_access.controller.CVController4Mongo import CVController4Mongo
+from data_access.controller.KBTalentController4Mongo import KBTalentController4Mongo
+from data_access.controller.ExperienceController4Mongo import ProjectExperienceController4Mongo
+from data_access.controller.JDCompanyController4Mongo import JDCompanyController4Mongo
 
 
 @Singleton
 class DataService:
     def __init__(self):
         self.cv_controller = CVController4Mongo()
+        self.jd_controller = KBTalentController4Mongo()
+        self.experienc_contorller = ProjectExperienceController4Mongo()
+        self.jd_company_controller = JDCompanyController4Mongo()
 
     def save(self, cv):
         if self.cv_controller.get_data_by_id(_id=cv._id):
@@ -22,6 +28,15 @@ class DataService:
 
     def delete(self, id):
         return self.cv_controller.delete_by_id(_id=id)
+
+    def get_jd_by_name(self, name, page, limit):
+        return self.jd_controller.get_talent_by_name_order_by_date(name, page, limit)
+
+    def get_project_experience_by_name(self, name, page, limit):
+        return self.experienc_contorller.get_datas_by_name(name, page=page, size=limit)
+
+    def get_company_by_jd(self, name, page, limit):
+        return self.jd_company_controller.get_data_by_job_title(name, page, limit)
 
 
 dataService = DataService()

@@ -19,8 +19,14 @@ class LinkerService:
     def link_company(self, cv):
         return self.linker.link_company(cv)
 
+    def get_company_info(self, name):
+        return self.linker.get_company_info(name)
+
     def link_terminology(self, cv):
         return self.terminology.link(cv)
+
+    def link_terminology_in_text(self, text):
+        return self.terminology.simple_word_linker(text)
 
     def parse(self, cv_json):
         return self.parser.parse(cv_json)

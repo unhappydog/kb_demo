@@ -144,7 +144,7 @@ class CVParser:
         workExperiences = []
         for experience in data["workExperience"]:
             company_name = experience.get('CompanyName', "")
-            company_name = re.sub('\(.+\)$|（.+）$', '', company_name)
+            # company_name = re.sub('\(.+\)$|（.+）$', '', company_name)
             workExperience = WorkExperience(workStartTime=CVParser.parse_time(experience.get('DateStart', None)),
                                             workEndTime=CVParser.parse_time(experience.get('DateEnd', None)),
                                             workCompany=company_name,
