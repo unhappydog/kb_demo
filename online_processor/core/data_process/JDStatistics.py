@@ -5,6 +5,7 @@ from datetime import datetime
 from itertools import groupby
 from collections import Counter
 from data_access.controller.KBTerminologyController4Mongo import KBTerminologyController4Mongo as TC
+import logging
 
 class JDStatistics:
     def __init__(self):
@@ -82,14 +83,16 @@ class JDStatistics:
             #日期数据
             jd_date.append(jd["Startdate"])
 
-            jd_words = [seg.split(":")[0] for seg in jd["JobDescription_seg"].split(",")]
-            for word in jd_words:
-                if word.lower() in list(map(str().lower(),self.terminology.keys())):
+            for word in jd["skills"]:
+                try:
                     skill_id = self.terminology[word]
-                    if skill_id not in skill.keys():
-                        skill[skill_id] = 1
-                    else:
-                        skill[skill_id] += 1
+                except KeyError:
+                    logging.info("Terminology \\{}\\ not in database".format(word))
+                    continue
+                if skill_id not in skill.keys():
+                    skill[skill_id] = 1
+                else:
+                    skill[skill_id] += 1
 
             # if jd["EnterpriseScale"] not in enterprise_scale.keys():
             #     education[jd["EnterpriseScale"]] = [salary]
@@ -162,7 +165,7 @@ class JDStatistics:
 
     def skill(self,jd_skill:dict):
         jd_skill = sorted(zip(jd_skill.values(),jd_skill.keys()),reverse=True)[:10]
-        result = [{"value":jdSkill[0],"name":TC.get_data_by_id(_id=jdSkill[1])["name"]} for jdSkill in jd_skill]
+        result = [{"value":jdSkill[0],"name":TC().get_data_by_id(_id=jdSkill[1])[0].name} for jdSkill in jd_skill]
         return result
 
     def statistics_by_jobtitle(self,job_title:str,statistics_time = 6):
