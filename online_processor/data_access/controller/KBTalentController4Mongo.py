@@ -15,7 +15,7 @@ class KBTalentController4Mongo(BaseMongoController):
             'JobTitle': name,
             "ISBAD": 0,
             "ISREPLICATE": 0
-        }, db=self._schema,table= self._table, projection={
+        }, db=self._schema, table=self._table, projection={
             "_id": 1,
             "Name": 1,
             "Company": 1,
@@ -29,7 +29,8 @@ class KBTalentController4Mongo(BaseMongoController):
             "Startdate": 1,
             "Enddate": 1,
             "JobDescription": 1,
-            "JobLocation": 1
+            "JobLocation": 1,
+            "graph": 1
         }, page=page, size=limit, sort_by="Startdate")
 
         return data

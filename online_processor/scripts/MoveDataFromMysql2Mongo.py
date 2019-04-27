@@ -5,6 +5,7 @@ from data_access.controller.KBTerminologyController4Mongo import KBTerminologyCo
 from data_access.controller.KBTerminologyController import KBTerminologyController
 import datetime
 # from services.MongoService import mgservice
+from services.tool_services.mysql_service import mysqlService
 from services.tool_services.MongoService import mgService as mgservice
 import re
 
@@ -45,17 +46,25 @@ def syn_company():
 def syn_terminology():
     kb_terminal_mysql = KBTerminologyController()
     kb_terminal_mongo = KBTerminologyController4Mongo()
+    filed_table = mysqlService.execute("select * from kb_terminology_type")
+    filed_table = {data['id']:data['type'] for data in filed_table}
     datas = kb_terminal_mysql.get_datas()
     for data in datas:
         # print(data.__dict__)
-        doc = data.__dict__
+        # doc = data.__dict__
+        doc = {}
+        for column in ["cnName", "engName", "brief","fieldId", "id", "name"]:
+            doc[column] =  data.__dict__[column]
         if doc['cnName'] is not None:
             doc['cnName'] = doc['cnName'].split(';')
         if doc['engName'] is not None:
             doc['engName'] = doc['engName'].split(';')
+
+        if doc['fieldId'] is not None:
+            doc['fieldId'] = [filed_table.get(int(_id)) for _id in doc['fieldId'].split(';')]
         if mgservice.query({"id":data.id}, 'kb_demo','kb_terminology'):
             mgservice.delete({'id': data.id}, 'kb_demo', 'kb_terminology')
-        kb_terminal_mongo.insert_data(data)
+        kb_terminal_mongo.insert_data(doc)
 
 
 def exetract_info(doc, col_names):
