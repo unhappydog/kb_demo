@@ -13,12 +13,22 @@ from services.TalentBankService import tbService
 @inf_restful.route("/online/similar_jd/<string:name>/<int:page>/<int:limit>", methods=['GET'])
 def get_similar_jd(name, page, limit):
     datas = dataService.get_jd_by_name(name, page, limit)
+    # datas = [{"link":linkerService.link_jd(data)} for data in datas]
+    for data in datas:
+        data['link'] = linkerService.link_jd(data)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
 
-@inf_restful.route("/online/talent_bank/search/<string:keyword>/<int:page>/<int:limit>", methods=['GET'])
-def search_talent_by_keyword(keyword, page, limit):
-    datas = tbService.search_by_name(keyword, page, limit)
+@inf_restful.route("/online/talent_bank/search/<string:by>/<string:searchWord>/<int:page>/<int:limit>", methods=['GET'])
+def search_talent_by_keyword(by, searchWord, page, limit):
+    if by == "keyword":
+        datas = tbService.search_by_name(searchWord, page, limit)
+    elif by == "education":
+        datas = tbService.search_by_education(searchWord, page,limit)
+    elif by == "source":
+        datas = tbService.search_by_source(searchWord, page, limit)
+    elif by == "none":
+        datas = tbService.get_datas(page, limit)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
 

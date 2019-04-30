@@ -5,7 +5,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-neo_host = "centos1"
+neo_host = "rembern.com"
 neo_port = 32474
 
 mysql_host = "172.16.6.10"

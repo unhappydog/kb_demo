@@ -11,7 +11,13 @@ class TalentBankService:
         self.talent_bank.save(cv)
 
     def search_by_name(self, name, page, size):
-        return self.talent_bank.search_by_name(name, page,size)
+        return self.talent_bank.search_by_name(name, page, size)
+
+    def search_by_education(self, education, page, size):
+        return self.talent_bank.search_by_education(education, page, size)
+
+    def search_by_source(self, source, page, size):
+        return self.talent_bank.search_by_source(source, page, size)
 
     def get_by_id(self, id):
         return self.talent_bank.get_by_id(id)
@@ -21,5 +27,9 @@ class TalentBankService:
 
     def update(self, cv):
         self.talent_bank.update(cv)
+
+    def get_datas(self, page, size):
+        return self.talent_bank.get_datas(page, size)
+
 
 tbService = TalentBankService()

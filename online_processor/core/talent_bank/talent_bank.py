@@ -23,7 +23,26 @@ class TalentBank:
         "架构",
         "算法专家",
         "技术总",
-        "算法工程师"
+        "算法工程师",
+        "研发工程师",
+        "工程师",
+        "初级工程师",
+        "高级工程师",
+        "中级工程师",
+        "技术专员",
+        "开发工程师",
+        "工程师",
+        "开发",
+        "专员",
+        "高级算法工程师",
+        "研究员",
+        "高级",
+        "算法研发",
+        "算法",
+        "研发",
+        "主管",
+        "工程师",
+        "助理工程师"
     ]
 
     def __init__(self):
@@ -42,6 +61,14 @@ class TalentBank:
             name = re.sub(reg_pattern,'', name)
         return self.contoller.get_datas_by_keyword(keyword=name, page=page, size=limit)
 
+    def search_by_education(self, education, page, limit):
+        # return self.
+        return self.contoller.get_datas_by_education(education,page=page, size=limit)
+        pass
+
+    def search_by_source(self, source, page, limit):
+        return self.contoller.get_datas_by_source(source=source, page=page, size=limit)
+
     def get_by_id(self, _id):
         data =self.contoller.get_data_by_id(_id)
         if data:
@@ -54,4 +81,7 @@ class TalentBank:
 
     def update(self, cv):
         self.contoller.update_by_id(cv)
+
+    def get_datas(self, page, limit):
+        return self.contoller.get_datas_order_by(page=page, size=limit)
 

@@ -75,7 +75,7 @@ class CVParser:
         for key, value in class_dict.items():
             experience_list = cv.__dict__[key]
             cv.__dict__[key] = []
-            if experience_list and experience_list != "":
+            if experience_list and experience_list != "" and type(experience_list) == list:
                 for experience in experience_list:
                     cv.__dict__[key].append(value(**experience))
 

@@ -14,7 +14,9 @@ class KBTalentController4Mongo(BaseMongoController):
         data = mgservice.query_sort(query_cond={
             'JobTitle': name,
             "ISBAD": 0,
-            "ISREPLICATE": 0
+            "ISREPLICATE": 0,
+            "duty":{"$exists":True},
+            "requirement":{"$exists":True}
         }, db=self._schema, table=self._table, projection={
             "_id": 1,
             "Name": 1,
@@ -28,7 +30,9 @@ class KBTalentController4Mongo(BaseMongoController):
             "JobType": 1,
             "Startdate": 1,
             "Enddate": 1,
-            "JobDescription": 1,
+            # "JobDescription": 1,
+            'duty':1,
+            'requirement':1,
             "JobLocation": 1,
             "graph": 1
         }, page=page, size=limit, sort_by="Startdate")

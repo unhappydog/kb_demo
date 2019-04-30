@@ -9,11 +9,20 @@ from services.tool_services.MongoService import mgService
 
 if __name__ == '__main__':
     cv_controller = CVController4Mongo()
-    # datas = cv_controller.get_datas()
+    datas = cv_controller.get_datas()
     # datas = mgService.query({}, 'kb_demo', 'kb_CV_origin')
     # for data in datas:
     #     cv = linkerService.parse(data)
     #     # print(cv.__dict__)
     #     # dataService.save(cv)
+    #     cv.source = "zhilian"
     #     tbService.save(cv)
-    print(tbService.search_by_name("机器学习", 2, 10))
+
+    datas = mgService.query({}, 'kb_demo','kb_CV')
+    for data in datas:
+        print(data)
+        cv = linkerService.parse(data)
+        cv.highestEducationDegree = cv.highestEducationBackground
+        cv.source = 'local'
+        tbService.save(cv)
+    # print(tbService.search_by_name("机器学习算法工程师", 2, 10))

@@ -59,6 +59,8 @@ def syn_terminology():
             doc['cnName'] = doc['cnName'].split(';')
         if doc['engName'] is not None:
             doc['engName'] = doc['engName'].split(';')
+        if doc['name'] == "":
+            print(doc)
 
         if doc['fieldId'] is not None:
             doc['fieldId'] = [filed_table.get(int(_id)) for _id in doc['fieldId'].split(';')]

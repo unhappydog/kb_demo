@@ -40,5 +40,11 @@ class LinkerService:
         del temp_object
         return risk_points
 
+    def link_jd(self, jd):
+        columns = ["requirement","duty"]
+        return {
+            column: self.link_terminology_in_text(jd[column]) for column in columns
+        }
+
 
 linkerService = LinkerService()
