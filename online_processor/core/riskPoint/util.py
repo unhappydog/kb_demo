@@ -5,14 +5,19 @@ class util(object):
     # 时间差
     def time_difference(self, starttime, endtime):
 
-        if starttime > endtime:
-            temp = starttime
-            starttime = endtime
-            endtime = temp
-        if isinstance(endtime, str):
-            endtime = datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
-        if isinstance(starttime, str):
-            starttime = datetime.strptime(starttime, "%Y-%m-%d %H:%M:%S")
+
+        if starttime>endtime:
+            return False
+        if isinstance(endtime,str):
+            if ':' in endtime:
+                endtime = datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
+            else:
+                endtime = datetime.strptime(endtime, "%Y-%m-%d")
+        if isinstance(starttime,str):
+            if ':' in endtime:
+                starttime = datetime.strptime(starttime, "%Y-%m-%d %H:%M:%S")
+            else:
+                starttime = datetime.strptime(starttime, "%Y-%m-%d")
         diff = (endtime - starttime).days
         start = int("".join(datetime.strftime(starttime, '%Y')))
         end = int("".join(datetime.strftime(endtime, '%Y')))
@@ -74,8 +79,9 @@ class util(object):
                 monthlist.append(month)
         return yearlist, monthlist
 
-    def iszero(self, newput):
-        count = 0
+
+    def iszero(self,newput):
+        count=0
         for i in newput:
             if i == 0:
                 count += 1

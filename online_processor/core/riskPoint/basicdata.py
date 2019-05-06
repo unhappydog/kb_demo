@@ -57,9 +57,13 @@ class basicdata(object):
                  worktimedata.append(wo['workTimePeriod'])
         return worktimedata
 
-    def salarydata(self, singaldata):
-        exceptsalar = singaldata['expectedSalary']
-        worksalar = []
+
+    def salarydata(self,singaldata):
+        try:
+             exceptsalar=singaldata['expectedSalary']
+        except:
+            exceptsalar=''
+        worksalar=[]
         for sa in singaldata['workExperience']:
             try:
                 worksalar.append(sa['workSalary'].strip(' '))
