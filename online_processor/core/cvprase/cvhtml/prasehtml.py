@@ -4,8 +4,8 @@ from collections import defaultdict
 from core.cvprase.Util.util import util
 class htmlparse(object):
 
-    def parsemain(self,root,getdir):
-        srthtml = self.gethtml(root+'/' + getdir)
+    def parsemain(self,root):
+        srthtml = self.gethtml(root)
         objhtml = htmlparse()
         totaldict = {}
         strsplit = re.compile('<div class="resume-preview-all">(.*?)</div>').findall(srthtml)

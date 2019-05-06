@@ -7,8 +7,8 @@ class util(object):
 
     def doc2docx(self,g):
         word = wc.Dispatch('Word.Application')
-        doc = word.Documents.Open('E:/cv/' + g)  # 目标路径下的文件
-        newpath = 'E:/cv/' + g.replace('doc', 'docx')
+        doc = word.Documents.Open( g)  # 目标路径下的文件
+        newpath = g.replace('doc', 'docx')
         doc.SaveAs(newpath, 16)  # 转化后路径下的文件
         doc.Close()
         word.Quit()
