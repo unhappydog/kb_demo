@@ -6,6 +6,8 @@ import os
 from settings import BASE_DIR
 
 host = "rembern.com"
+
+
 # host = "localhost"
 
 
@@ -30,15 +32,19 @@ class TestRestApi(unittest.TestCase):
         print(result.json())
 
     def test_bank_search(self):
-        # for mod in ['keyword','education','source', 'none']:
-        result = requests.get('http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}'.format(host, 'keyword', "机器学习算法工程师", 1, 10))
-        print(result.json())
-        result = requests.get('http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}'.format(host, 'education', "硕士", 1, 10))
-        print(result.json())
-        result = requests.get('http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}'.format(host, 'source', "zhilian", 1, 10))
-        print(result.json())
-        result = requests.get('http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}'.format(host, 'none', "none", 1, 10))
-        print(result.json())
+        for mod in ['none','zhilian','upload']:
+            result = requests.get(
+                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'keyword', "机器学习算法工程师", 1, 10, mod))
+            print(result.json())
+            result = requests.get(
+                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'education', "硕士", 1, 10, mod))
+            print(result.json())
+            result = requests.get(
+                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'source', "zhilian", 1, 10, mod))
+            print(result.json())
+            result = requests.get(
+                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'none', "none", 1, 10, mod))
+            print(result.json())
 
 
     def test_similar(self):
@@ -50,8 +56,10 @@ class TestRestApi(unittest.TestCase):
         print(result.json())
 
     def test_company_job(self):
-        result = requests.get('http://{0}:18081/online/get_company_by_job_title/{1}/{2}/{3}'.format(host, "数据挖掘工程师", 1, 10))
+        result = requests.get(
+            'http://{0}:18081/online/get_company_by_job_title/{1}/{2}/{3}'.format(host, "数据挖掘工程师", 1, 10))
         print(result.json())
+
 
 if __name__ == '__main__':
     unittest.main()

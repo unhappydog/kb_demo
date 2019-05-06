@@ -26,7 +26,7 @@ class CV:
                  _id="", insertTime="", updateTime="", source="", fileFormat="",
                  filePath="", attachmentPath="", plainText="", sameCVid="", md5="", zhilianLabels=[],
                  cv_url="",
-                 linked_result="", keyword="", tag=""):
+                 linked_result="", keyword="", tag="", source_method=""):
         self.phone = phone
         self.birthday = birthday
         self.age = age
@@ -93,4 +93,5 @@ class CV:
         self.linked_result = linked_result
         self.keyword =keyword
         self.tag = tag
+        self.source_method = source_method
 

@@ -3,30 +3,35 @@ from data_access.models.CV import CV
 from core.cvprase.cvword.praseword import cvword
 from core.cvprase.cvpdf.extract import cvprase
 from core.cvprase.cvhtml.prasehtml import htmlparse
-from core.cvprase.Util.util import  util
+from core.cvprase.Util.util import util
+
+
 class CV_main(object):
-    def __init__(self,root):
-        self.cv=None
-        self.root=root
-        self.predicates=['name','updateTime','id','gender','age','birthday','workYear','highestEducationBackground','currentAddress',
-                       'domicilePlace','politicsStatus','marital','selfEvaluation',
-                        'expectedWorkplace','expectedSalary','expectedStatus','expectedOccupation','expectedIndustry',
-                        'workExperience','projectExperience','educationExperience','certificate','trainingExperience','award',
-                        'associationExperience','skill','hobby']
+    def __init__(self, root):
+        self.cv = None
+        self.root = root
+        self.predicates = ['name', 'updateTime', 'id', 'gender', 'age', 'birthday', 'workYear',
+                           'highestEducationBackground', 'currentAddress',
+                           'domicilePlace', 'politicsStatus', 'marital', 'selfEvaluation',
+                           'expectedWorkplace', 'expectedSalary', 'expectedStatus', 'expectedOccupation',
+                           'expectedIndustry',
+                           'workExperience', 'projectExperience', 'educationExperience', 'certificate',
+                           'trainingExperience', 'award',
+                           'associationExperience', 'skill', 'hobby']
 
     def main_prase(self):
 
         getdir = [files[2] for files in os.walk(self.root)][0]
         for line in getdir:
             print(line)
-            dict={}
+            dict = {}
             if line.endswith('html'):
                 dict = htmlparse().parsemain(self.root, line)
             if line.endswith('docx'):
                 dict = cvword().mainwordprase(self.root, line)
             if line.endswith('doc'):
                 util().doc2docx(line)
-                os.remove(self.root+'/'+line)
+                os.remove(self.root + '/' + line)
                 dict = cvword().mainwordprase(self.root, line.replace('doc', 'docx'))
             if line.endswith('pdf'):
                 dict = cvprase().prase(self.root, line)
@@ -34,7 +39,7 @@ class CV_main(object):
                 try:
                     dict[pre]
                 except:
-                    dict[pre]=''
+                    dict[pre] = ''
             print(dict)
             self.cv = CV(name=dict['name'],
                          updateTime=dict['updateTime'],
@@ -67,11 +72,6 @@ class CV_main(object):
         return self.cv
 
 
-if __name__=='__main__':
-    h=CV_main('E:/cv')
-    data=h.main_prase()
-
-
-
-
-
+if __name__ == '__main__':
+    h = CV_main('E:/cv')
+    data = h.main_prase()
