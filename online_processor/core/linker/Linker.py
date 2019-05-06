@@ -50,6 +50,18 @@ class Linker:
                 logging.warning("{0} is not in database".format(company))
         return result
 
+    def get_company_info(self, company):
+        result = {}
+        data = self.company_controller.get_data_by_name(company)
+        if data:
+            result[company] = data[0].__dict__
+        else:
+            # Logger.waring("{0} is not in database.".format(company))
+            logging.warning("{0} is not in database".format(company))
+        return result
+
+
+
 
 
 

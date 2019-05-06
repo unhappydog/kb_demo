@@ -4,7 +4,7 @@ from utils.MapTags import DataMap, sql
 from utils.Tags import return_type
 import settings
 
-@DataMap(_schema=settings.mysql_db, _table="kb_terminology")
+@DataMap(_schema=settings.mysql_db, _table="kb_terminology_processed")
 class KBTerminologyController(BaseController):
 
     @return_type(KB_Terminology)

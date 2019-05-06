@@ -16,6 +16,7 @@ class KBTerminologyController4Mongo(BaseMongoController):
                                 projection={'_id': True, 'cnName': True, 'engName': True})
         return datas
 
+
     @return_type(KB_Terminology)
     def get_data_by_id(self, _id=''):
         """
@@ -25,6 +26,8 @@ class KBTerminologyController4Mongo(BaseMongoController):
         if type(_id) == str:
             cond = {"_id":ObjectId(_id)}
         elif type(_id) == ObjectId:
+            cond = {"_id": _id}
+        elif type(_id) == int:
             cond = {"_id": _id}
         else:
             logging.error("message _id should be type str or objectId")

@@ -130,9 +130,9 @@ class TerminologyLinker:
 
     def recongnize_termnology(self, word_list, language='cn'):
         if language == 'cn':
-            return [word for word in word_list if word in self.name_to_id.keys()]
+            return [word for word in word_list if word in self.name_to_id.keys() and word !=""]
         elif language =='en':
-            return [word for word in word_list if word in self.enname_to_id.keys()]
+            return [word for word in word_list if word in self.enname_to_id.keys() and word != ""]
         else:
             logging.error("unrecongnize language")
             return None

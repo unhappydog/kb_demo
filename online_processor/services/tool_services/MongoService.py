@@ -42,7 +42,7 @@ class MongoService:
         return x
 
     def query_sort(self, query_cond, table, db, sort_by='', ascending=-1, page=1,
-                   size=10):
+                   size=10, projection=None):
         """
         按顺序返回
         :param query_cond:
@@ -56,9 +56,9 @@ class MongoService:
         """
         skip = (page - 1) * size
         if query_cond is None or query_cond == {}:
-            query_result = self.client[db][table].find().sort(sort_by, ascending).skip(skip).limit(size)
+            query_result = self.client[db][table].find(projection=projection).sort(sort_by, ascending).skip(skip).limit(size)
         else:
-            query_result = self.client[db][table].find(query_cond).sort(sort_by, ascending).skip(skip).limit(size)
+            query_result = self.client[db][table].find(query_cond, projection=projection).sort(sort_by, ascending).skip(skip).limit(size)
         x = [doc for doc in query_result]
         return x
 
@@ -99,6 +99,21 @@ class MongoService:
         x = [doc for doc in query_result]
         return x
 
+    def remove_dul(self, dul_col, db, table):
+        dul_ids = self.client[db][table].aggregate([
+            {"$group": {
+                "_d_id": {"$min": '$_id'},
+                "_id": {"id": "${0}".format(dul_col)},
+                "num": {"$sum": 1},
+            }},
+            {"$match": {
+                "num": {"$gt": 1}
+            }}
+            # {"$project": {"_id": 0, dul_col: "$_id", "num": 1}}
+        ])
+        x = [data for data in dul_ids]
+        return x
+
 
 mgService = MongoService()
 
@@ -114,9 +129,8 @@ if __name__ == '__main__':
 
     a = time.time()
 
-    data = mgService.query({"schoolName": "武汉大学"},
-                           'kb_demo',
-                           'kb_academy')
+    data = mgService.remove_dul('ID', 'kb_demo', 'kb_talent')
     print(data)
+    # [mgService.delete({'_id':x['_d_id']}, 'kb_demo', 'kb_talent') for x in data]
+    print(len(data))
 
-    print(time.time() - a)

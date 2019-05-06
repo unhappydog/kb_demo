@@ -4,7 +4,7 @@ from settings import  BASE_DIR
 from data_access.models.CV import CV
 from data_access.models.properties.EducationExperience import EducationExperience
 from data_access.models.properties.WorkExperience import WorkExperience
-from data_access.controller.CVController import CVController
+from data_access.controller.CVController4Mongo import CVController4Mongo
 
 career = os.path.join(BASE_DIR, "resources", "careers.json")
 summary_path = os.path.join(BASE_DIR, "resources", "summary.json")
@@ -16,7 +16,7 @@ json_summary = json.load(fp_summary)
 datas = json_data['data']['dataList']
 summarys = json_summary['data']
 data_summarys = zip(datas, summarys)
-cv_controller = CVController()
+cv_controller = CVController4Mongo()
 for data, summary in data_summarys:
    cv = CV(name=data['userName'],
       gender=data['gender'],
