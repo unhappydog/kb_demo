@@ -2,8 +2,8 @@ from  core.cvprase.cvword.contentPrase import ContentParse
 import os
 from core.cvprase.Util.util import util
 class cvword(object):
-    def mainwordprase(self,root,path):
-            table,para,name=util().get_doc(root+'/'+path)
+    def mainwordprase(self,root):
+            table,para,name=util().get_doc(root)
             basicdict = ContentParse().basic_info(table, para, name)
             totaldict = basicdict
             iss = [i.text.strip(' ') for i in para if i.text.strip(' ') == '自我评价']

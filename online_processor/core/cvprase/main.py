@@ -15,21 +15,18 @@ class CV_main(object):
                         'associationExperience','skill','hobby']
 
     def main_prase(self):
-
-        getdir = [files[2] for files in os.walk(self.root)][0]
-        for line in getdir:
-            print(line)
+            print(self.root)
             dict={}
-            if line.endswith('html'):
-                dict = htmlparse().parsemain(self.root, line)
-            if line.endswith('docx'):
-                dict = cvword().mainwordprase(self.root, line)
-            if line.endswith('doc'):
-                util().doc2docx(line)
-                os.remove(self.root+'/'+line)
-                dict = cvword().mainwordprase(self.root, line.replace('doc', 'docx'))
-            if line.endswith('pdf'):
-                dict = cvprase().prase(self.root, line)
+            if self.root.endswith('html'):
+                dict = htmlparse().parsemain(self.root)
+            if self.root.endswith('docx'):
+                dict = cvword().mainwordprase(self.root)
+            if self.root.endswith('doc'):
+                util().doc2docx(self.root)
+                os.remove(self.root)
+                dict = cvword().mainwordprase(self.root.replace('doc', 'docx'))
+            if self.root.endswith('pdf'):
+                dict = cvprase().prase(self.root)
             for pre in self.predicates:
                 try:
                     dict[pre]
@@ -64,11 +61,11 @@ class CV_main(object):
                          skill=dict['skill'],
                          hobby=dict['hobby'])
 
-        return self.cv
+            return self.cv
 
 
 if __name__=='__main__':
-    h=CV_main('E:/cv')
+    h=CV_main('E:/cv/智联招聘_白先生_中文_20190415_1555292674778.pdf')
     data=h.main_prase()
 
 

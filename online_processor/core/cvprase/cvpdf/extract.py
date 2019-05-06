@@ -6,8 +6,8 @@ class cvprase(object):
     def __init__(self):
         self.resumedict={}
         
-    def prase(self,root,path):
-            doc=fitz.open(root+"/"+path)
+    def prase(self,root):
+            doc=fitz.open(root)
             title=proutil().titlextract(doc)
             pagedict=self.get_page(doc,title)
             basicdict=indivial().basic_info(doc,pagedict)
