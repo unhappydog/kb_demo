@@ -17,3 +17,6 @@ class KBTerminologyController(BaseController):
 
     @sql("select id, cnName, engName from _table")
     def get_id_name(self): pass
+
+    @sql("select ")
+    def get_name_by_att(self):pass

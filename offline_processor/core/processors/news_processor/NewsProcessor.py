@@ -1,4 +1,4 @@
-from core.processors.BaseProcessor import BaseProcessor
+from core.base.BaseProcessor import BaseProcessor
 from data_access.controller.NewController4Mongo import NewController4Mongo
 import pandas as pd
 

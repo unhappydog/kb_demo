@@ -21,18 +21,14 @@ class MongoService:
     def query_as_gen(self, query_cond, db, table, projection=None, skip=None, limit=None):
         if query_cond is None or query_cond == {}:
             if skip is None:
-                query_result = self.client[db][table].find(projection=projection)
+                query_result = self.client[db][table].find(projection=projection, no_cursor_timeout=True)
             else:
-                query_result = self.client[db][table].find(projection=projection).skip(skip).limit(limit)
+                query_result = self.client[db][table].find(projection=projection, no_cursor_timeout=True).skip(skip).limit(limit)
         else:
             if skip is None:
-                query_result = self.client[db][table].find(query_cond, projection=projection)
+                query_result = self.client[db][table].find(query_cond, projection=projection, no_cursor_timeout=True)
             else:
-                query_result = self.client[db][table].find(query_cond, projection=projection).skip(skip).limit(limit)
-            # x = [doc for doc in query_result]
-        # for doc in query_result:
-        #     print(doc)
-        #     yield doc
+                query_result = self.client[db][table].find(query_cond, projection=projection, no_cursor_timeout=True).skip(skip).limit(limit)
         return query_result
 
     def query(self, query_cond, db, table, projection=None, skip=None, limit=None):

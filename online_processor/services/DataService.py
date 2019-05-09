@@ -3,6 +3,7 @@ from data_access.controller.CVController4Mongo import CVController4Mongo
 from data_access.controller.KBTalentController4Mongo import KBTalentController4Mongo
 from data_access.controller.ExperienceController4Mongo import ProjectExperienceController4Mongo
 from data_access.controller.JDCompanyController4Mongo import JDCompanyController4Mongo
+from services.tool_services.MongoService import mgService
 
 
 @Singleton
@@ -37,6 +38,7 @@ class DataService:
 
     def get_company_by_jd(self, name, page, limit):
         return self.jd_company_controller.get_data_by_job_title(name, page, limit)
+
 
 
 dataService = DataService()

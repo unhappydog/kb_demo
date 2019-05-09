@@ -97,7 +97,7 @@ def query(by={"_id": "_id"}):
                 for k, v in by.items():
                     spec[k] = loc['kwargs'][v]
                 datas = mgservice.query(spec, self._schema, self._table)
-                return datas
+            return datas
 
         return _sql
 

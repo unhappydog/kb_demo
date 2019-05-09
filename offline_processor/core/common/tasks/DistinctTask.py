@@ -1,7 +1,6 @@
-from core.processors.BaseTask import BaseTask
-from core.processors.news_processor import newsProcessor
+from core.base.BaseTask import BaseTask
 from core.base.data.FixSizeDataFrame import FixSizeDataFrame
-from utils.Constants import processed_suffix, seg_suffix
+from utils.Constants import seg_suffix
 from utils import Utils
 
 
@@ -9,12 +8,8 @@ from utils import Utils
 # @newsProcessor.add_as_processors(order=1, stage=1,
 #                                  content_column="CONTENT", pubtime_column="PUBTIME",
 #                                  replicate_column="ISREPLICATE",
-#                                  min_score=0.7, max_length=1000)
-class DistinctTask(BaseTask):
-    """
-    common task to remove duplicate items
-    should provie param with tag (content_column, pubtime_column, replicate_column, min_score, max_length)
-    """
+#                                  min_score=0.7, max_length=10)
+class BaseDistinctTask(BaseTask):
     def __init__(self, content_column, pubtime_column,
                  replicate_column, min_score, max_length):
         self.content_column = content_column
@@ -37,12 +32,9 @@ class DistinctTask(BaseTask):
 
         m = Utils.compute_min_hash(Utils.parse_segged_word(x[self.content_column + seg_suffix]))
         x['min_hash'] = m
-
-        for index, item in self.history.value.iterrows():
-            m_score = m.jaccard(item['min_hash'])
-            if m_score > self.min_score:
-                self.history.push_data(x)
-                return 1
-
+        min_hash_scores = self.history.value.apply(lambda x: m.jaccard(x['min_hash']), axis=1)
+        m_score = min_hash_scores.max()
         self.history.push_data(x)
+        if m_score > self.min_score:
+            return 1
         return 0

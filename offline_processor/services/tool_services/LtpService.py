@@ -1,6 +1,7 @@
 from utils.Tags import Singleton
 from tools.Ltp import Ltp
 from data_access.controller.KBTerminologyController4Mongo import KBTerminologyController4Mongo
+from data_access.controller.KBCompanyController4Mongo import KBCompanyController4Mongo
 
 
 class LtpService:
@@ -15,6 +16,14 @@ class LtpService:
             if data['engName']:
                 for name in data['engName']:
                     user_dict.append(name)
+
+        self.kb_company_controller = KBCompanyController4Mongo()
+        company_names = self.kb_company_controller.get_datas()
+        for data in company_names:
+            if data['companyName']:
+                user_dict.append(data['companyName'])
+            if data['entName']:
+                user_dict.append(data['entName'])
         self.ltp = Ltp(user_dict=user_dict)
 
     def segment(self, doc):

@@ -1,5 +1,4 @@
-from core.processors.BaseTask import BaseTask
-from core.processors.news_processor import newsProcessor
+from core.base.BaseTask import BaseTask
 from utils.Logger import logging
 from core.common import Common
 from utils.Constants import processed_suffix, seg_suffix
@@ -10,23 +9,25 @@ import re, datetime
 # @newsProcessor.add_as_processors(order=0, stage=1, key_column="_id", title_column="TITLE",
 #                                  content_column="CONTENT", pubtime_column="PUBTIME",
 #                                  brief_column="BRIEF", bad_column="ISBAD")
-class PreProcessTask(BaseTask):
+class BasePreProcessTask(BaseTask):
     """
     common task to prepocess content and title
     """
-    def __init__(self, key_column, title_column, content_column, pubtime_column, brief_column, bad_column):
+    def __init__(self, key_column, title_column, content_column, pubtime_column, brief_column, bad_column,
+                 min_lenth=[50, 10]):
         self.key_column = key_column
         self.title_column = title_column
         self.content_column = content_column
         self.pubtime_column = pubtime_column
         self.bad_column = bad_column
         self.brief_column = brief_column
+        self.min_length = min_lenth
 
     def fit(self, data):
         logging.info("starting processing data")
         # abuse bad data
         abuse_ids = Common.compute_abuse_id(data, [self.content_column, self.title_column], self.key_column,
-                                            min_length_list=[50, 10], detect_messy_list=[False, True])
+                                            min_length_list=self.min_length, detect_messy_list=[False, True])
         # data = data[data[self.key_column].apply(lambda x: x not in abuse_ids)]
         data[self.bad_column] = data[self.key_column].apply(lambda x: 0 if x not in abuse_ids else 1)
 
@@ -41,6 +42,10 @@ class PreProcessTask(BaseTask):
         data[title_processed] = Common.process_title(data, self.title_column, title_processed)
 
         data[self.pubtime_column] = data[self.pubtime_column].apply(lambda x: self.covert(x))
+        data = self.special_process(data)
+        return data
+
+    def special_process(self, data):
         return data
 
     def covert(self, time):

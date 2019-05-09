@@ -23,7 +23,7 @@ def convert_str_2_date(date):
     elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$', date):
         return datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
     else:
-        print("un recongize")
+        print("un recongize {0}".format(date))
         return date
 
 
