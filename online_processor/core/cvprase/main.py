@@ -1,9 +1,9 @@
 import os
 from data_access.models.CV import CV
-from core.cvprase.cvword.praseword import cvword
+# from core.cvprase.cvword.praseword import cvword
 from core.cvprase.cvpdf.extract import cvprase
 from core.cvprase.cvhtml.prasehtml import htmlparse
-from core.cvprase.Util.util import util
+# from core.cvprase.Util.util import util
 
 
 class CV_main(object):
@@ -25,12 +25,12 @@ class CV_main(object):
         dict = {}
         if self.root.endswith('html'):
             dict = htmlparse().parsemain(self.root)
-        if self.root.endswith('docx'):
-            dict = cvword().mainwordprase(self.root)
-        if self.root.endswith('doc'):
-            util().doc2docx(self.root)
-            os.remove(self.root)
-            dict = cvword().mainwordprase(self.root.replace('doc', 'docx'))
+        # if self.root.endswith('docx'):
+        #     dict = cvword().mainwordprase(self.root)
+        # if self.root.endswith('doc'):
+        #     util().doc2docx(self.root)
+        #     os.remove(self.root)
+        #     dict = cvword().mainwordprase(self.root.replace('doc', 'docx'))
         if self.root.endswith('pdf'):
             dict = cvprase().prase(self.root)
         for pre in self.predicates:
@@ -71,5 +71,8 @@ class CV_main(object):
 
 
 if __name__ == '__main__':
-    h = CV_main('E:/cv/智联招聘_白先生_中文_20190415_1555292674778.pdf')
+    from settings import BASE_DIR
+    cv_path = os.path.join(BASE_DIR, 'resources', '智联招聘_常先生_中文_20190415_1555294995349.pdf')
+    h = CV_main(cv_path)
     data = h.main_prase()
+    print(data.__dict__)

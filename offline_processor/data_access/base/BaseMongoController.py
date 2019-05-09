@@ -81,3 +81,21 @@ class BaseMongoController:
                 else:
                     cond = {"_id": data["_id"]}
                     mgService.update(cond, data, self._schema, self._table)
+
+    @query_as_gen(by=None)
+    def get_datas_as_gen(self, data): pass
+
+    def get_batch_data(self, batch=100):
+        result = []
+        count = 0
+        cusor = self.get_datas_as_gen()
+        for data in cusor:
+            result.append(data)
+            count += 1
+            if count == batch:
+                yield result
+                result = []
+                count = 0
+        cusor.close()
+        if count != 0:
+            yield result

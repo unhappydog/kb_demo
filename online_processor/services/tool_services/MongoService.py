@@ -114,6 +114,9 @@ class MongoService:
         x = [data for data in dul_ids]
         return x
 
+    def count_datas(self, cond, db, table):
+        return self.client[db][table].count(cond)
+
 
 mgService = MongoService()
 
@@ -129,8 +132,10 @@ if __name__ == '__main__':
 
     a = time.time()
 
-    data = mgService.remove_dul('ID', 'kb_demo', 'kb_talent')
+    # data = mgService.remove_dul('ID', 'kb_demo', 'kb_talent')
+    import datetime
+    data = mgService.count_datas({'updateTime':{'$gt':datetime.datetime.now() - datetime.timedelta(days=100)}},'kb_demo', 'kb_talent_bank')
     print(data)
     # [mgService.delete({'_id':x['_d_id']}, 'kb_demo', 'kb_talent') for x in data]
-    print(len(data))
+    # print(len(data))
 

@@ -23,9 +23,11 @@ class FixSizeDataFrame:
     def push_data(self, item):
         if self.value.last_valid_index() is None:
             index = 0
-            self.value = pd.DataFrame(data=None, columns=item.keys())
+            self.value = pd.DataFrame(columns=list(item.keys()))
+            # self.value.set_index('index')
         else:
             index = self.value.last_valid_index() + 1
+        item['index'] = index
         heap_item = (item[self.sort_by], index)
         heapq.heappush(self.index_heap, heap_item)
         self.value.loc[index] = item
@@ -36,6 +38,9 @@ class FixSizeDataFrame:
 
         :return:
         """
+
+        if self.min_value == -1 and self.max_length == -1:
+            print("no min_alue none max_length setted")
         # 如果设定最小值，则按照最小值调整
         if self.min_value != -1:
             heap_item = heapq.heappop(self.index_heap)
@@ -48,7 +53,8 @@ class FixSizeDataFrame:
         if self.max_length != -1:
             while len(self.index_heap) > self.max_length:
                 heap_item = heapq.heappop(self.index_heap)
-                self.value.drop(index=heap_item[1])
+                self.value = self.value.drop(index=heap_item[1])
+                # self.value
 
     def pop_data(self):
         heap_item = heapq.heappop(self.index_heap)

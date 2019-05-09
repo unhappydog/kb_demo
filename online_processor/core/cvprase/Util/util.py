@@ -1,17 +1,17 @@
 import re
 import docx
 from core.cvprase.Util import adjunction as ad
-from win32com import client as wc
+# from win32com import client as wc
 import os
 class util(object):
 
-    def doc2docx(self,g):
-        word = wc.Dispatch('Word.Application')
-        doc = word.Documents.Open( g)  # 目标路径下的文件
-        newpath = g.replace('doc', 'docx')
-        doc.SaveAs(newpath, 16)  # 转化后路径下的文件
-        doc.Close()
-        word.Quit()
+    # def doc2docx(self,g):
+    #     word = wc.Dispatch('Word.Application')
+    #     doc = word.Documents.Open( g)  # 目标路径下的文件
+    #     newpath = g.replace('doc', 'docx')
+    #     doc.SaveAs(newpath, 16)  # 转化后路径下的文件
+    #     doc.Close()
+    #     word.Quit()
 
     """字典整合"""
     def integration(self, dict1, dict2):

@@ -8,14 +8,13 @@ import re
      工作时间异常；教育时间异常；毕业高校异常；工作跳槽频繁；薪资异常
 """
 
+
 class riskPoint(object):
     def __init__(self):
         self.cv_data = ''
         self.workStrattime, self.workEndtime, self.eduStarttime, self.eduEndtime = [], [], [], []
         self.acadmyschool = basicdata().academydata()
         self.updatetime = ''
-
-
 
     # 时间异常情况
 
@@ -62,6 +61,7 @@ class riskPoint(object):
              print(totaldict)
              return totaldict
     #时间异常情况
+
     def timeclash(self):
 
         timeclash = []
@@ -81,6 +81,7 @@ class riskPoint(object):
                 temp={}
                 temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(month) + '月'
                 timeclash.append(temp)
+
         count = 0
         for ws, we in zip(self.workStrattime, self.workEndtime):
             count += 1
@@ -97,42 +98,42 @@ class riskPoint(object):
         else:
             return False
 
-    #教育异常情况
-    def edutimeerror(self,singaldata):
-        educationDegree,eduname,edumajor=basicdata().educationdata(singaldata)
-        school=basicdata().academydata()
-        eduerror=[]
-        count=0
-        for es,ew,ed,en,em in  zip(self.eduStarttime,self.eduEndtime,educationDegree,eduname,edumajor):
-            count+=1
-            year,month=util().time_difference(es,ew)
-            if ed=='本科':
-                temp={}
-                if  year<=3 and month<11:
-                    temp['label']='本科异常'
+    # 教育异常情况
+    def edutimeerror(self, singaldata):
+        educationDegree, eduname, edumajor = basicdata().educationdata(singaldata)
+        school = basicdata().academydata()
+        eduerror = []
+        count = 0
+        for es, ew, ed, en, em in zip(self.eduStarttime, self.eduEndtime, educationDegree, eduname, edumajor):
+            count += 1
+            year, month = util().time_difference(es, ew)
+            if ed == '本科':
+                temp = {}
+                if year <= 3 and month < 11:
+                    temp['label'] = '本科异常'
                     temp['error'] = '候选人本科不足4年'
                     eduerror.append(temp)
-            if ed=='硕士':
-                    temp={}
-                    if "香港" in en or bool(re.search('[a-z]', en)):
-                        if year<1:
-                          temp['label']='硕士异常'
-                          temp['error']='候选人硕士读了不到'+str(month)+'个月'
-                          eduerror.append(temp)
-                    else:
+            if ed == '硕士':
+                temp = {}
+                if "香港" in en or bool(re.search('[a-z]', en)):
+                    if year < 1:
+                        temp['label'] = '硕士异常'
+                        temp['error'] = '候选人硕士读了不到' + str(month) + '个月'
+                        eduerror.append(temp)
+                else:
 
-                        if (year<=1 and month<6) :
-                            temp['label']='硕士异常'
-                            temp['error']='候选人硕士读了不到2年'
-                            eduerror.append(temp)
-                        elif year>3:
-                            temp['label']='硕士异常'
-                            temp['error']='候选人读了'+str(year)+'硕士'
-                            eduerror.append(temp)
-            if ed=='其他':
-                temp={}
-                temp['label']='学历异常'
-                temp['error']='候选人学历不明'
+                    if (year <= 1 and month < 6):
+                        temp['label'] = '硕士异常'
+                        temp['error'] = '候选人硕士读了不到2年'
+                        eduerror.append(temp)
+                    elif year > 3:
+                        temp['label'] = '硕士异常'
+                        temp['error'] = '候选人读了' + str(year) + '硕士'
+                        eduerror.append(temp)
+            if ed == '其他':
+                temp = {}
+                temp['label'] = '学历异常'
+                temp['error'] = '候选人学历不明'
                 eduerror.append(temp)
             if em == '其他':
                 temp = {}
@@ -148,75 +149,73 @@ class riskPoint(object):
                 eduerror.append(temp)
 
         if '大专' in educationDegree:
-            temp={}
-            temp['label']='专升本'
-            temp['error']='候选人本科之前读了专科'
+            temp = {}
+            temp['label'] = '专升本'
+            temp['error'] = '候选人本科之前读了专科'
             eduerror.append(temp)
         if len(eduerror) > 0:
             return eduerror
         else:
             return False
 
-    #薪资情况
-    def salaryerror(self,singaldata):
-        exsalary,worksalary=basicdata().salarydata(singaldata)
-        mid=[]
-        if exsalary!='':
+    # 薪资情况
+    def salaryerror(self, singaldata):
+        exsalary, worksalary = basicdata().salarydata(singaldata)
+        mid = []
+        if exsalary != '':
             for ws in worksalary:
-                if len(ws.split('-'))>1:
-                    start=int(ws.split('-')[0])
-                    end=int(ws.split('-')[1].strip('元/月'))
-                    mid.append(start+(end-start)//2)
+                if len(ws.split('-')) > 1:
+                    start = int(ws.split('-')[0])
+                    end = int(ws.split('-')[1].strip('元/月'))
+                    mid.append(start + (end - start) // 2)
                 else:
                     continue
-            if len(exsalary.split('-'))>1:
-                exstart=int(exsalary.split('-')[0])
-                exsal=exstart+(int(exsalary.split('-')[1].strip('元/月'))-exstart)//2
-                if exsal<np.mean(mid):
+            if len(exsalary.split('-')) > 1:
+                exstart = int(exsalary.split('-')[0])
+                exsal = exstart + (int(exsalary.split('-')[1].strip('元/月')) - exstart) // 2
+                if exsal < np.mean(mid):
                     temp = {}
-                    temp['label']='薪资异常'
-                    temp['error']='候选人期望薪资低于工作经历的平均薪资'
+                    temp['label'] = '薪资异常'
+                    temp['error'] = '候选人期望薪资低于工作经历的平均薪资'
                     return temp
                 else:
                     return False
             else:
                 return False
         else:
-            return  False
+            return False
 
-    #跳槽频繁情况
-    def worktimeError(self,singaldata):
-        worktime=basicdata().worktimedata(singaldata)
-        status=singaldata['expectedStatus']
-        count=0
-        hopping=[]
-        if len(worktime)>0:
-            for si,wt in zip(singaldata['workExperience'],worktime):
-                count+=1
+    # 跳槽频繁情况
+    def worktimeError(self, singaldata):
+        worktime = basicdata().worktimedata(singaldata)
+        status = singaldata['expectedStatus']
+        count = 0
+        hopping = []
+        if len(worktime) > 0:
+            for si, wt in zip(singaldata['workExperience'], worktime):
+                count += 1
                 if '年' in wt:
                     continue
                 else:
-                    mon="".join(re.compile('\d+').findall(wt))
+                    mon = "".join(re.compile('\d+').findall(wt))
                     if '在校生' in status or '应届生' in status:
                         continue
-                    elif int(mon)<6:
-                        temp={}
-                        temp['label']='跳槽频繁'
-                        temp['error']='候选人的第'+str(count)+'段工作经历不足半年'
+                    elif int(mon) < 6:
+                        temp = {}
+                        temp['label'] = '跳槽频繁'
+                        temp['error'] = '候选人的第' + str(count) + '段工作经历不足半年'
                         hopping.append(temp)
-            if len(hopping)>0:
+            if len(hopping) > 0:
                 return hopping
             else:
                 return False
         else:
             return False
 
-
-
-    #时间间隔（教育时间间隔，工作时间间隔）
-    def edutimegap(self,singaldata):
-        edugapdata=singaldata['educationExperience']
-        eduyeargap,edumongap=util().gap(edugapdata,self.updatetime,0)
+    # 时间间隔（教育时间间隔，工作时间间隔）
+    def edutimegap(self, singaldata):
+        edugapdata = singaldata['educationExperience']
+        eduyeargap, edumongap = util().gap(edugapdata, self.updatetime, 0)
         if len(eduyeargap) > 0:
             temp = {}
             maxgap = max(eduyeargap)
@@ -232,7 +231,7 @@ class riskPoint(object):
     def worktimegap(self, singaldata):
         workdata = singaldata['workExperience']
         try:
-            workyear=singaldata['workYear']
+            workyear = singaldata['workYear']
             if workyear:
                 workyeargap, workmongap = util().gap(workdata, self.updatetime, 1)
                 jobhopping = []
@@ -245,11 +244,11 @@ class riskPoint(object):
                         temp['label'] = '工作年限异常'
                         temp['error'] = '候选人工作经验的年限与工作经历的时间不符'
                         jobhopping.append(temp)
-                    if workyear>1:
-                        if self.eduEndtime[0]>singaldata['updateTime']:
-                            temp={}
-                            temp['label']='工作经验异常'
-                            temp['error']='候选人尚未毕业但已有'+str(workyear)+'年工作经验'
+                    if workyear > 1:
+                        if self.eduEndtime[0] > singaldata['updateTime']:
+                            temp = {}
+                            temp['label'] = '工作经验异常'
+                            temp['error'] = '候选人尚未毕业但已有' + str(workyear) + '年工作经验'
                             jobhopping.append(temp)
                 count = len(workdata) + 1
                 if len(workdata) > 1:
@@ -284,6 +283,7 @@ class riskPoint(object):
 
     #滥用精通
     def genera_use(self,sigaldata):
+
         try:
             skill = sigaldata['skill']
 

@@ -4,19 +4,24 @@ from utils.Logger import logging
 from data_access.base.BaseMongoController import BaseMongoController
 from data_access.models.KB_Terminology import KB_Terminology
 from services.tool_services.MongoService import mgService as mgservice
+from data_access.controller.KBPostController4Mongo import KBPostController4Mongo
 from bson.objectid import ObjectId
 import settings
 
 
 @DataMap(_schema=settings.mongo_db, _table="kb_talent")
 class KBTalentController4Mongo(BaseMongoController):
+    def __init__(self):
+        self.keyword_dict = KBPostController4Mongo().get_prefix_dict()
+
     def get_talent_by_name_order_by_date(self, name, page=1, limit=10):
+
         data = mgservice.query_sort(query_cond={
-            'JobTitle': name,
+            'JobTitle': self.tag_data(name),
             "ISBAD": 0,
             "ISREPLICATE": 0,
-            "duty":{"$exists":True},
-            "requirement":{"$exists":True}
+            "duty": {"$exists": True},
+            "requirement": {"$exists": True}
         }, db=self._schema, table=self._table, projection={
             "_id": 1,
             "Name": 1,
@@ -31,8 +36,8 @@ class KBTalentController4Mongo(BaseMongoController):
             "Startdate": 1,
             "Enddate": 1,
             # "JobDescription": 1,
-            'duty':1,
-            'requirement':1,
+            'duty': 1,
+            'requirement': 1,
             "JobLocation": 1,
             "graph": 1
         }, page=page, size=limit, sort_by="Startdate")
@@ -40,6 +45,13 @@ class KBTalentController4Mongo(BaseMongoController):
         return data
 
     pass
+
+    def tag_data(self, name):
+        for k, v in self.keyword_dict.items():
+            for keyword in v:
+                if keyword in name:
+                    return k
+        return name
 
 
 if __name__ == '__main__':

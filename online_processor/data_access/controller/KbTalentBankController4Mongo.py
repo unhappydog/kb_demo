@@ -2,10 +2,16 @@ from utils.MongoMapTags import query, delete, update, DataMap
 from utils.Tags import return_type
 from data_access.base.BaseMongoController import BaseMongoController
 from services.tool_services.MongoService import mgService as mgservice
+from data_access.controller.KBPostController4Mongo import KBPostController4Mongo
 
 
 @DataMap(_schema="kb_demo", _table="kb_talent_bank")
 class KBTalentBankController4Mongo(BaseMongoController):
+
+    def __init__(self):
+        self.keyword_dict = KBPostController4Mongo().get_prefix_dict()
+        self.word_to_title = {v_sub: k for k, v in self.keyword_dict.items() for v_sub in v}
+
     def get_datas_order_by(self, sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
         if not mode:
             cond = None
@@ -76,6 +82,23 @@ class KBTalentBankController4Mongo(BaseMongoController):
                                     ascending=ascending,
                                     page=page,
                                     size=size)
+
+    def count_datas(self, cond):
+        # mgservice.cou
+        return mgservice.count_datas(cond, table=self._table, db=self._schema)
+
+    def count_tags(self, cond=None):
+        result = {
+            "sources": {data['source']: data['num'] for data in mgservice.count_tag("source", self._schema, self._table)
+                        if data['source'] != ''},
+            "education": {data['highestEducationDegree']: data['num'] for data in
+                          mgservice.count_tag("highestEducationDegree", self._schema, self._table) if
+                          data['highestEducationDegree'] != ''},
+            "jobTitle": {self.word_to_title.get(data['keyword']): data['num'] for data in
+                         mgservice.count_tag("keyword", self._schema, self._table) if
+                         data['keyword'] in self.word_to_title.keys()}
+        }
+        return result
 
 
 if __name__ == '__main__':

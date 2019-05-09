@@ -1,5 +1,6 @@
 import re
 from data_access.controller.KbTalentBankController4Mongo import KBTalentBankController4Mongo
+import datetime
 
 
 class TalentBank:
@@ -70,7 +71,7 @@ class TalentBank:
         return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode)
 
     def get_by_id(self, _id):
-        data =self.contoller.get_data_by_id(_id)
+        data =self.contoller.get_data_by_id(_id=_id)
         if data:
             return data[0]
         else:
@@ -80,8 +81,18 @@ class TalentBank:
         self.contoller.delete_by_id(_id)
 
     def update(self, cv):
+        # cv.updateTime = datetime.datetime.now()
         self.contoller.update_by_id(cv)
 
     def get_datas(self, page, limit, mode):
         return self.contoller.get_datas_order_by(page=page, size=limit,mode=mode)
+
+    def count_datas(self, cond):
+        return self.contoller.count_datas(cond)
+
+    def count_datas_update_after(self, time):
+        return self.contoller.count_datas(cond={"updateTime":{"$gt":time}})
+
+    def count_tags(self):
+        return self.contoller.count_tags()
 

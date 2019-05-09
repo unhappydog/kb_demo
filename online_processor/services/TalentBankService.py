@@ -31,5 +31,14 @@ class TalentBankService:
     def get_datas(self, page, size, mode):
         return self.talent_bank.get_datas(page, size, mode)
 
+    def count_all_data(self):
+        return self.talent_bank.count_datas({})
+
+    def count_data_after(self,time):
+        return self.talent_bank.count_datas_update_after(time)
+
+    def count_tags(self):
+        return self.talent_bank.count_tags()
+
 
 tbService = TalentBankService()
