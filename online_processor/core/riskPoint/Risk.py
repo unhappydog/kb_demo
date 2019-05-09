@@ -21,44 +21,44 @@ class riskPoint(object):
 
     def identification(self,cvdata):
              self.cv_data=cvdata
+
              self.updatetime =self.cv_data['updateTime']
              try:
-                 self.workStrattime, self.workEndtime, self.eduStarttime, self.eduEndtime = basicdata().clopsetime(
-                     self.cv_data)
-                 totaldict = []
-                 timclash = self.timeclash()
-                 edutime = self.edutimeerror(self.cv_data)
-                 worktimeError = self.worktimeError(self.cv_data)
-                 edutimegap = self.edutimegap(self.cv_data)
-                 worktimegap = self.worktimegap(self.cv_data)
-                 salaryerror = self.salaryerror(self.cv_data)
-                 if not isinstance(timclash, bool):
-                     totaldict.extend(timclash)
-                 if not isinstance(edutime, bool):
-                     totaldict.extend(edutime)
-                 if not isinstance(worktimeError, bool):
-                     totaldict.extend(worktimeError)
-                 if not isinstance(salaryerror, bool):
-                     totaldict.append(salaryerror)
-                 if not isinstance(edutimegap, bool):
-                     totaldict.append(edutimegap)
-                 if not isinstance(worktimegap, bool):
-                     totaldict.extend(worktimegap)
-                 genera_use = self.genera_use(self.cv_data)
-                 if not isinstance(genera_use, bool):
-                     totaldict.append(genera_use)
+                         self.workStrattime, self.workEndtime, self.eduStarttime, self.eduEndtime = basicdata().clopsetime(
+                             self.cv_data)
+                         totaldict = []
+                         timclash = self.timeclash()
+                         edutime = self.edutimeerror(self.cv_data)
+                         worktimeError = self.worktimeError(self.cv_data)
+                         edutimegap = self.edutimegap(self.cv_data)
+                         worktimegap = self.worktimegap(self.cv_data)
+                         salaryerror = self.salaryerror(self.cv_data)
+                         if not isinstance(timclash, bool):
+                             totaldict.extend(timclash)
+                         if not isinstance(worktimeError, bool):
+                             totaldict.extend(worktimeError)
+                         if not isinstance(edutime, bool):
+                             totaldict.extend(edutime)
+                         if not isinstance(salaryerror, bool):
+                             totaldict.append(salaryerror)
+                         if not isinstance(edutimegap, bool):
+                             totaldict.append(edutimegap)
+                         if not isinstance(worktimegap, bool):
+                             totaldict.extend(worktimegap)
+                         genera_use = self.genera_use(self.cv_data)
+                         if not isinstance(genera_use, bool):
+                             totaldict.append(genera_use)
              except:
-                 totaldict = []
-                 edutime = self.edutimeerror(self.cv_data)
-                 if not isinstance(edutime, bool):
-                     totaldict.extend(edutime)
-                 edutimegap = self.edutimegap(self.cv_data)
-                 if not isinstance(edutimegap, bool):
-                     totaldict.append(edutimegap)
-                 genera_use = self.genera_use(self.cv_data)
-                 if not isinstance(genera_use, bool):
-                     totaldict.append(genera_use)
-
+                         totaldict = []
+                         edutime = self.edutimeerror(self.cv_data)
+                         if not isinstance(edutime, bool):
+                             totaldict.extend(edutime)
+                         edutimegap = self.edutimegap(self.cv_data)
+                         if not isinstance(edutimegap, bool):
+                             totaldict.append(edutimegap)
+                         genera_use = self.genera_use(self.cv_data)
+                         if not isinstance(genera_use, bool):
+                             totaldict.append(genera_use)
              print(totaldict)
              return totaldict
     #时间异常情况
@@ -67,19 +67,20 @@ class riskPoint(object):
         timeclash = []
         worksmalltime = min(self.workStrattime)
         edumaxtime = max(self.eduEndtime)
-        year, month = util().time_difference(worksmalltime, edumaxtime)
-        if year > 0:
-            temp={}
-            temp["label"] = "工作时间异常"
-            if month == 0:
-                temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年'
-            else:
-                temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年' + str(month) + '月'
-            timeclash.append(temp)
-        elif month > 6:
-            temp={}
-            temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(month) + '月'
-            timeclash.append(temp)
+        if not isinstance(util().time_difference(edumaxtime,worksmalltime),bool):
+            year, month = util().time_difference(edumaxtime,worksmalltime)
+            if year > 0 and year<10:
+                temp={}
+                temp["label"] = "工作时间异常"
+                if month == 0:
+                    temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年'
+                else:
+                    temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年' + str(month) + '月'
+                timeclash.append(temp)
+            elif month > 6:
+                temp={}
+                temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(month) + '月'
+                timeclash.append(temp)
         count = 0
         for ws, we in zip(self.workStrattime, self.workEndtime):
             count += 1
@@ -283,12 +284,15 @@ class riskPoint(object):
 
     #滥用精通
     def genera_use(self,sigaldata):
-
         try:
             skill = sigaldata['skill']
+
             if isinstance(skill, list):
-                for sk in skill:
-                    skill += sk[1]
+                if len(skill)>1:
+                    for sk in skill:
+                        skill += sk[1]
+                else:
+                    skill="".join(skill)
             else:
                 skill = skill
         except:
@@ -311,5 +315,6 @@ class riskPoint(object):
             return False
 
 if __name__=='__main__':
-    cvdata=basicdata().get_cvdata()[6]
+    cvdata=basicdata().get_cvdata()[0]
+
     riskPoint().identification(cvdata)

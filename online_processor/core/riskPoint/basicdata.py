@@ -74,6 +74,7 @@ class basicdata(object):
 
     def get_cvdata(self):
         data = self.cvinfo.get_datas()
+        # data=self.cvinfo.get_data_by_id(_id='N4vWR1Ki0nrY6ZfaX1asjQ')
         return data
 
 
