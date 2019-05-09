@@ -55,19 +55,19 @@ class TalentBank:
         else:
             self.contoller.insert_data(cv)
 
-    def search_by_name(self, name, page, limit):
+    def search_by_name(self, name, page, limit, mode):
         reg_pattern = "({0})".format("|".join(self.post_prefix))
         if re.match(".+" + reg_pattern + "$", name):
             name = re.sub(reg_pattern,'', name)
-        return self.contoller.get_datas_by_keyword(keyword=name, page=page, size=limit)
+        return self.contoller.get_datas_by_keyword(keyword=name, page=page, size=limit, mode=mode)
 
-    def search_by_education(self, education, page, limit):
+    def search_by_education(self, education, page, limit, mode):
         # return self.
-        return self.contoller.get_datas_by_education(education,page=page, size=limit)
+        return self.contoller.get_datas_by_education(education,page=page, size=limit,mode=mode)
         pass
 
-    def search_by_source(self, source, page, limit):
-        return self.contoller.get_datas_by_source(source=source, page=page, size=limit)
+    def search_by_source(self, source, page, limit, mode):
+        return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode)
 
     def get_by_id(self, _id):
         data =self.contoller.get_data_by_id(_id)
@@ -82,6 +82,6 @@ class TalentBank:
     def update(self, cv):
         self.contoller.update_by_id(cv)
 
-    def get_datas(self, page, limit):
-        return self.contoller.get_datas_order_by(page=page, size=limit)
+    def get_datas(self, page, limit, mode):
+        return self.contoller.get_datas_order_by(page=page, size=limit,mode=mode)
 
