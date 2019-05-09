@@ -4,8 +4,6 @@ from datetime import datetime
 class util(object):
     # 时间差
     def time_difference(self, starttime, endtime):
-
-
         if starttime>endtime:
             return False
         if isinstance(endtime,str):
@@ -14,7 +12,7 @@ class util(object):
             else:
                 endtime = datetime.strptime(endtime, "%Y-%m-%d")
         if isinstance(starttime,str):
-            if ':' in endtime:
+            if ':' in starttime:
                 starttime = datetime.strptime(starttime, "%Y-%m-%d %H:%M:%S")
             else:
                 starttime = datetime.strptime(starttime, "%Y-%m-%d")
@@ -68,15 +66,16 @@ class util(object):
         yearlist = []
         monthlist = []
         if len(epchodata) > 1:
-            for edu in range(len(epchodata) - 1, 0, -1):
+            for edu in range(len(epchodata)-1, 0, -1):
                 if epchodata[edu][endtime] != '':
-                    gapstart = epchodata[edu][endtime]
+                    gapend = epchodata[edu][endtime]
                 else:
-                    gapstart = updatetime
-                gapend = epchodata[edu - 1][starttime]
-                year, month = self.time_difference(gapend, gapstart)
-                yearlist.append(year)
-                monthlist.append(month)
+                    gapend = updatetime
+                gapstart = epchodata[edu - 1][starttime]
+                if not isinstance(self.time_difference(gapend,gapstart),bool):
+                    year, month = self.time_difference(gapend, gapstart)
+                    yearlist.append(year)
+                    monthlist.append(month)
         return yearlist, monthlist
 
 
@@ -92,9 +91,7 @@ class util(object):
         else:
             return False
 
-    # dict合并
-    def integration(self, dict1, dict2):
-        return {**dict1, **dict2}
+
 
 
 if __name__ == '__main__':
