@@ -9,7 +9,6 @@ class basicdata(object):
         self.academy = KBAcademyController4Mongo()
 
     def clopsetime(self, signaldata):
-        print(signaldata['name'])
         workStrattime = []
         workEndtime = []
         eduStarttime = []
@@ -69,12 +68,10 @@ class basicdata(object):
                 worksalar.append(sa['workSalary'].strip(' '))
             except:
                 worksalar.append(' ')
-
         return exceptsalar,worksalar
 
     def get_cvdata(self):
         data = self.cvinfo.get_datas()
-        # data=self.cvinfo.get_data_by_id(_id='N4vWR1Ki0nrY6ZfaX1asjQ')
         return data
 
 
