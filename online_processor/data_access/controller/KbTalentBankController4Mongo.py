@@ -11,6 +11,7 @@ class KBTalentBankController4Mongo(BaseMongoController):
     def __init__(self):
         self.keyword_dict = KBPostController4Mongo().get_prefix_dict()
         self.word_to_title = {v_sub: k for k, v in self.keyword_dict.items() for v_sub in v}
+        # self.title_to_word = {v:k for k,v in self.word_to_title.items()}
 
     def get_datas_order_by(self, sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
         if not mode:
@@ -22,16 +23,30 @@ class KBTalentBankController4Mongo(BaseMongoController):
     def count_tag(self, tag_column, cond=None):
         return mgservice.count_tag(tag_column, self._schema, self._table, cond=cond)
 
-    def get_datas_by_keyword(self, keyword="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
+    def get_datas_by_name(self, keyword="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
         if not mode:
             cond = {
-                "keyword": keyword
+                # "keyword": {"$regex":keyword}
+                "keyword": {"$in": self.keyword_dict.get(keyword)}
             }
         else:
             cond = {
-                "keyword": keyword,
+                # "keyword": {"$regex":keyword},
+                "keyword": {"$int": self.keyword_dict.get(keyword)},
                 "source_method": mode
             }
+        return mgservice.query_sort(query_cond=cond,
+                                    table=self._table,
+                                    db=self._schema,
+                                    sort_by=sort_by,
+                                    ascending=ascending,
+                                    page=page,
+                                    size=size)
+
+    def search_datas_by_keyword(self, keyword="", sort_by="updateTime", ascending=-1, page=1, size=10):
+        cond = {
+            "keyword":{"$regex":keyword}
+        }
         return mgservice.query_sort(query_cond=cond,
                                     table=self._table,
                                     db=self._schema,
@@ -88,15 +103,22 @@ class KBTalentBankController4Mongo(BaseMongoController):
         return mgservice.count_datas(cond, table=self._table, db=self._schema)
 
     def count_tags(self, cond=None):
+        datas = mgservice.count_tag("keyword", self._schema, self._table)
+        num_map = {data['keyword']: data['num'] for data in datas}
+        temp = {}
+        for k,v in num_map.items():
+            if self.word_to_title.get(k) in temp.keys():
+                temp[self.word_to_title.get(k)] += v
+            else:
+                temp[self.word_to_title.get(k)] = v
+
         result = {
             "sources": {data['source']: data['num'] for data in mgservice.count_tag("source", self._schema, self._table)
                         if data['source'] != ''},
             "education": {data['highestEducationDegree']: data['num'] for data in
                           mgservice.count_tag("highestEducationDegree", self._schema, self._table) if
                           data['highestEducationDegree'] != ''},
-            "jobTitle": {self.word_to_title.get(data['keyword']): data['num'] for data in
-                         mgservice.count_tag("keyword", self._schema, self._table) if
-                         data['keyword'] in self.word_to_title.keys()}
+            "jobTitle": temp
         }
         return result
 

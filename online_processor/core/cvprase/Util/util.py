@@ -1,12 +1,16 @@
 import re
 import docx
+import os
 from core.cvprase.Util import adjunction as ad
 import subprocess
 class util(object):
     def doc2docx(self,root):
         output = subprocess.check_output(
             ["soffice", "--headless", "--convert-to", "docx:MS Word 2007 XML", root,
-             "--outdir", root.split('/')[-2]])
+             "--outdir", root.replcace("\\","/").split('/')[-2]])
+            # print(os.path.split(root)[-2])
+            # ["soffice", "--headless", "--convert-to", "docx:MS Word 2007 XML", root,
+            #  "--outdir", "resources"])
 
     """字典整合"""
     def integration(self, dict1, dict2):

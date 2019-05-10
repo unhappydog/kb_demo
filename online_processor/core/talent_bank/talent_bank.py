@@ -57,10 +57,10 @@ class TalentBank:
             self.contoller.insert_data(cv)
 
     def search_by_name(self, name, page, limit, mode):
-        reg_pattern = "({0})".format("|".join(self.post_prefix))
-        if re.match(".+" + reg_pattern + "$", name):
-            name = re.sub(reg_pattern,'', name)
-        return self.contoller.get_datas_by_keyword(keyword=name, page=page, size=limit, mode=mode)
+        # reg_pattern = "({0})".format("|".join(self.post_prefix))
+        # if re.match(".+" + reg_pattern + "$", name):
+        #     name = re.sub(reg_pattern,'', name)
+        return self.contoller.get_datas_by_name(keyword=name, page=page, size=limit, mode=mode)
 
     def search_by_education(self, education, page, limit, mode):
         # return self.
@@ -69,6 +69,9 @@ class TalentBank:
 
     def search_by_source(self, source, page, limit, mode):
         return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode)
+
+    def search_by_keyword(self, keyword, page, limit):
+        return self.contoller.search_datas_by_keyword(keyword=keyword, page=page, size=limit)
 
     def get_by_id(self, _id):
         data =self.contoller.get_data_by_id(_id=_id)

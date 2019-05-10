@@ -86,6 +86,10 @@ class TestRestApi(unittest.TestCase):
         result = requests.get("http://{0}:18081/online/jd_statics/{1}".format(host, '机器学习工程师'))
         print(result.json())
 
+    def test_search_talent(self):
+        result = requests.get("http://{0}:18081/online/sourcing/search_talent_bank/{1}/{2}/{3}".format(host,"机器学习", 1,10))
+        print(result.json())
+
 
 if __name__ == '__main__':
     unittest.main()

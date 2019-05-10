@@ -14,10 +14,31 @@ def syn_academy():
     kb_mysql = KB_AcademyController()
     kb_mongo = KBAcademyController4Mongo()
 
+    id_dict = {1:"中国校友网(2019)",2:"中国校友网(2018)"}
+    datas = mysqlService.execute("select * from kb_academy_rank")
+    rank_map = {
+        data['academyId']: data['rank'] for data in datas
+    }
+    source_map={
+        data['academyId']: id_dict[int(data['toplistId'])] for data in datas
+    }
+
     datas = kb_mysql.get_datas()
+
     for data in datas:
         print(data.__dict__)
-        kb_mongo.insert_data(data)
+        al_data =  kb_mongo.get_data_by_name(data.schoolName)
+        if al_data:
+            id = al_data[0]._id
+        # kb_mongo.insert_data(data)
+            data.__dict__['_id'] = id
+            data.__dict__['rank'] = rank_map.get(data.id)
+            data.__dict__['ranksource'] = source_map.get(data.id)
+            kb_mongo.update_by_id(data)
+
+        #     kb_mongo.update_by_id(data)
+        else:
+            kb_mongo.insert_data(data)
 
 
 def syn_company():
@@ -143,6 +164,6 @@ def extract_mem_info(doc):
 
 
 if __name__ == '__main__':
-    # syn_academy()
+    syn_academy()
     # syn_company()
-    syn_terminology()
+    # syn_terminology()
