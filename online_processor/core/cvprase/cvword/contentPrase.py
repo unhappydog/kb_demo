@@ -1,20 +1,16 @@
+# -*- coding: utf-8 -*-
 from collections import defaultdict
 from datetime import datetime
-from core.cvprase.Util.util import util
+from  core.cvprase.Util.util import util
 import re
 
-
 class ContentParse(object):
-
     def basic_info(self, table, para, name):
             basicdict = {}
-            basicdict['id'] = re.sub('[\u3000 ：]', '', para[0].text).replace('ID','')
-
+            basicdict['id'] = re.sub('[\u3000 ：\xa0]', '', para[0].text).replace('ID','')
             updatetime = []
-
             for el in table[0].rows:
                 for cell in el.cells:
-
                     updatematch = re.compile('\d.*\d').findall(cell.text)
                     if updatematch:
                         updatetime = "".join(re.compile('\d.*\d').findall(cell.text)).replace('.', '-')
@@ -34,7 +30,6 @@ class ContentParse(object):
             major = ['博士', '硕士', '本科', '大专']
             dict={'期望工作地区':'expectedWorkplace','期望月薪':'expectedSalary','目前状况':'expectedStatus','期望工作性质':'expectedWorkNature','期望从事职业':'expectedOccupation','期望从事行业':'expectedIndustry'}
             for line in row_content:
-
                 strline = "".join(line)
                 if '男' in strline or '女' in strline:
                     basicinfo = []
@@ -57,18 +52,25 @@ class ContentParse(object):
                             address = list(set(basicinfo[start:-1]))
                             for i in address:
                                 if '现居住地' in i:
-                                    basicdict['currentAddress'] = " ".join(address[address.index(i):]).split('：')[1].replace('户口','')
-                        if '户口' in i:
-                            basicdict['domicilePlace '] = i.split('：')[1]
+                                    basicdict['currentAddress'] = "".join(address[address.index(i):][0]).split('：')[1].replace('户口','')
+                                if '户口' in i:
+                                    basicdict['domicilePlace'] = i.split('：')[1]
+                        if '户口' in basicinfo[-1]:
+                            basicdict['politicsStatus']=''
+                        else:
+                            basicdict['politicsStatus']=basicinfo[-1]
                         majinfo = [x for x in major if x in i]
                         if majinfo:
                             basicdict['highestEducationBackground'] = "".join(majinfo)
                 if len(line)>1:
                     for k,v in dict.items():
-                        if line[0].strip('：')==k:
+                        if re.sub('[： ]','',line[0])==k:
                             basicdict[v]=line[1].strip(' ')
             if para[3].text:
-                basicdict['selfEvaluation'] =  para[3].text
+                if len(re.sub('[\xa0 ]','',para[3].text))<=4:
+                    basicdict['selfEvaluation'] = ''
+                else:
+                    basicdict['selfEvaluation'] =re.sub('[\n]','',para[3].text)
             return basicdict
 
     def work(self,worinfo):
@@ -79,7 +81,6 @@ class ContentParse(object):
             if pro<=len(worsplit)-2:
                 newinfo=worinfo[worsplit[pro]:worsplit[pro+1]]
             else:
-
                 newinfo = worinfo[worsplit[pro]:]
             if newinfo:
                 strline = "".join(newinfo[0])
@@ -97,7 +98,6 @@ class ContentParse(object):
                         temp['workTimePeriod'] ="".join(re.compile('\((.*)\)').findall(company[-1]))
                     else:
                         temp['workCompany'] = company[-1]
-
                 if len("".join(newinfo[1]).split('|'))>1:
                     temp['workPosition']="".join(newinfo[1]).split('|')[0].strip(' ')
                     temp['workSalary']="".join(newinfo[1]).split('|')[1].strip(' ')
@@ -110,9 +110,12 @@ class ContentParse(object):
                     temp['workCompanyIndustry']=cominfo[0].strip(' ')
                     temp['workCompanyNature']=cominfo[1].strip(' ')
                 elif len(cominfo)==3:
-                    temp['workCompanyIndustry'] = cominfo[0].strip(' ')
-                    temp['workCompanyNature'] = cominfo[1].split("：")[1].strip(' ')
-                    temp['workCompanyScale']=cominfo[2].split("：")[1].strip(' ')
+                    try:
+                        temp['workCompanyIndustry'] = cominfo[0].strip(' ')
+                        temp['workCompanyNature'] = cominfo[1].split("：")[1].strip(' ')
+                        temp['workCompanyScale']=cominfo[2].split("：")[1].strip(' ')
+                    except:
+                        temp['workCompanyIndustry']="/".join(cominfo)
                 if len(newinfo)==3:
                     temp['workDescription']=re.sub('[\n\xa0]','',"".join(newinfo[2][1])).strip(' ')
                 elif len(newinfo)==4:
@@ -122,7 +125,7 @@ class ContentParse(object):
             workdict['work'].append(temp)
         return workdict['work']
 
-    def project(self,proinfo):
+    def projectExperience(self,proinfo):
         projectdict=defaultdict(list)
         prosplit=util().listsplit(proinfo)
         for pro in range(0,len(prosplit)):
@@ -132,28 +135,33 @@ class ContentParse(object):
             else:
                 newinfo = proinfo[prosplit[pro-1]:]
             for line in newinfo:
-                         strline="".join(line)
-                         protitle="".join(re.compile('\d{4}.\d{2} - (.*)').findall(strline))
-                         if protitle:
-                            protime="".join(re.compile('\d{4}.\d{2} - \d{4}.\d{2}').findall(strline))
-                            if protime:
-                                     temp['projectStartTime']=datetime.strptime(protime.split('-')[0].strip(' ').replace('.','-'),"%Y-%m")
-                                     temp['projectEndTime']=datetime.strptime(protime.split('-')[1].strip(' ').replace('.','-'),'%Y-%m')
-                                     temp['projectName'] ="".join(re.compile('.*\d(.*)').findall(strline)).strip(' ')
-                            else:
-                                     protime = "".join(re.compile('\d{4}.\d{2} - 至今').findall(strline))
-                                     temp['projectStartTime'] = datetime.strptime(protime.split('-')[0].strip(' ').replace('.', '-'), "%Y-%m")
-                                     temp['projectEndTime'] = ''
-                                     temp['projectName'] = "".join(re.compile('至今(.*)').findall(strline)).strip(' ')
-                         else:
-                             dict={'项目描述':'projectDescription','责任描述':'projectDuty','软件环境':'peojectSoftwareEnv','硬件环境':'projectHardwareEnv','开发工具':'projectTool'}
-                             for k,v in dict.items():
-                                 if line[0]==k:
-                                     temp[v]=re.sub('[\n \xa0]','',line[1])
+                strline = "".join(line)
+                protitle = "".join(re.compile('\d{4}.\d{2} - (.*)').findall(strline))
+                if protitle:
+                    protime = "".join(re.compile('\d{4}.\d{2} - \d{4}.\d{2}').findall(strline))
+                    if protime:
+                        temp['projectStartTime'] = datetime.strptime(protime.split('-')[0].strip(' ').replace('.', '-'),
+                                                                     "%Y-%m")
+                        temp['projectEndTime'] = datetime.strptime(protime.split('-')[1].strip(' ').replace('.', '-'),
+                                                                   '%Y-%m')
+                        temp['projectName'] = "".join(re.compile('.*\d(.*)').findall(strline)).strip(' ')
+                    else:
+                        protime = "".join(re.compile('\d{4}.\d{2} - 至今').findall(strline))
+                        temp['projectStartTime'] = datetime.strptime(protime.split('-')[0].strip(' ').replace('.', '-'),
+                                                                     "%Y-%m")
+                        temp['projectEndTime'] = ''
+                        temp['projectName'] = "".join(re.compile('至今(.*)').findall(strline)).strip(' ')
+                else:
+                    dict = {'项目描述': 'projectDescription', '责任描述': 'projectDuty', '软件环境': 'peojectSoftwareEnv',
+                            '硬件环境': 'projectHardwareEnv', '开发工具': 'projectTool'}
+                    for k, v in dict.items():
+                        if line[0].strip('：')== k:
+                            temp[v]=re.sub('[\xa0\n]','',line[1])
             projectdict['project'].append(temp)
         return projectdict['project']
 
-    def eduction(self,eduinfo):
+    def educationExperience(self,eduinfo):
+
         edudict = defaultdict(list)
         for edu in eduinfo:
             temp = {}
@@ -171,7 +179,7 @@ class ContentParse(object):
         return edudict['eduction']
 
 
-    def training(self,traininginfo):
+    def trainingExperience(self,traininginfo):
         trainingdict=defaultdict(list)
         listsp =util().listsplit(traininginfo)
         dict={'培训机构':'trainingOrg','培训地点':'traininigPlace','培训描述':'trainingDescription','所获证书':'trainingCertificate'}
@@ -197,7 +205,7 @@ class ContentParse(object):
             trainingdict['trainingdict'].append(temp)
         return trainingdict['trainingdict']
 
-    def certifi(self,certinfo):
+    def certificate(self,certinfo):
         certifidict=defaultdict(list)
         for ce in certinfo:
             temp={}
@@ -226,7 +234,7 @@ class ContentParse(object):
                     languagedict['language'].append(temp)
         return languagedict['language']
 
-    def asscciation(self,assoinfo):
+    def associationExperience(self,assoinfo):
             temp = {}
             for i in assoinfo:
                 ass=[i for i in "".join(assoinfo[0]).split('\xa0') if i !='']
@@ -243,15 +251,12 @@ class ContentParse(object):
             if '活动描述' in stri:
                 continue
             temp = {}
-            if re.compile('\d{4}.\d{2}').findall("".join(stri)):
-                temp['time']="".join(re.compile('\d{4}.\d{2}').findall("".join(stri)))
-                awinfo=stri.split('\n')
-                if '奖项描述' in awinfo[1]:
-                    temp['awarddescription']=awinfo[1].split("：")[1].strip(' ')
-            else:
-                if '曾获' in stri:
-                    temp['awardKind'] = "".join(re.compile('曾获(.*)').findall(stri)).replace(' ', '')
-            awardict['award'].append(temp)
+            if '曾获' in stri:
+                if re.compile('\d{4}.\d{2}').findall("".join(stri)):
+                    temp['time'] = "".join(re.compile('\d{4}.\d{2}').findall("".join(stri)))
+                temp['awardKind'] = "".join(re.compile('曾获(.*)').findall(stri)).replace(' ', '')
+            if temp:
+                awardict['award'].append(temp)
         return awardict['award']
 
     def skill(self,skllinfo):
@@ -266,5 +271,45 @@ class ContentParse(object):
             return skilldict['skill']
         else:
             return "\n".join(skllinfo)
-    def job(self,joninfo):
-        return "".join(joninfo).strip(' ')
+    def hobby(self,joninfo):
+        jobstr=''
+        if isinstance(joninfo,list):
+            for li in joninfo:
+                jobstr+=li+' '
+            return jobstr
+        else:
+            return "".join(re.sub('[\xa0]','',joninfo)).strip(' ')
+
+    def workdict(self, para, table):
+        woindex = [para.index(i) for i in para if re.sub('[\xa0 ]', '', i.text) == '项目经历']
+        if woindex:
+            woindex = woindex[0]
+        else:
+            woindex = [para.index(i) for i in para if re.sub('[\xa0 ]', '', i.text) == '教育经历'][0]
+        workexper = []
+
+        for ta in table[3:]:
+            if '工作描述：' in util().tabletxt(ta):
+                workexper.append(table.index(ta))
+        woenindex = max(workexper) + 1
+        worktable = table[3:woenindex]
+        dict = ContentParse().work(util().tabletxtb(worktable))
+        newlist = [re.sub('[\\xa0 ]', '', pa.text) for pa in para[woindex:] if re.sub('[\\xa0]', '', pa.text) != '']
+        newtable = table[woenindex:]
+        return dict, newlist, newtable
+
+    def combindict(self, fulltext, newlist):
+        dict = {}
+        word = {'证书': 'certificate', '语言能力': 'language','专业技能':'skill' ,'兴趣爱好':'hobby','个人爱好':'hobby','在校实践经历': 'associationExperience', '在校学习情况': 'award'}
+        for key in range(len(newlist)):
+            if key<=len(newlist)-2:
+                infortindex = [fulltext.index(fu) for fu in fulltext if re.sub('[\xa0 ]', '', fu) == newlist[key]][0]
+                behindindex = [fulltext.index(fu) for fu in fulltext if re.sub('[\xa0 ]', '', fu) == newlist[key + 1]][0]
+                table = fulltext[infortindex+1:behindindex]
+            else:
+                endindex= [fulltext.index(fu) for fu in fulltext if re.sub('[\xa0 ]', '', fu) == newlist[key]][0]
+                table=fulltext[endindex+1:]
+            for k, v in word.items():
+                    if newlist[key] == k:
+                      dict[v] = getattr(ContentParse(), v)(table)
+        return dict
