@@ -1,17 +1,12 @@
 import re
 import docx
 from core.cvprase.Util import adjunction as ad
-# from win32com import client as wc
-import os
+import subprocess
 class util(object):
-
-    # def doc2docx(self,g):
-    #     word = wc.Dispatch('Word.Application')
-    #     doc = word.Documents.Open( g)  # 目标路径下的文件
-    #     newpath = g.replace('doc', 'docx')
-    #     doc.SaveAs(newpath, 16)  # 转化后路径下的文件
-    #     doc.Close()
-    #     word.Quit()
+    def doc2docx(self,root):
+        output = subprocess.check_output(
+            ["soffice", "--headless", "--convert-to", "docx:MS Word 2007 XML", root,
+             "--outdir", root.split('/')[-2]])
 
     """字典整合"""
     def integration(self, dict1, dict2):
@@ -33,7 +28,7 @@ class util(object):
         name = "".join([fu for fu in fullText if '先生' in fu or '女士' in fu]).strip('\t')
         table = doc.tables
         para = doc.paragraphs
-        return table, para, name
+        return table, para, name,fullText
 
     def tabletxt(self, table):
         c = []
