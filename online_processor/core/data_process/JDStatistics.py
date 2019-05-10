@@ -94,10 +94,14 @@ class JDStatistics:
                 else:
                     skill[skill_id] += 1
 
+
             # if jd["EnterpriseScale"] not in enterprise_scale.keys():
             #     education[jd["EnterpriseScale"]] = [salary]
             # else:
             #     education[jd["EnterpriseScale"]].append(salary)
+
+        for skill_key in skill:
+            skill[skill_key] = round(skill[skill_key] / len(jds) * 100 ,2)
 
         jd_statistics_datas = {"salary":{"salary_list":salary_list,
                                          "salary_city":salary_city,
@@ -208,7 +212,7 @@ class JDStatistics:
 
 if __name__ == "__main__":
     jd_statistics = JDStatistics()
-    jobtitle = "机器学习工程师"
+    jobtitle = "人工智能工程师"
     result = jd_statistics.statistics_by_jobtitle(jobtitle)
     print(result)
 
