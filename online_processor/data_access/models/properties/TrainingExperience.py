@@ -10,3 +10,6 @@ class TrainingExperience:
         self.trainingCourse = trainingCourse
         self.trainingCertificate = trainingCertificate
         self.trainingDescription = trainingDescription
+
+    def __getitem__(self, item):
+        return self.__dict__[item]

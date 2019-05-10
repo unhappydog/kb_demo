@@ -11,3 +11,5 @@ class EducationExperience:
         self.educationDegree = educationDegree
         self.educationMajorDescription = educationMajorDescription
         self.educationScore = educationScore
+    def __getitem__(self, item):
+        return self.__dict__[item]

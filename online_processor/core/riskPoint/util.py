@@ -1,21 +1,20 @@
 from datetime import datetime
-
+from utils import Utils
+from utils.Logger import logging
 
 class util(object):
     # 时间差
     def time_difference(self, starttime, endtime):
         if starttime>endtime:
             return False
-        if isinstance(endtime,str):
-            if ':' in endtime:
-                endtime = datetime.strptime(endtime, "%Y-%m-%d %H:%M:%S")
-            else:
-                endtime = datetime.strptime(endtime, "%Y-%m-%d")
-        if isinstance(starttime,str):
-            if ':' in starttime:
-                starttime = datetime.strptime(starttime, "%Y-%m-%d %H:%M:%S")
-            else:
-                starttime = datetime.strptime(starttime, "%Y-%m-%d")
+        if isinstance(endtime, str):
+            endtime = Utils.convert_str_2_date(endtime)
+        if isinstance(starttime, str):
+            starttime = Utils.convert_str_2_date(endtime)
+        # print(endtime)
+        # print(starttime)
+        logging.error(endtime)
+        logging.error(starttime)
         diff = (endtime - starttime).days
         start = int("".join(datetime.strftime(starttime, '%Y')))
         end = int("".join(datetime.strftime(endtime, '%Y')))

@@ -35,7 +35,7 @@ class TerminologyLinker:
         # education experience, work experience, project experience, training experience, association experience
         link_dict = {'educationExperience': ['educationMajorDescription'],
                      'workExperience': ['workDescription', 'workDuty', 'workSummary'],
-                     'projectExperience': ['projectName', 'projectDuty', 'projectSummary'],
+                     'projectExperience': ['projectName', 'projectDuty', 'projectSummary', 'projectDescription'],
                      'trainingExperience': ['trainingCourse', 'trainingDescription'],
                      'associationExperience': ['practiceName', 'practiceDescription']}
         for k, v in link_dict.items():

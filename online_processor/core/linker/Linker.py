@@ -43,11 +43,15 @@ class Linker:
         result = {}
         for company in companys:
             data = self.company_controller.get_data_by_name(company)
+            if ("大学" in company or "学院" in company) and not data:
+                data = self.academy_controller.get_data_by_name(company)
+            # if company.
             if data:
                 result[company] = data[0].__dict__
             else:
                 # Logger.waring("{0} is not in database.".format(company))
-                logging.warning("{0} is not in database".format(company))
+                # logging.warning("{0} is not in database".format(company))
+                print(company)
         return result
 
     def get_company_info(self, company):
