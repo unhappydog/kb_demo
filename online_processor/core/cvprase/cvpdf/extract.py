@@ -1,11 +1,9 @@
 from core.cvprase.cvpdf.private_info import indivial
 from core.cvprase.Util.proutil import  proutil
 import fitz
-import os
 class cvprase(object):
     def __init__(self):
         self.resumedict={}
-        
     def prase(self,root):
             doc=fitz.open(root)
             title=proutil().titlextract(doc)
