@@ -39,7 +39,6 @@ class JDStatistics:
         skill = {}   # data format :{terminology_id:freq}
 
         for jd in jds:
-
             if jd["Salary"] == "面议":
                 salary = None
             elif re.match("([0-9]*)-([0-9]*)",jd["Salary"]):
@@ -212,7 +211,7 @@ class JDStatistics:
 
 if __name__ == "__main__":
     jd_statistics = JDStatistics()
-    jobtitle = "人工智能工程师"
+    jobtitle = "机器学习工程师"
     result = jd_statistics.statistics_by_jobtitle(jobtitle)
     print(result)
 

@@ -12,6 +12,7 @@ from zhon import hanzi
 import string
 
 
+
 class CVPaint:
     def __init__(self):
         self.cv_controller = CVController4Mongo()
@@ -192,13 +193,14 @@ class CVPaint:
          'salarybottom': ['15000', '10000']}
         '''
         work_experience = cv.workExperience
+        work_experience = sorted(work_experience, key=lambda workExperience: workExperience.workEndTime,reverse = False)
         companys = []
         salary_top = []
         salary_bottom = []
 
         for workExperience in work_experience:
             company = workExperience.workCompany
-            salary = workExperience.workSalary
+            salary = workExperience.workSalary.strip()
             if salary == None or salary == "保密":
                 top, bottom = "-", "-"
             else:
@@ -374,18 +376,17 @@ class CVPaint:
 
 if __name__ == "__main__":
     cv_paint = CVPaint()
-    cv = cv_paint.cv_controller.get_data_by_id(_id="N7p7DBeE6lKOrYKUoDC(WA")[0]
-    # result = cv_paint.cv_paint(cv)
-    # print(result)
-
-    cv = cv_paint.parser.parse(cv)
-    # cv_paint.data_label(cv)
-    # testtime = cv.workExperience[0].workStartTime
-    # print(testtime.timetuple().tm_year)
-    # print(cv_paint.term_cloud(cv))
-    cw, sw = cv_paint.term_cloud(cv)
-    print(cw)
-    print("\n")
-    print(sw)
+    cv = cv_paint.cv_controller.get_data_by_id(_id="wDcE9xPa0uhHraG3vTaCCw")[0]
+    result = cv_paint.cv_paint(cv)
+    # cv = cv_paint.parser.parse(cv)
+    #
+    # # cv_paint.data_label(cv)
+    # # testtime = cv.workExperience[0].workStartTime
+    # # print(testtime.timetuple().tm_year)
+    # # print(cv_paint.term_cloud(cv))
+    # cw, sw = cv_paint.term_cloud(cv)
+    # print(cw)
+    # print("\n")
+    # print(sw)
 
     # print(cvpaint.data_label())
