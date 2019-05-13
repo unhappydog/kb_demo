@@ -13,8 +13,8 @@ class util(object):
             starttime = Utils.convert_str_2_date(endtime)
         # print(endtime)
         # print(starttime)
-        logging.error(endtime)
-        logging.error(starttime)
+        # logging.error(endtime)
+        # logging.error(starttime)
         diff = (endtime - starttime).days
         start = int("".join(datetime.strftime(starttime, '%Y')))
         end = int("".join(datetime.strftime(endtime, '%Y')))

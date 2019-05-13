@@ -13,6 +13,11 @@ if __name__ == '__main__':
     datas = mgService.query({}, 'kb_demo', 'kb_CV_origin')
     for data in datas:
         cv = linkerService.parse(data)
+        word_experiences = cv.workExperience
+        if len(word_experiences) <= 0:
+            continue
+        word_experiences = sorted(word_experiences, key=lambda x: x.workStartTime, reverse=True)
+        cv.recentPosition = word_experiences[0]['workPosition']
         # print(cv.__dict__)
         # dataService.save(cv)
         cv.source = "zhilian"
@@ -24,6 +29,11 @@ if __name__ == '__main__':
         print(data)
         cv = linkerService.parse(data)
         cv.highestEducationDegree = cv.highestEducationBackground
+        word_experiences = cv.workExperience
+        if len(word_experiences) <=0:
+            continue
+        word_experiences = sorted(word_experiences, key=lambda x: x.workStartTime, reverse=True)
+        cv.recentPosition = word_experiences[0]['workPosition']
         cv.source = 'zhilian'
         cv.source_method = 'upload'
         tbService.save(cv)

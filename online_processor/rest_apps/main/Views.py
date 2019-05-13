@@ -23,7 +23,7 @@ def get_similar_jd(name, page, limit):
     split_with_br = lambda x: re.sub('[0-9]{1,2}(、|：|,|，)', '<br/>', x)
     for data in datas:
         data['Name'] = re.sub("（.*）|\(.*\)", '', data['Name'])
-        data['Salary'] = (lambda x: "-".join(["{:.2f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
+        data['Salary'] = (lambda x: "-".join(["{:.1f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
             if re.match('[0-9]{1,10}-[0-9]{1,10}', x) else "")(data['Salary'])
         data['link'] = linkerService.link_jd(data)
         data['requirement'] = split_with_br(data['requirement'])
@@ -34,7 +34,7 @@ def get_similar_jd(name, page, limit):
 
 @inf_restful.route("/online/talent_bank/search/<string:by>/<string:searchWord>/<int:page>/<int:limit>/<string:mode>",
                    methods=['GET'])
-def search_talent_by_keyword(by, searchWord, page, limit, mode):
+def get_talent_by(by, searchWord, page, limit, mode):
     """
     按照职位名称、教育程度 、来源、或者其它查询人才库
     :param by:
@@ -53,6 +53,12 @@ def search_talent_by_keyword(by, searchWord, page, limit, mode):
         datas = tbService.search_by_source(searchWord, page, limit, mode)
     elif by == "none" or by == 'undefined':
         datas = tbService.get_datas(page, limit, mode)
+    return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/sourcing/search_talent_bank/<string:keyword>/<int:page>/<int:limit>")
+def search_talent_by_keyword(keyword, page, limit):
+    datas = tbService.search_by_keyword(keyword, page, limit)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
 
@@ -97,7 +103,7 @@ def upload(source):
             logging.error("some thing is wrong")
             logging.exception(e)
             return "fail"
-    return "success"
+    return json.dumps(tbService.get_by_id(data._id), cls=JSONEncoder, ensure_ascii=False)
 
 
 @inf_restful.route("/online/count_talent_banks", methods=['GET'])

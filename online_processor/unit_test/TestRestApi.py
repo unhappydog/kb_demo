@@ -18,7 +18,7 @@ class TestRestApi(unittest.TestCase):
             self.json_str = f.read()
         # json.loads(self.json_str, encoding='utf8')
         result = requests.post('http://{0}:18081/online/link'.format(host), data={'json': self.json_str})
-        print(result.json())
+        print(result.text)
 
     def test_paint(self):
         # with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
@@ -37,6 +37,7 @@ class TestRestApi(unittest.TestCase):
             result = requests.get(
                 'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'keyword', "机器学习算法工程师", 1, 10, mod))
             print(result.json())
+            # print(result.text)
             result = requests.get(
                 'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'education', "硕士", 1, 10, mod))
             print(result.json())
@@ -84,6 +85,10 @@ class TestRestApi(unittest.TestCase):
 
     def test_jd_statics(self):
         result = requests.get("http://{0}:18081/online/jd_statics/{1}".format(host, '机器学习工程师'))
+        print(result.json())
+
+    def test_search_talent(self):
+        result = requests.get("http://{0}:18081/online/sourcing/search_talent_bank/{1}/{2}/{3}".format(host,"机器学习", 1,10))
         print(result.json())
 
 

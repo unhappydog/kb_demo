@@ -1,6 +1,7 @@
 from core.riskPoint.basicdata import basicdata
 import numpy as np
 from core.riskPoint.util import util
+from utils.Utils import int_to_hanzi
 import re
 
 """
@@ -91,7 +92,7 @@ class riskPoint(object):
                 if util().overlapping(ws, we, es, ew):
                     temp = {}
                     temp['label'] = '时间逻辑异常'
-                    temp['error'] = '候选人第' + str(count) + '段工作经历与第' + str(ecount) + '段教育经历的时间冲突'
+                    temp['error'] = '候选人第' + int_to_hanzi(str(count)) + '段工作经历与第' + int_to_hanzi(str(ecount)) + '段教育经历的时间冲突'
                     timeclash.append(temp)
         if len(timeclash) > 0:
             return timeclash
@@ -138,14 +139,14 @@ class riskPoint(object):
             if em == '其他':
                 temp = {}
                 temp['label'] = '专业不明'
-                temp['error'] = '候选人第' + str(count) + '段教育经历的专业不明'
+                temp['error'] = '候选人第' + int_to_hanzi(str(count)) + '段教育经历的专业不明'
                 eduerror.append(temp)
             if en.strip(' ') not in [i for i in school]:
                 if '香港' in en:
                     continue
                 temp = {}
                 temp['label'] = '高校异常'
-                temp['error'] = '候选人在第' + str(count) + '段教育经历所就读的高校可能不存在'
+                temp['error'] = '候选人在第' + int_to_hanzi(str(count)) + '段教育经历所就读的高校可能不存在'
                 eduerror.append(temp)
 
         if '大专' in educationDegree:
@@ -203,7 +204,7 @@ class riskPoint(object):
                     elif int(mon)<6:
                         temp={}
                         temp['label']='跳槽频繁'
-                        temp['error']='候选人的第'+str(count)+'段工作经历不足半年'
+                        temp['error']='候选人的第'+int_to_hanzi(str(count))+'段工作经历不足半年'
                         hopping.append(temp)
             if len(hopping)>0:
                 return hopping
@@ -255,13 +256,13 @@ class riskPoint(object):
                         if wy != 0:
                             temp = {}
                             temp['label'] = '工作间隔'
-                            temp['error'] = '候选人在第' + str(strsum) + '段工作经历与第' + str(count) + '段工作经历之间的空档期为' + str(
+                            temp['error'] = '候选人在第' + int_to_hanzi(str(strsum)) + '段工作经历与第' + int_to_hanzi(str(count)) + '段工作经历之间的空档期为' + str(
                                 wy) + '年'
                             jobhopping.append(temp)
                         elif wy == 0 and wk > 6:
                             temp = {}
                             temp['label'] = '工作间隔'
-                            temp['error'] = '候选人在第' + str(strsum) + '段工作经历与第' + str(count) + '段工作经历之间的空档期超过半年'
+                            temp['error'] = '候选人在第' + int_to_hanzi(str(strsum)) + '段工作经历与第' + int_to_hanzi(str(count)) + '段工作经历之间的空档期超过半年'
                             jobhopping.append(temp)
                     if util().iszero(workyeargap) and util().iszero(workmongap):
                         temp = {}
