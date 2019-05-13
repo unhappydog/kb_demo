@@ -27,12 +27,12 @@ class KBTalentBankController4Mongo(BaseMongoController):
         if not mode:
             cond = {
                 # "keyword": {"$regex":keyword}
-                "keyword": {"$in": self.keyword_dict.get(keyword)}
+                "keyword": {"$in": self.keyword_dict.get(keyword, [])}
             }
         else:
             cond = {
                 # "keyword": {"$regex":keyword},
-                "keyword": {"$int": self.keyword_dict.get(keyword)},
+                "keyword": {"$in": self.keyword_dict.get(keyword, [])},
                 "source_method": mode
             }
         return mgservice.query_sort(query_cond=cond,

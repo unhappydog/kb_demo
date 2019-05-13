@@ -24,6 +24,8 @@ def convert_str_2_date(date):
         return datetime.datetime(year=2019, month=int(month), day=int(day))
     elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$', date):
         return datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+    elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$', date):
+        return datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
     else:
         print("un recongize {0}".format(date))
         return date

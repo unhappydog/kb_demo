@@ -60,17 +60,21 @@ class Kgnizer:
         all_skills = self.get_all_skills_from(link_text)
         all_skills = self.distinct_termnologys(all_skills)
 
+        tempset = set()
         for termnology in all_skills:
             if termnology.get('cnName'):
                 name = termnology['cnName'][0]
             else:
                 name = termnology['engName'][0]
             mastery = "涉及过"
+            if name.lower() in tempset:
+                continue
             cv_kg["技能"].append({
                 "术语": name,
                 "程度": mastery,
                 '悬浮': termnology
             })
+            tempset.add(name.lower())
         self.remove_null(cv_kg)
         return cv_kg
 
@@ -267,7 +271,7 @@ class Kgnizer:
                             kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, None)
                         else:
                             if len(child_value_1) >=1:
-                                child_propery_id_1 = kg_property_list.push_property("术语")
+                                child_propery_id_1 = kg_property_list.push_property("使用的技能")
                                 kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, None)
                             for termnolgoy in child_value_1:
                                 child_propery_id_2 = kg_property_list.push_property(termnolgoy['术语'])
