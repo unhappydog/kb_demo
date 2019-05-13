@@ -48,6 +48,26 @@ def parse_data_to_dict(data):
     return doc
 
 
+def int_to_hanzi(temp):
+    return {
+        1: '一',
+        2: '二',
+        3: '三',
+        4: '四',
+        5: '五',
+        6: '六',
+        7: '七',
+        8: '八',
+        9: '九',
+        10: '十',
+        11: '十一',
+        12: '十二',
+        13: '十三',
+        14: '十四',
+        15: '十五'
+    }.get(int(temp), temp)
+
+
 if __name__ == '__main__':
     print(convert_str_2_date('2012-09-01 00:00:00'))
     print(convert_str_2_date('2015-07-01'))

@@ -110,7 +110,7 @@ class TerminologyLinker:
 
         # 检查一个术语是否作为独立的单词存在
         text_en = text.lower()
-        text_en_pure = re.sub("({0}|,|;|，|。|；|、|,|;|\n)+".format(REGEX_CN), '__', text_en)
+        text_en_pure = re.sub(" *({0}|,|;|，|。|；|、|,|;|\n|\+)+ *".format(REGEX_CN), '__', text_en)
         text_en_pure_words = [word.strip() for word in text_en_pure.split("__")]
         text_en_pure_words = sorted(text_en_pure_words, key=lambda x: len(x), reverse=True)
         for en_word in text_en_pure_words:

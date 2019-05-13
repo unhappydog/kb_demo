@@ -45,7 +45,7 @@ class KBTalentBankController4Mongo(BaseMongoController):
 
     def search_datas_by_keyword(self, keyword="", sort_by="updateTime", ascending=-1, page=1, size=10):
         cond = {
-            "keyword":{"$regex":keyword}
+            "keyword": {"$regex": keyword}
         }
         return mgservice.query_sort(query_cond=cond,
                                     table=self._table,
@@ -106,7 +106,7 @@ class KBTalentBankController4Mongo(BaseMongoController):
         datas = mgservice.count_tag("keyword", self._schema, self._table)
         num_map = {data['keyword']: data['num'] for data in datas}
         temp = {}
-        for k,v in num_map.items():
+        for k, v in num_map.items():
             if self.word_to_title.get(k) in temp.keys():
                 temp[self.word_to_title.get(k)] += v
             else:

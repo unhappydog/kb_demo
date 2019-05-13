@@ -50,7 +50,7 @@ class TalentBank:
         self.contoller = KBTalentBankController4Mongo()
 
     def save(self, cv):
-        data = self.contoller.get_data_by_id(_id = cv._id)
+        data = self.contoller.get_data_by_id(_id=cv._id)
         if data:
             self.contoller.update_by_id(cv)
         else:
@@ -64,17 +64,21 @@ class TalentBank:
 
     def search_by_education(self, education, page, limit, mode):
         # return self.
-        return self.contoller.get_datas_by_education(education,page=page, size=limit,mode=mode)
+        return self.contoller.get_datas_by_education(education, page=page, size=limit, mode=mode)
         pass
 
     def search_by_source(self, source, page, limit, mode):
+
         return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode)
 
     def search_by_keyword(self, keyword, page, limit):
+        reg_pattern = "({0})".format("|".join(self.post_prefix))
+        if re.match(".+" + reg_pattern + "$", keyword):
+            keyword = re.sub(reg_pattern, '', keyword)
         return self.contoller.search_datas_by_keyword(keyword=keyword, page=page, size=limit)
 
     def get_by_id(self, _id):
-        data =self.contoller.get_data_by_id(_id=_id)
+        data = self.contoller.get_data_by_id(_id=_id)
         if data:
             return data[0]
         else:
@@ -88,14 +92,13 @@ class TalentBank:
         self.contoller.update_by_id(cv)
 
     def get_datas(self, page, limit, mode):
-        return self.contoller.get_datas_order_by(page=page, size=limit,mode=mode)
+        return self.contoller.get_datas_order_by(page=page, size=limit, mode=mode)
 
     def count_datas(self, cond):
         return self.contoller.count_datas(cond)
 
     def count_datas_update_after(self, time):
-        return self.contoller.count_datas(cond={"updateTime":{"$gt":time}})
+        return self.contoller.count_datas(cond={"updateTime": {"$gt": time}})
 
     def count_tags(self):
         return self.contoller.count_tags()
-

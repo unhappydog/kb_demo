@@ -9,7 +9,8 @@ import os
 
 class TestLBservice(unittest.TestCase):
     def test_search(self):
-        print(tbService.search_by_keyword("知识图谱", 3,10))
+        print(tbService.search_by_keyword("知识图谱", 1,10))
+        print(tbService.search_by_keyword("知识图谱工程师", 1, 10))
 
     def test_search_by_name(self):
         print(tbService.search_by_name("算法工程师", 2, 20, None))
