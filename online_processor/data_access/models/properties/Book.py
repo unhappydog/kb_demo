@@ -4,3 +4,5 @@ class Book:
         self.publishTime = pubishTime
         self.publisher = publisher
         self.description = description
+    def __getitem__(self, item):
+        return self.__dict__[item]

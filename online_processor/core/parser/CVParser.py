@@ -26,9 +26,9 @@ class_dict = {
     'skill': Skill,
     'certificate': Certificate,
     'language': Language,
-    'publishBook':Book,
-    'award':Award,
-    'publishPatent':Patent,
+    'publishBook': Book,
+    'award': Award,
+    'publishPatent': Patent,
     'publishPaper': Paper
 }
 
@@ -81,9 +81,12 @@ class CVParser:
 
         for educationExperience in cv.educationExperience:
             educationExperience.educationEndTime = CVParser.parse_time(educationExperience.educationEndTime)
-            educationExperience.educationStartTime =CVParser.parse_time(educationExperience.educationStartTime)
+            educationExperience.educationSchool = re.sub('\(.+\)|（.+）|【.*】|\|.*$', '',
+                                                         educationExperience.educationSchool)
+            educationExperience.educationStartTime = CVParser.parse_time(educationExperience.educationStartTime)
         for workExperience in cv.workExperience:
             workExperience.workStartTime = CVParser.parse_time(workExperience.workStartTime)
+            workExperience.workCompany = re.sub('\(.+\)|（.+）|【.*】|\|.*$', '', workExperience.workCompany)
             workExperience.workEndTime = CVParser.parse_time(workExperience.workEndTime)
         for projectExperience in cv.projectExperience:
             projectExperience.projectStartTime = CVParser.parse_time(projectExperience.projectStartTime)
@@ -133,18 +136,19 @@ class CVParser:
         for experience in data["educationExperience"]:
             school_name = experience.get('SchoolName', "")
             school_name = re.sub('\(.+\)$|（.+）$', '', school_name)
-            educationExperience = EducationExperience(educationStartTime=CVParser.parse_time(experience.get('DateStart', None)),
-                                                      educationEndTime=CVParser.parse_time(experience.get('DateEnd', None)),
-                                                      educationDegree=experience.get('EducationLevel', None),
-                                                      educationSchool=school_name,
-                                                      educationMajor=experience.get('MajorName', None),
-                                                      majorBigType=experience.get('MajorBigType', None),
-                                                      majorSmallType=experience.get('MajorSmallType', None))
+            educationExperience = EducationExperience(
+                educationStartTime=CVParser.parse_time(experience.get('DateStart', None)),
+                educationEndTime=CVParser.parse_time(experience.get('DateEnd', None)),
+                educationDegree=experience.get('EducationLevel', None),
+                educationSchool=school_name,
+                educationMajor=experience.get('MajorName', None),
+                majorBigType=experience.get('MajorBigType', None),
+                majorSmallType=experience.get('MajorSmallType', None))
             educationExperiences.append(educationExperience)
         workExperiences = []
         for experience in data["workExperience"]:
             company_name = experience.get('CompanyName', "")
-            # company_name = re.sub('\(.+\)$|（.+）$', '', company_name)
+            company_name = re.sub('\(.+\)|（.+）', '', company_name)
             workExperience = WorkExperience(workStartTime=CVParser.parse_time(experience.get('DateStart', None)),
                                             workEndTime=CVParser.parse_time(experience.get('DateEnd', None)),
                                             workCompany=company_name,

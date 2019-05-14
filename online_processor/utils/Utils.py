@@ -17,11 +17,15 @@ def convert_str_2_date(date):
         return datetime.datetime.strptime(date, "%Y.%m")
     elif re.match('^[0-9]{2}-[0-9]{2}-[0-9]{2}$', date):
         return datetime.datetime.strptime("20" + date, "%Y-%m-%d")
+    elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2}$', date):
+        return datetime.datetime.strptime(date, "%Y-%m-%d")
     elif re.match('^[0-9]{1,2}月 [0-9]{1,2}日.*$', date):
         month, day = date.split('日')[0].split('月 ')
         return datetime.datetime(year=2019, month=int(month), day=int(day))
     elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$', date):
         return datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+    elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$', date):
+        return datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
     else:
         print("un recongize {0}".format(date))
         return date
@@ -46,5 +50,26 @@ def parse_data_to_dict(data):
     return doc
 
 
+def int_to_hanzi(temp):
+    return {
+        1: '一',
+        2: '二',
+        3: '三',
+        4: '四',
+        5: '五',
+        6: '六',
+        7: '七',
+        8: '八',
+        9: '九',
+        10: '十',
+        11: '十一',
+        12: '十二',
+        13: '十三',
+        14: '十四',
+        15: '十五'
+    }.get(int(temp), temp)
+
+
 if __name__ == '__main__':
     print(convert_str_2_date('2012-09-01 00:00:00'))
+    print(convert_str_2_date('2015-07-01'))

@@ -39,7 +39,6 @@ class JDStatistics:
         skill = {}   # data format :{terminology_id:freq}
 
         for jd in jds:
-
             if jd["Salary"] == "面议":
                 salary = None
             elif re.match("([0-9]*)-([0-9]*)",jd["Salary"]):
@@ -94,10 +93,14 @@ class JDStatistics:
                 else:
                     skill[skill_id] += 1
 
+
             # if jd["EnterpriseScale"] not in enterprise_scale.keys():
             #     education[jd["EnterpriseScale"]] = [salary]
             # else:
             #     education[jd["EnterpriseScale"]].append(salary)
+
+        for skill_key in skill:
+            skill[skill_key] = round(skill[skill_key] / len(jds) * 100 ,2)
 
         jd_statistics_datas = {"salary":{"salary_list":salary_list,
                                          "salary_city":salary_city,

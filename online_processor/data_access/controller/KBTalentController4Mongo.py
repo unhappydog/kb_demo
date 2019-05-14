@@ -17,7 +17,7 @@ class KBTalentController4Mongo(BaseMongoController):
     def get_talent_by_name_order_by_date(self, name, page=1, limit=10):
 
         data = mgservice.query_sort(query_cond={
-            'JobTitle': self.tag_data(name),
+            'JobTitle': {'$regex': self.tag_data(name)},
             "ISBAD": 0,
             "ISREPLICATE": 0,
             "duty": {"$exists": True},

@@ -17,3 +17,5 @@ class ProjectExperience:
         self.projectSoftwareEnv = projectSoftwareEnv
         self.projectHardwareEnv = projectHardwareEnv
         self.projectTool = projectTool
+    def __getitem__(self, item):
+        return self.__dict__[item]

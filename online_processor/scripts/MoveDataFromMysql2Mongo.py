@@ -14,10 +14,39 @@ def syn_academy():
     kb_mysql = KB_AcademyController()
     kb_mongo = KBAcademyController4Mongo()
 
+    id_dict = {1: "中国校友网(2019)", 2: "中国校友网(2018)"}
+    url_dict = {1: "http://www.cuaa.net", 2: "http://www.cuaa.net"}
+    datas = mysqlService.execute("select * from kb_academy_rank")
+    rank_map = {
+        data['academyId']: data['rank'] for data in datas
+    }
+    source_map = {
+        data['academyId']: id_dict[int(data['toplistId'])] for data in datas
+    }
+    url_map = {
+        data['academyId']: url_dict[int(data['toplistId'])] for data in datas
+    }
     datas = kb_mysql.get_datas()
+
     for data in datas:
         print(data.__dict__)
-        kb_mongo.insert_data(data)
+        al_data = kb_mongo.get_data_by_name(data.schoolName)
+        if al_data:
+            id = al_data[0]._id
+            # kb_mongo.insert_data(data)
+            data.__dict__['_id'] = id
+            data.__dict__['rank'] = rank_map.get(data.id)
+            data.__dict__['ranksource'] = source_map.get(data.id)
+            data.__dict__['rankurl'] = url_map.get(data.id)
+            if data.speciality is not None:
+                data.__dict__['tags'] = [tag for tag in data.speciality.split(';') if '211工程' == tag or '985工程' == tag or '双一流' == tag]
+            else:
+                data.__dict__['tags'] = []
+            kb_mongo.update_by_id(data)
+
+        #     kb_mongo.update_by_id(data)
+        else:
+            kb_mongo.insert_data(data)
 
 
 def syn_company():
@@ -47,14 +76,14 @@ def syn_terminology():
     kb_terminal_mysql = KBTerminologyController()
     kb_terminal_mongo = KBTerminologyController4Mongo()
     filed_table = mysqlService.execute("select * from kb_terminology_type")
-    filed_table = {data['id']:data['type'] for data in filed_table}
+    filed_table = {data['id']: data['type'] for data in filed_table}
     datas = kb_terminal_mysql.get_datas()
     for data in datas:
         # print(data.__dict__)
         # doc = data.__dict__
         doc = {}
-        for column in ["cnName", "engName", "brief","fieldId", "id", "name"]:
-            doc[column] =  data.__dict__[column]
+        for column in ["cnName", "engName", "brief", "fieldId", "id", "name"]:
+            doc[column] = data.__dict__[column]
         if doc['cnName'] is not None:
             doc['cnName'] = doc['cnName'].split(';')
         if doc['engName'] is not None:
@@ -64,7 +93,7 @@ def syn_terminology():
 
         if doc['fieldId'] is not None:
             doc['fieldId'] = [filed_table.get(int(_id)) for _id in doc['fieldId'].split(';')]
-        if mgservice.query({"id":data.id}, 'kb_demo','kb_terminology'):
+        if mgservice.query({"id": data.id}, 'kb_demo', 'kb_terminology'):
             mgservice.delete({'id': data.id}, 'kb_demo', 'kb_terminology')
         kb_terminal_mongo.insert_data(doc)
 
@@ -96,7 +125,7 @@ def extract_tags(doc, col_name, split_dot="|"):
 def date_format(date):
     if re.match('^[0-9]{4}-[0-9]{1,2}$', date):
         # return "new Date(\"{0}\")".format(date)
-        return datetime.datetime.strptime(date,'%Y-%m')
+        return datetime.datetime.strptime(date, '%Y-%m')
     elif re.match('^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$', date):
         # return "new Date(\"{0}\")".format(date)
         return datetime.datetime.strptime(date, '%Y-%m-%d')
@@ -143,6 +172,6 @@ def extract_mem_info(doc):
 
 
 if __name__ == '__main__':
-    # syn_academy()
+    syn_academy()
     # syn_company()
-    syn_terminology()
+    # syn_terminology()

@@ -9,3 +9,6 @@ class Language:
         self.exam = exam
         self.ratings = ratings
         pass
+
+    def __getitem__(self, item):
+        return self.__dict__[item]

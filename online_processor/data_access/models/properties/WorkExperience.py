@@ -23,3 +23,6 @@ class WorkExperience:
         self.workSummary = workSummary
         self.workSubordinate = workSubordinate
         self.workResignationReason = workResignationReason
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
