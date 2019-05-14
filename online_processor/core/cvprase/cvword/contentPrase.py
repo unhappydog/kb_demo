@@ -303,11 +303,11 @@ class ContentParse(object):
         word = {'证书': 'certificate', '语言能力': 'language','专业技能':'skill' ,'兴趣爱好':'hobby','个人爱好':'hobby','在校实践经历': 'associationExperience', '在校学习情况': 'award'}
         for key in range(len(newlist)):
             if key<=len(newlist)-2:
-                infortindex = [fulltext.index(fu) for fu in fulltext if re.sub('[\xa0 ]', '', fu) == newlist[key]][0]
-                behindindex = [fulltext.index(fu) for fu in fulltext if re.sub('[\xa0 ]', '', fu) == newlist[key + 1]][0]
+                infortindex = [fulltext.index(fu) for fu in fulltext if re.sub('[\\t\xa0 ]', '', fu) == newlist[key]][0]
+                behindindex = [fulltext.index(fu) for fu in fulltext if re.sub('[\\t\xa0 ]', '', fu) == newlist[key + 1]][0]
                 table = fulltext[infortindex+1:behindindex]
             else:
-                endindex= [fulltext.index(fu) for fu in fulltext if re.sub('[\xa0 ]', '', fu) == newlist[key]][0]
+                endindex= [fulltext.index(fu) for fu in fulltext if re.sub('[\\t\xa0 ]', '', fu) == newlist[key]][0]
                 table=fulltext[endindex+1:]
             for k, v in word.items():
                     if newlist[key] == k:

@@ -139,7 +139,6 @@ class htmlparse(object):
             hh = []
             temp = {}
             for res in ht.split('&nbsp;'):
-
                 if res != '':
                     hh.append(res)
             temp['workStartTime'] = datetime.strptime(hh[0].split('-')[0].replace('.', '-'), "%Y-%m")
@@ -156,7 +155,7 @@ class htmlparse(object):
             else:
                 temp['workPosition'] = hi
             if len(ind.split('|')) == 1:
-                temp['workCompanyIndustry'] = ind.split('|')[0]
+                temp['workCompanyIndustry'] = "".join(re.findall('(.*)<div',ind.split('|')[0]))
             elif len(ind.split('|')) != 1:
                 if len(ind.split('|')) > 3:
                     temp['workCompanyIndustry'] = ind
