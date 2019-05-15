@@ -18,6 +18,13 @@ class indivial(object):
         newlist=['gender','age','birthday','workYear','highestEducationBackground','marital']
         for g in text:
             baseitem.append([ss[4] for ss in g[1]])
+        index=[]
+        for va in baseitem:
+            if '男' in va or '女' in va:
+                index.append(baseitem.index(va))
+        smindex=min(index)
+        name=baseitem[smindex-1][0]
+        subdict['name'] = name
         for key in baseitem:
              temp=[]
              for i in key:
@@ -28,8 +35,8 @@ class indivial(object):
                  subdict['updateTime']=datetime.strptime(temp[1].strip(' ').replace('.','-'),'%Y-%m-%d')
              if 'ID:' in strtemp:
                  subdict['id']=strtemp.split(':')[1].strip(' ')
-             if '先生' in strtemp or '女士' in strtemp:
-                 subdict['name']=strtemp
+             # if '先生' in strtemp or '女士' in strtemp:
+
              if '岁' in strtemp:
                      for k,v in zip(temp,newlist):
                         if '工作经验' in strtemp:

@@ -173,7 +173,6 @@ class htmlparse(object):
                 else:
                     temp['workCompanyIndustry'] = ind
             temp['workDescription'] = re.sub('[<br>\\t]', '', de)
-            print(temp)
             work_dict['workExperience'].append(temp)
         return work_dict['workExperience']
 

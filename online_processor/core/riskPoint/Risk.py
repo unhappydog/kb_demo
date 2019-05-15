@@ -15,10 +15,7 @@ class riskPoint(object):
         self.acadmyschool = basicdata().academydata()
         self.updatetime = ''
 
-
-
     # 时间异常情况
-
     def identification(self,cvdata):
                  self.cv_data=cvdata
                  print(self.cv_data['name'])
@@ -75,7 +72,7 @@ class riskPoint(object):
                 if month == 0:
                     temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年'
                 else:
-                    temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年' + str(month) + '月'
+                    temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年' + str(month) + '个月'
                 timeclash.append(temp)
             elif month > 6:
                 temp={}
@@ -137,18 +134,6 @@ class riskPoint(object):
                 temp['label'] = '专业不明'
                 temp['error'] = '候选人第' +str(count) + '段教育经历的专业不明'
                 eduerror.append(temp)
-            if '（' in en :
-                en="".join(re.findall('(.*)（',en))
-                print(en)
-            else:
-                en=en
-            if en.strip(' ') not in [i for i in school]:
-                    if '香港' in en or '莫斯科'in en:
-                        continue
-                    temp = {}
-                    temp['label'] = '高校异常'
-                    temp['error'] = '候选人在第' +str(count) + '段教育经历所就读的高校可能填写有误'
-                    eduerror.append(temp)
 
         if '大专' in educationDegree and len(educationDegree)>1:
             temp={}
@@ -207,7 +192,7 @@ class riskPoint(object):
             if count>0:
                 temp = {}
                 temp['label'] = '跳槽频繁'
-                temp['error'] = '候选人的工作经历不足半年'
+                temp['error'] = '候选人的部分工作经历时长不足半年'
                 hopping.append(temp)
             if len(hopping)>0:
                 return hopping
@@ -227,7 +212,7 @@ class riskPoint(object):
             maxgap = max(eduyeargap)
             if maxgap > 0:
                 temp['label'] = '教育间隔'
-                temp['error'] = '候选人的教育经历时间有' + Utils.int_to_hanzi(maxgap) + '年的间隔'
+                temp['error'] = '候选人的教育经历时间有' + str(maxgap) + '年的间隔'
                 return temp
             else:
                 return False

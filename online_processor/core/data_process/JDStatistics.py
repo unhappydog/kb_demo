@@ -139,7 +139,7 @@ class JDStatistics:
             print(Exception)
 
 
-        city_salary = sorted(city_salary, key=lambda k: k['value'],reverse=True)
+        city_salary = sorted(city_salary, key=lambda k: k['value'],reverse=True)[:10]
         experience_salary = sorted(experience_salary, key=lambda k: k['value'], reverse=True)
         education_salary = sorted(education_salary, key=lambda k: k['value'], reverse=True)
 
