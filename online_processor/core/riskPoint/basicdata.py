@@ -15,7 +15,6 @@ class basicdata(object):
         eduEndtime = []
 
         for si in signaldata['workExperience']:
-
                 workStrattime.append(si['workStartTime'])
                 if isinstance(si['workEndTime'],datetime):
                     workEndtime.append(si['workEndTime'])
@@ -24,7 +23,10 @@ class basicdata(object):
         for ed in signaldata['educationExperience']:
                 eduStarttime.append(ed['educationStartTime'])
                 if ed['educationEndTime'] != '':
-                    eduEndtime.append(ed['educationEndTime'])
+                    if ed['educationEndTime'] == None:
+                        eduEndtime.append(signaldata['updateTime'])
+                    else:
+                        eduEndtime.append(ed['educationEndTime'])
                 else:
                     eduEndtime.append(signaldata['updateTime'])
         return workStrattime,workEndtime,eduStarttime,eduEndtime
@@ -71,6 +73,7 @@ class basicdata(object):
         return exceptsalar,worksalar
 
     def get_cvdata(self):
+        # data=self.cvinfo.get_data_by_id( _id='ZfzjTYu13GwyNcT0MfkucQ')
         data = self.cvinfo.get_datas()
         return data
 

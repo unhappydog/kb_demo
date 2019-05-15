@@ -1,9 +1,8 @@
 from core.riskPoint.basicdata import basicdata
 import numpy as np
 from core.riskPoint.util import util
-from utils.Utils import int_to_hanzi
 import re
-
+from utils import Utils
 """
 异常类型设计：
      工作时间异常；教育时间异常；毕业高校异常；工作跳槽频繁；薪资异常
@@ -21,51 +20,50 @@ class riskPoint(object):
     # 时间异常情况
 
     def identification(self,cvdata):
-             self.cv_data=cvdata
-             print(self.cv_data['name'])
-             self.updatetime =self.cv_data['updateTime']
-             try:
-                     self.workStrattime, self.workEndtime, self.eduStarttime, self.eduEndtime = basicdata().clopsetime(
-                         self.cv_data)
-                     totaldict = []
-                     timclash = self.timeclash()
-                     edutime = self.edutimeerror(self.cv_data)
-                     worktimeError = self.worktimeError(self.cv_data)
-                     edutimegap = self.edutimegap(self.cv_data)
-                     worktimegap = self.worktimegap(self.cv_data)
-                     salaryerror = self.salaryerror(self.cv_data)
-                     if not isinstance(timclash, bool):
-                         totaldict.extend(timclash)
-                     if not isinstance(worktimeError, bool):
-                         totaldict.extend(worktimeError)
-                     if not isinstance(edutime, bool):
-                         totaldict.extend(edutime)
-                     if not isinstance(salaryerror, bool):
-                         totaldict.append(salaryerror)
-                     if not isinstance(edutimegap, bool):
-                         totaldict.append(edutimegap)
-                     if not isinstance(worktimegap, bool):
-                         totaldict.extend(worktimegap)
-                     genera_use = self.genera_use(self.cv_data)
-                     if not isinstance(genera_use, bool):
-                         totaldict.append(genera_use)
+                 self.cv_data=cvdata
+                 print(self.cv_data['name'])
+                 self.updatetime =self.cv_data['updateTime']
+                 try:
+                         self.workStrattime, self.workEndtime, self.eduStarttime, self.eduEndtime = basicdata().clopsetime(
+                             self.cv_data)
+                         totaldict = []
+                         timclash = self.timeclash()
+                         edutime = self.edutimeerror(self.cv_data)
+                         worktimeError = self.worktimeError(self.cv_data)
+                         edutimegap = self.edutimegap(self.cv_data)
+                         worktimegap = self.worktimegap(self.cv_data)
+                         salaryerror = self.salaryerror(self.cv_data)
+                         if not isinstance(timclash, bool):
+                             totaldict.extend(timclash)
+                         if not isinstance(worktimeError, bool):
+                             totaldict.extend(worktimeError)
+                         if not isinstance(edutime, bool):
+                             totaldict.extend(edutime)
+                         if not isinstance(salaryerror, bool):
+                             totaldict.append(salaryerror)
+                         if not isinstance(edutimegap, bool):
+                             totaldict.append(edutimegap)
+                         if not isinstance(worktimegap, bool):
+                             totaldict.extend(worktimegap)
+                         genera_use = self.genera_use(self.cv_data)
+                         if not isinstance(genera_use, bool):
+                             totaldict.append(genera_use)
 
-             except:
-                     totaldict = []
-                     edutime = self.edutimeerror(self.cv_data)
-                     if not isinstance(edutime, bool):
-                         totaldict.extend(edutime)
-                     edutimegap = self.edutimegap(self.cv_data)
-                     if not isinstance(edutimegap, bool):
-                         totaldict.append(edutimegap)
-                     genera_use = self.genera_use(self.cv_data)
-                     if not isinstance(genera_use, bool):
-                         totaldict.append(genera_use)
-             print(totaldict)
-             return totaldict
+                 except:
+                         totaldict = []
+                         edutime = self.edutimeerror(self.cv_data)
+                         if not isinstance(edutime, bool):
+                             totaldict.extend(edutime)
+                         edutimegap = self.edutimegap(self.cv_data)
+                         if not isinstance(edutimegap, bool):
+                             totaldict.append(edutimegap)
+                         genera_use = self.genera_use(self.cv_data)
+                         if not isinstance(genera_use, bool):
+                             totaldict.append(genera_use)
+                 print(totaldict)
+                 return totaldict
     #时间异常情况
     def timeclash(self):
-
         timeclash = []
         worksmalltime = min(self.workStrattime)
         edumaxtime = max(self.eduEndtime)
@@ -83,17 +81,16 @@ class riskPoint(object):
                 temp={}
                 temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(month) + '月'
                 timeclash.append(temp)
-        count = 0
+        count=0
         for ws, we in zip(self.workStrattime, self.workEndtime):
-            count += 1
-            ecount = 0
             for es, ew in zip(self.eduStarttime, self.eduEndtime):
-                ecount += 1
                 if util().overlapping(ws, we, es, ew):
-                    temp = {}
-                    temp['label'] = '时间逻辑异常'
-                    temp['error'] = '候选人第' + int_to_hanzi(str(count)) + '段工作经历与第' + int_to_hanzi(str(ecount)) + '段教育经历的时间冲突'
-                    timeclash.append(temp)
+                    count+=1
+        if count>0:
+                    timeerror = {}
+                    timeerror['label'] = '时间逻辑异常'
+                    timeerror['error'] = '候选人工作经历与教育经历的时间冲突'
+                    timeclash.append(timeerror)
         if len(timeclash) > 0:
             return timeclash
         else:
@@ -122,7 +119,6 @@ class riskPoint(object):
                           temp['error']='候选人硕士读了不到'+str(month)+'个月'
                           eduerror.append(temp)
                     else:
-
                         if (year<=1 and month<6) :
                             temp['label']='硕士异常'
                             temp['error']='候选人硕士读了不到2年'
@@ -139,17 +135,22 @@ class riskPoint(object):
             if em == '其他':
                 temp = {}
                 temp['label'] = '专业不明'
-                temp['error'] = '候选人第' + int_to_hanzi(str(count)) + '段教育经历的专业不明'
+                temp['error'] = '候选人第' +str(count) + '段教育经历的专业不明'
                 eduerror.append(temp)
+            if '（' in en :
+                en="".join(re.findall('(.*)（',en))
+                print(en)
+            else:
+                en=en
             if en.strip(' ') not in [i for i in school]:
-                if '香港' in en:
-                    continue
-                temp = {}
-                temp['label'] = '高校异常'
-                temp['error'] = '候选人在第' + int_to_hanzi(str(count)) + '段教育经历所就读的高校可能不存在'
-                eduerror.append(temp)
+                    if '香港' in en or '莫斯科'in en:
+                        continue
+                    temp = {}
+                    temp['label'] = '高校异常'
+                    temp['error'] = '候选人在第' +str(count) + '段教育经历所就读的高校可能填写有误'
+                    eduerror.append(temp)
 
-        if '大专' in educationDegree:
+        if '大专' in educationDegree and len(educationDegree)>1:
             temp={}
             temp['label']='专升本'
             temp['error']='候选人本科之前读了专科'
@@ -194,7 +195,7 @@ class riskPoint(object):
         hopping=[]
         if len(worktime)>0:
             for si,wt in zip(singaldata['workExperience'],worktime):
-                count+=1
+
                 if '年' in wt:
                     continue
                 else:
@@ -202,10 +203,12 @@ class riskPoint(object):
                     if '在校生' in status or '应届生' in status:
                         continue
                     elif int(mon)<6:
-                        temp={}
-                        temp['label']='跳槽频繁'
-                        temp['error']='候选人的第'+int_to_hanzi(str(count))+'段工作经历不足半年'
-                        hopping.append(temp)
+                        count += 1
+            if count>0:
+                temp = {}
+                temp['label'] = '跳槽频繁'
+                temp['error'] = '候选人的工作经历不足半年'
+                hopping.append(temp)
             if len(hopping)>0:
                 return hopping
             else:
@@ -224,7 +227,7 @@ class riskPoint(object):
             maxgap = max(eduyeargap)
             if maxgap > 0:
                 temp['label'] = '教育间隔'
-                temp['error'] = '候选人的教育经历时间有' + str(maxgap) + '年的间隔'
+                temp['error'] = '候选人的教育经历时间有' + Utils.int_to_hanzi(maxgap) + '年的间隔'
                 return temp
             else:
                 return False
@@ -256,13 +259,13 @@ class riskPoint(object):
                         if wy != 0:
                             temp = {}
                             temp['label'] = '工作间隔'
-                            temp['error'] = '候选人在第' + int_to_hanzi(str(strsum)) + '段工作经历与第' + int_to_hanzi(str(count)) + '段工作经历之间的空档期为' + str(
+                            temp['error'] = '候选人在第' + Utils.int_to_hanzi(strsum) + '段工作经历与第' + Utils.int_to_hanzi(count) + '段工作经历之间的空档期为' + str(
                                 wy) + '年'
                             jobhopping.append(temp)
                         elif wy == 0 and wk > 6:
                             temp = {}
                             temp['label'] = '工作间隔'
-                            temp['error'] = '候选人在第' + int_to_hanzi(str(strsum)) + '段工作经历与第' + int_to_hanzi(str(count)) + '段工作经历之间的空档期超过半年'
+                            temp['error'] = '候选人在第' +Utils.int_to_hanzi(strsum)+ '段工作经历与第' + Utils.int_to_hanzi(count) + '段工作经历之间的空档期超过半年'
                             jobhopping.append(temp)
                     if util().iszero(workyeargap) and util().iszero(workmongap):
                         temp = {}
@@ -275,10 +278,6 @@ class riskPoint(object):
                     return False
         except:
             return False
-
-
-
-
     #滥用精通
     def genera_use(self,sigaldata):
         try:
@@ -312,6 +311,5 @@ class riskPoint(object):
             return False
 
 if __name__=='__main__':
-    cvdata=basicdata().get_cvdata()[1]
-
+    cvdata=basicdata().get_cvdata()[0]
     riskPoint().identification(cvdata)
