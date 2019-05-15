@@ -5,10 +5,10 @@ import json
 import os
 from settings import BASE_DIR
 
-# host = "rembern.com"
+host = "rembern.com"
 
 
-host = "localhost"
+# host = "localhost"
 
 
 class TestRestApi(unittest.TestCase):
@@ -98,6 +98,27 @@ class TestRestApi(unittest.TestCase):
         print(news.json())
         news_by_domain = requests.get("http://{0}:18081/online/get_news_by_domain/{1}/{2}/{3}".format(host,"ai", 1,10))
         print(news_by_domain.json())
+
+    def test_bank_search_with_name(self):
+        for mod in ['none', 'zhilian', 'upload']:
+            print(mod)
+            result = requests.get(
+                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'keyword', "机器学习算法工程师", 1,
+                                                                                        10, mod,'李先生'))
+            print(result.json())
+            # print(result.text)
+            result = requests.get(
+                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'education', "硕士", 1, 10,
+                                                                                        mod,'李先生'))
+            print(result.json())
+            result = requests.get(
+                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'source', "zhilian", 1,
+                                                                                        10, mod,'李先生'))
+            print(result.json())
+            result = requests.get(
+                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'none', "none", 1, 10,
+                                                                                        mod,'李先生'))
+            print(result.json())
 
 
 if __name__ == '__main__':

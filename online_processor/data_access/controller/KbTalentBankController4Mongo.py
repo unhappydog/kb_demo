@@ -20,17 +20,19 @@ class KBTalentBankController4Mongo(BaseMongoController):
                     self.word_to_title[keyword] = [job_title]
         self.word_to_title['知识图谱'] = ['知识图谱工程师']
 
-    def get_datas_order_by(self, sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
+    def get_datas_order_by(self, sort_by="updateTime", ascending=-1, page=1, size=10, mode=None, name=None):
         if not mode:
-            cond = None
+            cond = {}
         else:
             cond = {"source_method": mode}
+        if name:
+            cond['name'] = {"$regex": name}
         return mgservice.query_sort(cond, self._table, self._schema, sort_by, ascending, page, size)
 
     def count_tag(self, tag_column, cond=None):
         return mgservice.count_tag(tag_column, self._schema, self._table, cond=cond)
 
-    def get_datas_by_name(self, keyword="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
+    def get_datas_by_name(self, keyword="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None, name=None):
         if not mode:
             cond = {
                 # "keyword": {"$regex":keyword}
@@ -42,6 +44,8 @@ class KBTalentBankController4Mongo(BaseMongoController):
                 "keyword": {"$in": self.keyword_dict.get(keyword, [])},
                 "source_method": mode
             }
+        if name is not None:
+            cond['name'] = {"$regex": name}
         return mgservice.query_sort(query_cond=cond,
                                     table=self._table,
                                     db=self._schema,
@@ -62,7 +66,7 @@ class KBTalentBankController4Mongo(BaseMongoController):
                                     page=page,
                                     size=size)
 
-    def get_datas_by_education(self, education="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
+    def get_datas_by_education(self, education="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None, name=None):
         if not mode:
             cond = {
                 "highestEducationDegree": education,
@@ -72,6 +76,8 @@ class KBTalentBankController4Mongo(BaseMongoController):
                 "highestEducationDegree": education,
                 "source_method": mode
             }
+        if name is not None:
+            cond['name'] = {"$regex": name}
 
         return mgservice.query_sort(query_cond=cond,
                                     table=self._table,
@@ -81,12 +87,14 @@ class KBTalentBankController4Mongo(BaseMongoController):
                                     page=page,
                                     size=size)
 
-    def get_datas_by_source(self, source="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
+    def get_datas_by_source(self, source="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None, name=None):
         if not mode:
             cond = {"source": source}
         else:
             cond = {"source": source,
                     "source_method": mode}
+        if name is not None:
+            cond['name'] = {"$regex": name}
 
         return mgservice.query_sort(query_cond=cond,
                                     table=self._table,

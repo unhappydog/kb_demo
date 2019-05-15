@@ -87,7 +87,10 @@ class CVPaint:
         job_hopping_time_char = "{0}次".format(str(job_hopping_time))
 
         # 平均工作经历时间
-        job_hopping_freq = work_total_time / len(work_experience)
+        if len(work_experience) == 0:
+            job_hopping_freq = 0
+        else:
+            job_hopping_freq = work_total_time / len(work_experience)
         job_hopping_freq_char = self.year_to_char(job_hopping_freq)
 
         # 平均工作空档期 最大工作空档期

@@ -15,8 +15,8 @@ def filter_data(func):
 def is_good(data, min_length=1):
     check_list = {'workExperience': ['workDescription', 'workDuty', 'workSummary'],
                   'projectExperience': ['projectName', 'projectDuty', 'projectSummary', 'projectDescription'],
-                  'trainingExperience': ['trainingCourse', 'trainingDescription'],
-                  'associationExperience': ['practiceName', 'practiceDescription']}
+                  'trainingExperience': ['trainingCourse', 'trainingDescription']}
+                  # 'associationExperience': ['practiceName', 'practiceDescription']}
     for k, v in check_list.items():
         if data.get(k, None) is not None and data.get(k, None) != []:
             for sub_item in v:
@@ -28,9 +28,9 @@ def is_good(data, min_length=1):
                 data[k] = temp
 
     if data.get('workExperience', None):
-        data['workExperience'] = sorted(data['workExperience'], key=lambda x: x['workStartTime'], reverse=False)
-        if data['workExperience'][-1]['workEndTime'] is None or data['workExperience'][-1]['workEndTime'] == "":
-            data['workExperience'][-1]['workEndTime'] = "至今"
+        data['workExperience'] = sorted(data['workExperience'], key=lambda x: x['workStartTime'], reverse=True)
+        if data['workExperience'][0]['workEndTime'] is None or data['workExperience'][0]['workEndTime'] == "":
+            data['workExperience'][0]['workEndTime'] = "至今"
     remove_null(data)
 
     return data
@@ -90,22 +90,22 @@ class TalentBank:
             self.contoller.insert_data(cv)
 
     @filter_data
-    def search_by_name(self, name, page, limit, mode):
+    def search_by_name(self, name, page, limit, mode, keyword):
         # reg_pattern = "({0})".format("|".join(self.post_prefix))
         # if re.match(".+" + reg_pattern + "$", name):
         #     name = re.sub(reg_pattern,'', name)
-        return self.contoller.get_datas_by_name(keyword=name, page=page, size=limit, mode=mode)
+        return self.contoller.get_datas_by_name(keyword=name, page=page, size=limit, mode=mode, name=keyword)
 
     @filter_data
-    def search_by_education(self, education, page, limit, mode):
+    def search_by_education(self, education, page, limit, mode, name):
         # return self.
-        return self.contoller.get_datas_by_education(education, page=page, size=limit, mode=mode)
+        return self.contoller.get_datas_by_education(education, page=page, size=limit, mode=mode, name=name)
         pass
 
     @filter_data
-    def search_by_source(self, source, page, limit, mode):
+    def search_by_source(self, source, page, limit, mode, name):
 
-        return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode)
+        return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode, name=name)
 
     @filter_data
     def search_by_keyword(self, keyword, page, limit):
@@ -114,12 +114,13 @@ class TalentBank:
             keyword = re.sub(reg_pattern, '', keyword)
         return self.contoller.search_datas_by_keyword(keyword=keyword, page=page, size=limit)
 
+    @filter_data
     def get_by_id(self, _id):
         data = self.contoller.get_data_by_id(_id=_id)
         if data:
-            return data[0]
+            return data
         else:
-            return None
+            return []
 
     def delete_by_id(self, _id):
         self.contoller.delete_by_id(_id)
@@ -128,8 +129,8 @@ class TalentBank:
         # cv.updateTime = datetime.datetime.now()
         self.contoller.update_by_id(cv)
 
-    def get_datas(self, page, limit, mode):
-        return self.contoller.get_datas_order_by(page=page, size=limit, mode=mode)
+    def get_datas(self, page, limit, mode, name):
+        return self.contoller.get_datas_order_by(page=page, size=limit, mode=mode, name=name)
 
     def count_datas(self, cond):
         return self.contoller.count_datas(cond)

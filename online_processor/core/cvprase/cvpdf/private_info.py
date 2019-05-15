@@ -248,7 +248,7 @@ class indivial(object):
                             temp['projectEndTime'] = ''
                             temp['projectName'] = "".join(re.compile('至今(.*)').findall(strline)).strip(' ')
                     else:
-                        dict = {'项目描述': 'projectDescription','责任描述': 'projectDuty', '软件环境': 'peojectSoftwareEnv',
+                        dict = {'项目描述': 'projectDescription','责任描述': 'projectDuty', '软件环境': 'projectSoftwareEnv',
                                 '硬件环境': 'projecctHardwareEnv', '开发工具': 'projectTool'}
                         for k, v in dict.items():
                             if k in line :
