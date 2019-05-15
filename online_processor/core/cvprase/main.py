@@ -65,7 +65,7 @@ class CV_main(object) :
 
 if __name__=='__main__':
 
-    h = CV_main('/tmp/pycharm_141/resources/static/uploads/智联招聘_曹先生_中文_20190415_1555294101639.html')
+    h = CV_main('/tmp/pycharm_141/resources/static/uploads/智联招聘_郝先生_中文_20190415_1555295349103.doc')
     data=h.main_prase()
 
 

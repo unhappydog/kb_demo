@@ -7,6 +7,25 @@ from services.tool_services.MongoService import mgService as mgservice
 from data_access.controller.KBPostController4Mongo import KBPostController4Mongo
 from bson.objectid import ObjectId
 import settings
+import re
+
+
+def format_jds(func):
+    def __wrapper(*args, **kwargs):
+        data = func(*args, **kwargs)
+        return [format_single_jd(jd) for jd in data]
+    return __wrapper
+
+
+def format_single_jd(jd):
+    # format salary
+    if re.match('[0-9]{1,10}-[0-9]{1,10}', jd['Salary']):
+        jd['Salary'] = "-".join(["{:.0f}k".format(float(ele) / 1000) for ele in jd['Salary'].split('-')])
+    elif re.match('[0-9]{1,10}以上', jd['Salary']):
+        jd['Salary'] = "{:.0f}k以上".format(float(jd['Salary'][:-2])/1000)
+    else:
+        jd['Salary'] = ""
+    return jd
 
 
 @DataMap(_schema=settings.mongo_db, _table="kb_talent")
@@ -14,6 +33,7 @@ class KBTalentController4Mongo(BaseMongoController):
     def __init__(self):
         self.keyword_dict = KBPostController4Mongo().get_prefix_dict()
 
+    @format_jds
     def get_talent_by_name_order_by_date(self, name, page=1, limit=10):
 
         data = mgservice.query_sort(query_cond={
@@ -56,4 +76,4 @@ class KBTalentController4Mongo(BaseMongoController):
 
 if __name__ == '__main__':
     contoller = KBTalentController4Mongo()
-    print(contoller.get_talent_by_name_order_by_date("数据专家"))
+    print(contoller.get_talent_by_name_order_by_date("数据挖掘工程师"))

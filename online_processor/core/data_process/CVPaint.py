@@ -27,7 +27,7 @@ class CVPaint:
     def conver_null_time(self, start_time, end_time, update_time):
         if start_time == None:
             start_time = update_time
-        if end_time == None:
+        if end_time == None or end_time == '至今':
             end_time = update_time
         return start_time, end_time
 
@@ -193,7 +193,7 @@ class CVPaint:
          'salarybottom': ['15000', '10000']}
         '''
         work_experience = cv.workExperience
-        work_experience = sorted(work_experience, key=lambda workExperience: workExperience.workEndTime,reverse = False)
+        work_experience = sorted(work_experience, key=lambda workExperience: workExperience.workStartTime,reverse = False)
         companys = []
         salary_top = []
         salary_bottom = []

@@ -1,6 +1,39 @@
 import re
 from data_access.controller.KbTalentBankController4Mongo import KBTalentBankController4Mongo
 import datetime
+from utils.Utils import remove_null
+
+
+def filter_data(func):
+    def wrapper(*args, **kwargs):
+        datas = func(*args, **kwargs)
+        return [is_good(data) for data in datas]
+
+    return wrapper
+
+
+def is_good(data, min_length=1):
+    check_list = {'workExperience': ['workDescription', 'workDuty', 'workSummary'],
+                  'projectExperience': ['projectName', 'projectDuty', 'projectSummary', 'projectDescription'],
+                  'trainingExperience': ['trainingCourse', 'trainingDescription'],
+                  'associationExperience': ['practiceName', 'practiceDescription']}
+    for k, v in check_list.items():
+        if data.get(k, None) is not None and data.get(k, None) != []:
+            for sub_item in v:
+                temp = []
+                for dat in data[k]:
+                    if dat.get(sub_item, None) and len(dat[sub_item]) < min_length:
+                        dat[sub_item] = None
+                    temp.append(dat)
+                data[k] = temp
+
+    if data.get('workExperience', None):
+        data['workExperience'] = sorted(data['workExperience'], key=lambda x: x['workStartTime'], reverse=False)
+        if data['workExperience'][-1]['workEndTime'] is None or data['workExperience'][-1]['workEndTime'] == "":
+            data['workExperience'][-1]['workEndTime'] = "至今"
+    remove_null(data)
+
+    return data
 
 
 class TalentBank:
@@ -56,21 +89,25 @@ class TalentBank:
         else:
             self.contoller.insert_data(cv)
 
+    @filter_data
     def search_by_name(self, name, page, limit, mode):
         # reg_pattern = "({0})".format("|".join(self.post_prefix))
         # if re.match(".+" + reg_pattern + "$", name):
         #     name = re.sub(reg_pattern,'', name)
         return self.contoller.get_datas_by_name(keyword=name, page=page, size=limit, mode=mode)
 
+    @filter_data
     def search_by_education(self, education, page, limit, mode):
         # return self.
         return self.contoller.get_datas_by_education(education, page=page, size=limit, mode=mode)
         pass
 
+    @filter_data
     def search_by_source(self, source, page, limit, mode):
 
         return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode)
 
+    @filter_data
     def search_by_keyword(self, keyword, page, limit):
         reg_pattern = "({0})".format("|".join(self.post_prefix))
         if re.match(".+" + reg_pattern + "$", keyword):

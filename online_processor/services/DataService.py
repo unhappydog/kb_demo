@@ -4,6 +4,7 @@ from data_access.controller.KBTalentController4Mongo import KBTalentController4M
 from data_access.controller.ExperienceController4Mongo import ProjectExperienceController4Mongo
 from data_access.controller.JDCompanyController4Mongo import JDCompanyController4Mongo
 from services.tool_services.MongoService import mgService
+from data_access.controller.NewController4Mongo import NewController4Mongo
 
 
 @Singleton
@@ -13,6 +14,7 @@ class DataService:
         self.jd_controller = KBTalentController4Mongo()
         self.experienc_contorller = ProjectExperienceController4Mongo()
         self.jd_company_controller = JDCompanyController4Mongo()
+        self.news_controller = NewController4Mongo()
 
     def save(self, cv):
         if self.cv_controller.get_data_by_id(_id=cv._id):
@@ -39,6 +41,14 @@ class DataService:
     def get_company_by_jd(self, name, page, limit):
         return self.jd_company_controller.get_data_by_job_title(name, page, limit)
 
+    def get_news_by_tag(self, tag, page, limit):
+        return self.news_controller.get_news_by_tag(tag, page=page, limit=limit)
+
+    def get_news(self, page, limit):
+        return self.news_controller.get_news(page=page, limit=limit)
+
+    def get_news_by_domain(self, domain, page, limit):
+        return self.news_controller.get_news_by_domain(domain, page=page, limit=limit)
 
 
 dataService = DataService()

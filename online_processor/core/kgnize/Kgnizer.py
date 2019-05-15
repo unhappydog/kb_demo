@@ -251,7 +251,7 @@ class Kgnizer:
                             kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, None)
                         else:
                             if len(child_value_1)>=1:
-                                child_propery_id_1 = kg_property_list.push_property("术语")
+                                child_propery_id_1 = kg_property_list.push_property("使用的技能")
                                 kg_property_list.push_path(child_propery_id_1, child_propery_id, child_propery_1, None)
                             for termnolgoy in child_value_1:
                                 child_propery_id_2 = kg_property_list.push_property(termnolgoy['术语'])

@@ -24,3 +24,4 @@ class TestLBservice(unittest.TestCase):
         for k,v in jobs.items():
             count += v
         print(count)
+

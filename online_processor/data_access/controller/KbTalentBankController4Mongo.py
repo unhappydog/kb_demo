@@ -10,8 +10,15 @@ class KBTalentBankController4Mongo(BaseMongoController):
 
     def __init__(self):
         self.keyword_dict = KBPostController4Mongo().get_prefix_dict()
-        self.word_to_title = {v_sub: k for k, v in self.keyword_dict.items() for v_sub in v}
-        # self.title_to_word = {v:k for k,v in self.word_to_title.items()}
+        self.keyword_dict['自然语言处理工程师'].remove('知识图谱')
+        self.word_to_title = {}
+        for job_title, keywords in self.keyword_dict.items():
+            for keyword in keywords:
+                if keyword in self.word_to_title.keys():
+                    self.word_to_title[keyword].append(job_title)
+                else:
+                    self.word_to_title[keyword] = [job_title]
+        self.word_to_title['知识图谱'] = ['知识图谱工程师']
 
     def get_datas_order_by(self, sort_by="updateTime", ascending=-1, page=1, size=10, mode=None):
         if not mode:
@@ -106,11 +113,16 @@ class KBTalentBankController4Mongo(BaseMongoController):
         datas = mgservice.count_tag("keyword", self._schema, self._table)
         num_map = {data['keyword']: data['num'] for data in datas}
         temp = {}
-        for k, v in num_map.items():
-            if self.word_to_title.get(k) in temp.keys():
-                temp[self.word_to_title.get(k)] += v
+        for keyword, num in num_map.items():
+            if self.word_to_title.get(keyword):
+                for job_title in self.word_to_title[keyword]:
+                    if job_title in temp.keys():
+                        temp[job_title] += num
+                    else:
+                        temp[job_title] = num
             else:
-                temp[self.word_to_title.get(k)] = v
+                temp["unknown"] = num
+        temp["数据分析师"] = 0
 
         result = {
             "sources": {data['source']: data['num'] for data in mgservice.count_tag("source", self._schema, self._table)

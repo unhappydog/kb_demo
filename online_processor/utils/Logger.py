@@ -18,7 +18,7 @@ formatter = logging.Formatter("%(asctime)s %(filename)s[line:%(lineno)d] %(level
 console.setFormatter(formatter)
 logging.getLogger().addHandler(console)
 
-error_log = logging.FileHandler(error_log_file)
+error_log = logging.FileHandler(error_log_file, encoding='utf8')
 error_log.setLevel(logging.ERROR)
 error_log.setFormatter(formatter)
 logging.getLogger().addHandler(error_log)

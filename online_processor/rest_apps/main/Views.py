@@ -23,8 +23,8 @@ def get_similar_jd(name, page, limit):
     split_with_br = lambda x: re.sub('[0-9]{1,2}(、|：|,|，)', '<br/>', x)
     for data in datas:
         data['Name'] = re.sub("（.*）|\(.*\)", '', data['Name'])
-        data['Salary'] = (lambda x: "-".join(["{:.1f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
-            if re.match('[0-9]{1,10}-[0-9]{1,10}', x) else "")(data['Salary'])
+        # data['Salary'] = (lambda x: "-".join(["{:.0f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
+        #     if re.match('[0-9]{1,10}-[0-9]{1,10}', x) else "")(data['Salary'])
         data['link'] = linkerService.link_jd(data)
         data['requirement'] = split_with_br(data['requirement'])
         data['duty'] = split_with_br(data['duty'])
@@ -145,3 +145,23 @@ def save_cv_to_bank():
             return "success"
         else:
             return "no exception but save failed"
+
+
+@inf_restful.route("/online/get_news_by_tag/<string:tag>/<int:page>/<int:size>", methods=['GET'])
+def get_news_by_tags(tag, page, size):
+    data = dataService.get_news_by_tag(tag, page,size)
+    return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/get_news/<int:page>/<int:size>", methods=['GET'])
+def get_news(page, size):
+    data = dataService.get_news(page, size)
+    return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/get_news_by_domain/<string:domain>/<int:page>/<int:size>", methods=['GET'])
+def get_news_by_domain(domain, page, size):
+    data = dataService.get_news_by_domain(domain, page, size)
+    return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
+
+
