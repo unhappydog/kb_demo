@@ -60,12 +60,13 @@ class CV_main(object) :
                          associationExperience=dict['associationExperience'],
                          skill=dict['skill'],
                          hobby=dict['hobby'])
+            print(self.cv)
             return self.cv
 
 
 if __name__=='__main__':
 
-    h = CV_main('/tmp/pycharm_141/resources/static/uploads/智联招聘_曹先生_中文_20190415_1555294101639.html')
+    h = CV_main('/tmp/pycharm_141/resources/static/uploads/智联招聘_冯先生_中文_20190415_1555295564793.html')
     data=h.main_prase()
 
 

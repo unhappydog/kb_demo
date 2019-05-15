@@ -278,7 +278,7 @@ class indivial(object):
                 temp['educationEndTime'] = datetime.strptime(line[2].replace('.', '-'), '%Y-%m')
             temp['educationDegree'] = line[-1]
             temp['educationSchool'] = line[3]
-            temp['educationMajorDescription'] = line[-2]
+            temp['educationMajor'] = line[-2]
             edudict['education'].append(temp)
         return edudict['education']
     #培训经历

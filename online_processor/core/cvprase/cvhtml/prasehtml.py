@@ -81,10 +81,10 @@ class htmlparse(object):
                 person.append(i)
         totaidict['gender'] = person[0]
         totaidict['age'] = int("".join(re.compile('(\d{2})岁').findall(person[1])))
-        strdate = re.sub("年", "-", "".join(re.compile('\d{4}.\d').findall(person[1])))
+        strdate = re.sub("年", "-", "".join(re.compile('\d{4}.\d+').findall(person[1])))
         date_time = datetime.strptime(strdate, '%Y-%m')
         totaidict['birthday'] = date_time
-
+        print(date_time)
         for i in person:
             if '工作经验' in i:
                 totaidict['workYear'] = int("".join(re.compile('(\d+).*').findall(i)))
@@ -158,7 +158,7 @@ class htmlparse(object):
                 temp['workCompanyIndustry'] = "".join(re.findall('(.*)<div',ind.split('|')[0]))
             elif len(ind.split('|')) != 1:
                 if len(ind.split('|')) > 3:
-                    temp['workCompanyIndustry'] = ind
+                    temp['workCompanyIndustry'] = ind.split('|')[0]
                 else:
                     try:
                         temp['workCompanyNature'] = ind.split('|')[1].split('：')[1]
@@ -166,12 +166,14 @@ class htmlparse(object):
                             temp['workCompanyScale'] = ind.split('|')[2]
                     except:
                         temp['workCompanyIndustry'] = ind
+
             else:
                 if '<' in ind:
                     temp['workCompanyIndustry'] = "".join(re.compile('<.*>(.*)').findall(ind))
                 else:
                     temp['workCompanyIndustry'] = ind
             temp['workDescription'] = re.sub('[<br>\\t]', '', de)
+            print(temp)
             work_dict['workExperience'].append(temp)
         return work_dict['workExperience']
 
@@ -228,7 +230,6 @@ class htmlparse(object):
                                                            '%Y-%m')
             endtime = edulist[0].split(' ')[1].strip(' ')
             if endtime == '至今':
-
                 temp['educationEndTime'] = ''
             else:
                 temp['educationEndTime'] = datetime.strptime(endtime.replace('.', '-'), '%Y-%m')
