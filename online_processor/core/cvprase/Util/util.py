@@ -26,7 +26,12 @@ class util(object):
         doc = docx.Document(path)
         document = ad.opendocx(path)
         fullText = ad.getdocumenttext(document)
-        name = "".join([fu for fu in fullText if '先生' in fu or '女士' in fu]).strip('\t')
+        index=[]
+        for i in fullText:
+            if '男 ' in i or '女 ' in i:
+                index.append(fullText.index(i))
+        minindex=min(index)
+        name =fullText[minindex-1].strip(' ')
         table = doc.tables
         para = doc.paragraphs
         return table, para, name,fullText
