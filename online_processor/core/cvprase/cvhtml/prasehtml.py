@@ -65,7 +65,7 @@ class htmlparse(object):
         da = "".join(re.compile('<div class="resume-preview-title">(.*?)</div>').findall(html))
         updatetime = "".join(re.compile('<strong>(\d.*\d)</strong>').findall(da))
         cvidparent = "".join(re.compile('<div class="resume-preview-center">(.*?)</div>').findall(html))
-        id = "".join(re.compile('<span class="resume-left-tips-id">(.*?)</span>').findall(cvidparent))
+        id = "".join(re.compile('<span class="resume-left-tips-id">(.*?)</span>').findall(cvidparent)).replace('ID:','')
         totaidict['updateTime'] = datetime.strptime(updatetime.replace('.', '-'), "%Y-%m-%d")
         totaidict['id'] = id
         # 称呼
@@ -84,7 +84,6 @@ class htmlparse(object):
         strdate = re.sub("年", "-", "".join(re.compile('\d{4}.\d+').findall(person[1])))
         date_time = datetime.strptime(strdate, '%Y-%m')
         totaidict['birthday'] = date_time
-        print(date_time)
         for i in person:
             if '工作经验' in i:
                 totaidict['workYear'] = int("".join(re.compile('(\d+).*').findall(i)))
@@ -181,12 +180,24 @@ class htmlparse(object):
         project = sp + html
         h2title = re.compile('<h2>(.*?)</h2>').findall(project)
         desbody = re.compile('<tbody>(.*?)</tbody>').findall(project)
+        newtitle=[]
+        newbody=[]
         mebody = []
         # 去重
         for me in desbody:
             if me not in mebody:
                 mebody.append(me)
-        for h, d in zip(h2title, mebody):
+        for ht in h2title:
+            if '&nbsp' in ht:
+                continue
+            else:
+                newtitle.append(ht)
+        for nb in mebody:
+            if '工作描述' in nb:
+                continue
+            else:
+                newbody.append(nb)
+        for h, d in zip(newtitle, newbody):
             temp = {}
             temp['projectStartTime'] = datetime.strptime(h.split(' ')[0].strip('-').replace('.', '-'), '%Y-%m')
             endtime = h.split(' ')[1]
@@ -201,14 +212,17 @@ class htmlparse(object):
             if len(destitle) == 1:
                 temp["projectDescription"] = "".join(desinfo)
             else:
-                dict = {"项目描述": 'projectDescription', "软件环境": 'projectSoftwareEnv', "硬件环境": 'projectHardwareEnv',
+                dict = {"项目描述": 'projectDescription', '责任描述': 'projectDuty', "软件环境": 'projectSoftwareEnv',
+                        "硬件环境": 'projectHardwareEnv',
                         "开发工具": 'projectTool'}
                 for rep, pde in zip(destitle, desinfo):
+
                     for k, v in dict.items():
                         if rep.strip('：') == k:
-                            temp[v] = re.sub('[<br>\\t]', '', pde)
+                            temp[v] = re.sub('[<br>\\t\\xa0]', '', pde)
             projectdict['projectExperience'].append(temp)
         return projectdict['projectExperience']
+
 
     def edu_exprience(self, html):
         edudict = defaultdict(list)
