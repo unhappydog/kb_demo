@@ -73,7 +73,7 @@ class basicdata(object):
         return exceptsalar,worksalar
 
     def get_cvdata(self):
-        # data=self.cvinfo.get_data_by_id( _id='ZfzjTYu13GwyNcT0MfkucQ')
+        # data=self.cvinfo.get_data_by_id( _id='felUB(QMusmOrYKUoDC(WA')
         data = self.cvinfo.get_datas()
         return data
 

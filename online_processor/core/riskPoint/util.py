@@ -59,6 +59,8 @@ class util(object):
             endtime = 'workEndTime'
         yearlist = []
         monthlist = []
+        ge=[]
+        ga=[]
         if len(epchodata) > 1:
             for edu in range(len(epchodata)-1, 0, -1):
                 if epchodata[edu][endtime] != '':
@@ -67,10 +69,12 @@ class util(object):
                     gapend = updatetime
                 gapstart = epchodata[edu - 1][starttime]
                 if not isinstance(self.time_difference(gapend,gapstart),bool):
+                    ge.append(gapend.strftime('%Y-%m'))
+                    ga.append(gapstart.strftime('%Y-%m'))
                     year, month = self.time_difference(gapend, gapstart)
                     yearlist.append(year)
                     monthlist.append(month)
-        return yearlist, monthlist
+        return yearlist, monthlist,ge,ga
 
 
     def iszero(self,newput):
