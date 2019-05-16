@@ -13,6 +13,7 @@ class TestLinkIngService(unittest.TestCase):
         # with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
         #     self.json_str = f.read()
         cv =  dataService.get('T0foglOzKqLcHaV24piZ(w')
+        print(cv['projectExperience'])
         self.cv = linkerService.parse(cv)
         print(self.cv.__dict__)
         result_academy = linkerService.link_academy(self.cv)

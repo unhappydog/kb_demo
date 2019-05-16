@@ -5,10 +5,10 @@ import json
 import os
 from settings import BASE_DIR
 
-host = "rembern.com"
+# host = "rembern.com"
 
 
-# host = "localhost"
+host = "localhost"
 
 
 class TestRestApi(unittest.TestCase):
@@ -67,7 +67,7 @@ class TestRestApi(unittest.TestCase):
 
     def test_upload_data(self):
         files = {
-            "file": open(os.path.join(BASE_DIR,'resources','智联招聘_程先生_中文_20190327_1553679490903.html'), 'rb')
+            "file": open(os.path.join(BASE_DIR,'resources','智联招聘_常先生_中文_20190415_1555294995349.pdf'), 'rb')
         }
         result = requests.post("http://{0}:18081/online/upload/zhilian".format(host), files=files)
         print(result.text)
