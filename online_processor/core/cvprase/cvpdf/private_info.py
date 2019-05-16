@@ -191,10 +191,12 @@ class indivial(object):
                        wolist=[i for i in x.split('(') if i!='']
                        if len(wolist)>1:
                             comname=[i for i in x.split(' ') if i!='']
-                            temp['workCompany'] = comname[0]
+                            if '岁' in comname[0] or 'ID:' in comname[0] :
+                                 continue
+                            else:
+                                  temp['workCompany'] = comname[0]
                        else:
                             temp['workTimePeriod'] = re.sub('[\) ]','',"".join(wolist))
-
                    if len(x.split('|'))>1:
                        uplist=[ i for  i in x.split('|') if i !='' ]
                        if len(uplist)>1:
@@ -204,9 +206,17 @@ class indivial(object):
                for li in line[workbasic:]:
                    if 'ID' in li:
                        loindex.append(line.index(li))
+
                if loindex:
                    stindex = min(loindex)
                    temp['workDescription'] = "".join(line[workbasic:stindex]).replace('工作描述：', '')
+                   if temp['workDescription']=='':
+                       impro=line[workbasic:]
+                       tmpindex=[impro.index(i) for i in impro if '如需联系方式请下载该简历' in i]
+                       if tmpindex:
+                           temp['workDescription']="".join(impro[tmpindex[0]+1:])
+                       else:
+                           temp['workDescription']=''
                else:
                    temp['workDescription'] = "".join(line[workbasic:-1]).replace('工作描述：', '')
                if '元' in  line[workbasic-1]:
@@ -276,7 +286,7 @@ class indivial(object):
                                 temp['projectDuty'] = "".join(newinfo[puindex[0]:-1]).replace('责任描述：', '')
                         dict = {'软件环境': 'projectSoftwareEnv', '硬件环境': 'projecctHardwareEnv', '开发工具': 'projectTool'}
                         for k, v in dict.items():
-                            if k in line:
+                            if k+'：' in line:
                                 temp[v] = line.replace(k + '：', '')
                 projectdict['project'].append(temp)
         return projectdict['project']
