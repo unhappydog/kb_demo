@@ -31,9 +31,15 @@ class TerminologyLinker:
         :return:
         """
         result = dict()
-        propertys = ['skills', 'selfEvaluation']
+        propertys = ['selfEvaluation']
         for property in propertys:
             result[property] = self.link_in_property(cv, property)
+
+        if cv['skill']:
+            if type(cv['skill']) == list:
+                result['skill'] = self.link_in_sub_property(cv,'skill',['name'])
+            else:
+                result['skill'] = self.link_in_property(cv,'skill')
 
         # education experience, work experience, project experience, training experience, association experience
         link_dict = {'educationExperience': ['educationMajorDescription'],
