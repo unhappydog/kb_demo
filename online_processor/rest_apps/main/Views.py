@@ -26,8 +26,8 @@ def get_similar_jd(name, page, limit):
         # data['Salary'] = (lambda x: "-".join(["{:.0f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
         #     if re.match('[0-9]{1,10}-[0-9]{1,10}', x) else "")(data['Salary'])
         data['link'] = linkerService.link_jd(data)
-        data['requirement'] = split_with_br(data['requirement'])
-        data['duty'] = split_with_br(data['duty'])
+        data['requirement'] = split_with_br(data['requirement'][5:] if data['requirement'].startswith('<br/>') else data['requirement'])
+        data['duty'] = split_with_br(data['duty'][5:] if data['duty'].startswith('<br/>') else data['duty'])
 
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 

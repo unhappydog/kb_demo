@@ -16,10 +16,11 @@ def link_cv():
     linking academies, companies, majors in cv
     :return: json format cv
     """
+    logging.debug("accepted data")
     if request.method == 'POST':
-        # json_data = dict(request.form)
+        logging.debug(dir(request))
         json_data = request.form["json"]
-        print(json_data)
+        logging.debug(json_data)
         cv = linkerService.parse(json_data)
         dataService.save(cv)
         academies = linkerService.link_academy(cv)
