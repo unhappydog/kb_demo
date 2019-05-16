@@ -1,7 +1,7 @@
 from fabric import Connection
 import os
 
-update_list = ['core', 'data_access', 'logs','rest_apps', 'scripts', 'services',
+update_list = ['core', 'data_access', 'rest_apps', 'scripts', 'services',
                'tools','unit_test','utils','main.py']
 # update_list = ['Recommand.py']
 # update_list = ['app']
@@ -20,6 +20,7 @@ def update():
         for scp_cm in scp_cms:
             os.system(scp_cm)
         print(result)
+        con.run("cd /home/lxl/online_processor;./bin/start.sh restart")
 
 
 if __name__ == '__main__':

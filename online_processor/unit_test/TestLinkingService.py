@@ -4,14 +4,17 @@ from services.KgizeService import kgService
 from settings import BASE_DIR
 from utils.Utils import parse_data_to_dict
 import os
+from services.DataService import dataService
 
 
 class TestLinkIngService(unittest.TestCase):
 
     def test_parse(self):
-        with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
-            self.json_str = f.read()
-        self.cv = linkerService.parse(self.json_str)
+        # with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
+        #     self.json_str = f.read()
+        cv =  dataService.get('T0foglOzKqLcHaV24piZ(w')
+        print(cv['projectExperience'])
+        self.cv = linkerService.parse(cv)
         print(self.cv.__dict__)
         result_academy = linkerService.link_academy(self.cv)
         print(result_academy)

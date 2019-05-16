@@ -70,6 +70,26 @@ def int_to_hanzi(temp):
     }.get(int(temp), temp)
 
 
+def remove_null(temp):
+    for key in list(temp.keys()):
+        value = temp[key]
+        if not value:
+            del temp[key]
+        elif type(value) == dict:
+            remove_null(value)
+        elif type(value) == list:
+            for index in range(len(value)):
+                if type(value[index]) == dict:
+                    remove_null(value[index])
+            temp[key] = [data for data in value if data]
+
+
 if __name__ == '__main__':
-    print(convert_str_2_date('2012-09-01 00:00:00'))
-    print(convert_str_2_date('2015-07-01'))
+    # print(convert_str_2_date('2012-09-01 00:00:00'))
+    # print(convert_str_2_date('2015-07-01'))
+    data = {
+        'a':None,
+        'b':[{'a':None}, {'b':'c'}]
+    }
+    remove_null(data)
+    print(data)

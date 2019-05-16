@@ -23,8 +23,8 @@ def get_similar_jd(name, page, limit):
     split_with_br = lambda x: re.sub('[0-9]{1,2}(、|：|,|，)', '<br/>', x)
     for data in datas:
         data['Name'] = re.sub("（.*）|\(.*\)", '', data['Name'])
-        data['Salary'] = (lambda x: "-".join(["{:.1f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
-            if re.match('[0-9]{1,10}-[0-9]{1,10}', x) else "")(data['Salary'])
+        # data['Salary'] = (lambda x: "-".join(["{:.0f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
+        #     if re.match('[0-9]{1,10}-[0-9]{1,10}', x) else "")(data['Salary'])
         data['link'] = linkerService.link_jd(data)
         data['requirement'] = split_with_br(data['requirement'])
         data['duty'] = split_with_br(data['duty'])
@@ -53,6 +53,31 @@ def get_talent_by(by, searchWord, page, limit, mode):
         datas = tbService.search_by_source(searchWord, page, limit, mode)
     elif by == "none" or by == 'undefined':
         datas = tbService.get_datas(page, limit, mode)
+    return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/talent_bank/search_with_name/<string:name>/<string:by>/<string:searchWord>/<int:page"
+                   ">/<int:limit>/<string:mode>",
+                   methods=['GET'])
+def get_talent_with_name_by(name, by, searchWord, page, limit, mode):
+    """
+    按照职位名称、教育程度 、来源、或者其它查询人才库
+    :param by:
+    :param searchWord:
+    :param page:
+    :param limit:
+    :return:
+    """
+    if mode == "none":
+        mode = None
+    if by == "keyword":
+        datas = tbService.search_by_name(searchWord, page, limit, mode, name)
+    elif by == "education":
+        datas = tbService.search_by_education(searchWord, page, limit, mode, name)
+    elif by == "source":
+        datas = tbService.search_by_source(searchWord, page, limit, mode, name)
+    elif by == "none" or by == 'undefined':
+        datas = tbService.get_datas(page, limit, mode, name)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
 
@@ -102,8 +127,10 @@ def upload(source):
             # print(e)
             logging.error("some thing is wrong")
             logging.exception(e)
-            return "fail"
-    return json.dumps(tbService.get_by_id(data._id), cls=JSONEncoder, ensure_ascii=False)
+            return {"status":"fail"}
+        cv = tbService.get_by_id(data._id)
+        cv = cv[0] if cv else None
+    return json.dumps(cv, cls=JSONEncoder, ensure_ascii=False)
 
 
 @inf_restful.route("/online/count_talent_banks", methods=['GET'])
@@ -145,3 +172,23 @@ def save_cv_to_bank():
             return "success"
         else:
             return "no exception but save failed"
+
+
+@inf_restful.route("/online/get_news_by_tag/<string:tag>/<int:page>/<int:size>", methods=['GET'])
+def get_news_by_tags(tag, page, size):
+    data = dataService.get_news_by_tag(tag, page,size)
+    return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/get_news/<int:page>/<int:size>", methods=['GET'])
+def get_news(page, size):
+    data = dataService.get_news(page, size)
+    return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/get_news_by_domain/<string:domain>/<int:page>/<int:size>", methods=['GET'])
+def get_news_by_domain(domain, page, size):
+    data = dataService.get_news_by_domain(domain, page, size)
+    return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
+
+

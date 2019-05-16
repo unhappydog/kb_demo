@@ -20,8 +20,8 @@ class TerminologyLinker:
             if data['engName']:
                 for name in data['engName']:
                     self.enname_to_id[name.lower()] = data['_id']
-        name2id = dict(self.name_to_id, **self.enname_to_id)
-        self.linker = ACLinker(name2id)
+        # name2id = dict(self.name_to_id, **self.enname_to_id)
+        self.linker = ACLinker(self.name_to_id)
 
     def link(self, cv):
         """
@@ -94,14 +94,15 @@ class TerminologyLinker:
         result = [
             {'name': data[3][1],
              'start_index': data[0],
-             'end_index': data[1],
+             'end_index': data[1]+1,
              'terminology_detail': self.kb_terminology_controller.get_data_by_id(data[3][0])[0].__dict__ if self.kb_terminology_controller.get_data_by_id(data[3][0]) else None
              } for data in linked_tupe if data[2] >= 2
         ]
         return sorted(result, key=lambda x:x['start_index'], reverse=False)
 
     def simple_word_linker(self, text):
-        return self.linke_with_ac(text)
+        # return self.linke_with_ac(text)
+        result = self.linke_with_ac(text)
     # def simple_word_linker(self, text):
     #     """
     #     find the terminology in text
@@ -124,29 +125,29 @@ class TerminologyLinker:
     #             result.append({'name': word, 'start_index': start_index, 'end_index': end_index,
     #                            'terminology_detail': word_detail})
     #
-    #     # 检查一个术语是否作为独立的单词存在
-    #     text_en = text.lower()
-    #     text_en_pure = re.sub(" *({0}|,|;|，|。|；|、|,|;|\n|\+)+ *".format(REGEX_CN), '__', text_en)
-    #     text_en_pure_words = [word.strip() for word in text_en_pure.split("__")]
-    #     text_en_pure_words = sorted(text_en_pure_words, key=lambda x: len(x), reverse=True)
-    #     for en_word in text_en_pure_words:
-    #         # en_word = en_word.strip(" ")
-    #         if en_word in self.enname_to_id.keys():
-    #             start_index = text_en.rfind(en_word)
-    #             if start_index == -1:
-    #                 continue
-    #             end_index = start_index + len(en_word)
-    #             text_en = text_en[:start_index] + "_" * len(en_word) + text_en[end_index:]
+        # 检查一个术语是否作为独立的单词存在
+        text_en = text.lower()
+        text_en_pure = re.sub(" *({0}|,|;|，|。|；|  |、|,|;|\n|\+|:)+ *".format(REGEX_CN), '__', text_en)
+        text_en_pure_words = [word.strip() for word in text_en_pure.split("__")]
+        text_en_pure_words = sorted(text_en_pure_words, key=lambda x: len(x), reverse=True)
+        for en_word in text_en_pure_words:
+            # en_word = en_word.strip(" ")
+            if en_word in self.enname_to_id.keys():
+                start_index = text_en.rfind(en_word)
+                if start_index == -1:
+                    continue
+                end_index = start_index + len(en_word)
+                text_en = text_en[:start_index] + "_" * len(en_word) + text_en[end_index:]
+
+                word_detail = self.kb_terminology_controller.get_data_by_id(self.enname_to_id[en_word])
+                if word_detail:
+                    word_detail = word_detail[0].__dict__
+                result.append({'name': en_word, 'start_index': start_index,
+                               'end_index': end_index, 'terminology_detail': word_detail})
+
+        result = sorted(result, key=lambda x: x['start_index'], reverse=False)
     #
-    #             word_detail = self.kb_terminology_controller.get_data_by_id(self.enname_to_id[en_word])
-    #             if word_detail:
-    #                 word_detail = word_detail[0].__dict__
-    #             result.append({'name': en_word, 'start_index': start_index,
-    #                            'end_index': end_index, 'terminology_detail': word_detail})
-    #
-    #     result = sorted(result, key=lambda x: x['start_index'], reverse=False)
-    #
-    #     return result
+        return result
 
     def recongnize_termnology(self, word_list, language='cn'):
         if language == 'cn':
@@ -161,3 +162,4 @@ class TerminologyLinker:
         linked_tupe = self.linker.link_text(text)
         result = [data[3][1] for data in linked_tupe if data[2] >=2]
         return result
+

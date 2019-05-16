@@ -27,7 +27,7 @@ class CVPaint:
     def conver_null_time(self, start_time, end_time, update_time):
         if start_time == None:
             start_time = update_time
-        if end_time == None:
+        if end_time == None or end_time == '至今':
             end_time = update_time
         return start_time, end_time
 
@@ -87,7 +87,10 @@ class CVPaint:
         job_hopping_time_char = "{0}次".format(str(job_hopping_time))
 
         # 平均工作经历时间
-        job_hopping_freq = work_total_time / len(work_experience)
+        if len(work_experience) == 0:
+            job_hopping_freq = 0
+        else:
+            job_hopping_freq = work_total_time / len(work_experience)
         job_hopping_freq_char = self.year_to_char(job_hopping_freq)
 
         # 平均工作空档期 最大工作空档期
@@ -193,7 +196,7 @@ class CVPaint:
          'salarybottom': ['15000', '10000']}
         '''
         work_experience = cv.workExperience
-        work_experience = sorted(work_experience, key=lambda workExperience: workExperience.workEndTime,reverse = False)
+        work_experience = sorted(work_experience, key=lambda workExperience: workExperience.workStartTime,reverse = False)
         companys = []
         salary_top = []
         salary_bottom = []
