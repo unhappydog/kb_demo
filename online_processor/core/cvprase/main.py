@@ -12,7 +12,7 @@ class CV_main(object) :
                        'domicilePlace', 'politicsStatus', 'marital', 'selfEvaluation',
                         'expectedWorkplace', 'expectedSalary', 'expectedStatus', 'expectedOccupation', 'expectedIndustry',
                         'workExperience','projectExperience', 'educationExperience', 'certificate', 'trainingExperience', 'award',
-                        'associationExperience','skill', 'hobby']
+                        'associationExperience', 'language','skill', 'hobby']
 
     def main_prase(self):
             print(self.root)
@@ -58,6 +58,7 @@ class CV_main(object) :
                          trainingExperience=dict['trainingExperience'],
                          award=dict['award'],
                          associationExperience=dict['associationExperience'],
+                         language=dict['language'],
                          skill=dict['skill'],
                          hobby=dict['hobby'])
             print(self.cv)
@@ -66,8 +67,7 @@ class CV_main(object) :
 
 if __name__=='__main__':
 
-
-    h = CV_main('/tmp/pycharm_141/resources/static/uploads/智联招聘_冯先生_中文_20190415_1555295564793.html')
+    h = CV_main('/tmp/pycharm_141/resources/static/uploads/智联招聘_白先生_中文_20190415_1555292674778.pdf')
     data=h.main_prase()
 
 

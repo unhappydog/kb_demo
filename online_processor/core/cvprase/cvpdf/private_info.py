@@ -237,7 +237,7 @@ class indivial(object):
             if pro <= len(prosplit) - 2:
                 newinfo = prolist[prosplit[pro]:prosplit[pro + 1]]
             else:
-                newinfo = prolist[prosplit[pro - 1]:]
+                newinfo = prolist[prosplit[pro]:]
             if newinfo:
                 temp = {}
                 for line in newinfo:
@@ -255,11 +255,29 @@ class indivial(object):
                             temp['projectEndTime'] = ''
                             temp['projectName'] = "".join(re.compile('至今(.*)').findall(strline)).strip(' ')
                     else:
-                        dict = {'项目描述': 'projectDescription','责任描述': 'projectDuty', '软件环境': 'projectSoftwareEnv',
-                                '硬件环境': 'projecctHardwareEnv', '开发工具': 'projectTool'}
+                        pdindex = [newinfo.index(li) for li in newinfo if '项目描述' in li]
+                        if pdindex:
+                            if re.findall('\d{4}.\d{2}',newinfo[-1]):
+                                 stemp=newinfo[pdindex[0]:-1]
+                            else:
+                                stemp = newinfo[pdindex[0]:]
+                            errindex=[stemp.index(li) for li in stemp if 'ID:'  in li]
+                            if errindex:
+                                stemp=stemp[:errindex[0]]
+                            else:
+                                stemp=stemp
+                            temp['projectDescription'] = "".join(stemp).replace('项目描述：', '')
+                            puindex = [newinfo.index(li) for li in newinfo if '责任描述' in li]
+                            if puindex:
+                                temp['projectDuty'] = "".join(newinfo[puindex[0]:pdindex[0]]).replace('责任描述：', '')
+                        else:
+                            puindex = [newinfo.index(li) for li in newinfo if '责任描述' in li]
+                            if puindex:
+                                temp['projectDuty'] = "".join(newinfo[puindex[0]:-1]).replace('责任描述：', '')
+                        dict = {'软件环境': 'projectSoftwareEnv', '硬件环境': 'projecctHardwareEnv', '开发工具': 'projectTool'}
                         for k, v in dict.items():
-                            if k in line :
-                                temp[v] = line.replace(k+'：','')
+                            if k in line:
+                                temp[v] = line.replace(k + '：', '')
                 projectdict['project'].append(temp)
         return projectdict['project']
 
