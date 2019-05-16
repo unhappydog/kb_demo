@@ -29,8 +29,25 @@ def is_good(data, min_length=1):
 
     if data.get('workExperience', None):
         data['workExperience'] = sorted(data['workExperience'], key=lambda x: x['workStartTime'], reverse=True)
-        if data['workExperience'][0]['workEndTime'] is None or data['workExperience'][0]['workEndTime'] == "":
-            data['workExperience'][0]['workEndTime'] = "至今"
+        # if data['workExperience'][0]['workEndTime'] is None or data['workExperience'][0]['workEndTime'] == "":
+        #     data['workExperience'][0]['workEndTime'] = "至今"
+        tem_experi = []
+        for experi in data['workExperience']:
+            if experi['workEndTime'] is None or experi['workEndTime'] == '':
+                experi['workEndTime'] = '至今'
+            tem_experi.append(experi)
+        data['workExperience'] = tem_experi
+    if data.get('projectExperience', None):
+        data['projectExperience'] = sorted(data['projectExperience'], key=lambda x: x['projectStartTime'], reverse=True)
+        tem_experi = []
+        for experi in data['projectExperience']:
+            if experi['projectEndTime'] is None or experi['projectEndTime'] == '':
+                experi['projectEndTime'] = '至今'
+            tem_experi.append(experi)
+        data['projectExperience'] = tem_experi
+
+        # if data['projectExperience'][0]['projectEndTime'] is None or data['projectExperience'][0]['projectEndTime'] == "":
+        #     data['projectExperience'][0]['projectEndTime'] = "至今"
     remove_null(data)
 
     return data
@@ -129,6 +146,7 @@ class TalentBank:
         # cv.updateTime = datetime.datetime.now()
         self.contoller.update_by_id(cv)
 
+    @filter_data
     def get_datas(self, page, limit, mode, name):
         return self.contoller.get_datas_order_by(page=page, size=limit, mode=mode, name=name)
 

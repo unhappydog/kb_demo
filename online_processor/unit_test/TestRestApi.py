@@ -49,7 +49,7 @@ class TestRestApi(unittest.TestCase):
             print(result.json())
 
     def test_similar(self):
-        result = requests.get('http://{0}:18081/online/similar_jd/{1}/{2}/{3}'.format(host, "数据挖掘工程师", 2, 10))
+        result = requests.get('http://{0}:18081/online/similar_jd/{1}/{2}/{3}'.format(host, "数据挖掘工程师", 1, 10))
         print(result.json())
 
     def test_experience(self):
@@ -117,7 +117,7 @@ class TestRestApi(unittest.TestCase):
             print(result.json())
             result = requests.get(
                 'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'none', "none", 1, 10,
-                                                                                        mod,'李先生'))
+                                                                                        mod,'T女士'))
             print(result.json())
 
 

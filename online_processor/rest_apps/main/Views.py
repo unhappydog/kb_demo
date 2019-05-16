@@ -20,14 +20,17 @@ import os
 def get_similar_jd(name, page, limit):
     datas = dataService.get_jd_by_name(name, page, limit)
     # datas = [{"link":linkerService.link_jd(data)} for data in datas]
-    split_with_br = lambda x: re.sub('[0-9]{1,2}(、|：|,|，)', '<br/>', x)
+    split_with_br = lambda x: re.sub('<br/>{2,}','',re.sub('[0-9]{1,2}(、|：|,|，)', '<br/>', x))
     for data in datas:
         data['Name'] = re.sub("（.*）|\(.*\)", '', data['Name'])
         # data['Salary'] = (lambda x: "-".join(["{:.0f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
         #     if re.match('[0-9]{1,10}-[0-9]{1,10}', x) else "")(data['Salary'])
         data['link'] = linkerService.link_jd(data)
-        data['requirement'] = split_with_br(data['requirement'][5:] if data['requirement'].startswith('<br/>') else data['requirement'])
-        data['duty'] = split_with_br(data['duty'][5:] if data['duty'].startswith('<br/>') else data['duty'])
+        data['requirement'] = split_with_br(data['requirement']).strip().strip(':').strip('【').strip('】').strip()
+        data['requirement'] = data['requirement'][5:] if data['requirement'].startswith('<br/>') else data['requirement']
+
+        data['duty'] = split_with_br(data['duty']).strip().strip(':').strip('【').strip()
+        data['duty'] = data['duty'][5:] if data['duty'].startswith('<br/>') else data['duty']
 
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
