@@ -86,7 +86,7 @@ def get_talent_with_name_by(name, by, searchWord, page, limit, mode):
 
 @inf_restful.route("/online/sourcing/search_talent_bank/<string:keyword>/<int:page>/<int:limit>")
 def search_talent_by_keyword(keyword, page, limit):
-    datas = tbService.search_by_keyword(keyword, page, limit)
+    datas = tbService.search_by_keyword(keyword, page=page, size=limit)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
 

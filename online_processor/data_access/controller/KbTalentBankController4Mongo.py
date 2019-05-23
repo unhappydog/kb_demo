@@ -54,10 +54,28 @@ class KBTalentBankController4Mongo(BaseMongoController):
                                     page=page,
                                     size=size)
 
-    def search_datas_by_keyword(self, keyword="", sort_by="updateTime", ascending=-1, page=1, size=10):
+    def search_datas_by_keyword(self, keyword="", sort_by="updateTime", location=None, experience=None,
+                                educationDegree=None, ascending=-1, page=1, size=10):
+        degrees =['中专', '大专', '本科', '硕士', '博士']
         cond = {
             "keyword": {"$regex": keyword}
         }
+        degree_dict = {
+            '不限': degrees,
+            '中专': degrees,
+            '大专': degrees[1:],
+            '本科': degrees[2:],
+            '硕士': degrees[3:],
+            '博士': degrees[4:]
+        }
+        if location:
+            cond['currentAddress'] = {'$regex': location}
+        if experience:
+            low, high = experience.split('-')
+            cond['workYear'] = {'$gt': low, '$lt': high}
+        if educationDegree:
+            cond['highestEducationDegree'] = {'$in': degree_dict.get(educationDegree, [])}
+
         return mgservice.query_sort(query_cond=cond,
                                     table=self._table,
                                     db=self._schema,
@@ -66,7 +84,8 @@ class KBTalentBankController4Mongo(BaseMongoController):
                                     page=page,
                                     size=size)
 
-    def get_datas_by_education(self, education="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None, name=None):
+    def get_datas_by_education(self, education="", sort_by="updateTime", ascending=-1, page=1, size=10, mode=None,
+                               name=None):
         if not mode:
             cond = {
                 "highestEducationDegree": education,

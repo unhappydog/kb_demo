@@ -2,6 +2,8 @@ from utils.Logger import logging
 from data_access.controller.KBAcademyController4Mongo import KBAcademyController4Mongo
 from data_access.controller.KBCompanyController4Mongo import KBCompanyController4Mongo
 
+import re
+
 
 class Linker:
     def __init__(self):
@@ -23,9 +25,14 @@ class Linker:
             schools.append(school)
         result = {}
         for school in schools:
+            original_school = school
+            school = re.sub("大学.*$", '大学', school) if '大学' in school else re.sub("学院.*$", "学院",
+                                                                                 school) if '学院' in school else school
+            if not school:
+                continue
             data = self.academy_controller.get_data_by_name(school)
             if data:
-                result[school] = data[0].__dict__
+                result[original_school] = data[0].__dict__
             else:
                 # Logger.waring("{0} is not in database.".format(school))
                 logging.warning("{0} is not in database".format(school))
@@ -63,11 +70,3 @@ class Linker:
             # Logger.waring("{0} is not in database.".format(company))
             logging.warning("{0} is not in database".format(company))
         return result
-
-
-
-
-
-
-
-

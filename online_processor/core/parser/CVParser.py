@@ -81,12 +81,12 @@ class CVParser:
 
         for educationExperience in cv.educationExperience:
             educationExperience.educationEndTime = CVParser.parse_time(educationExperience.educationEndTime)
-            educationExperience.educationSchool = re.sub('\(.+\)|（.+）|【.*】|\|.*$', '',
-                                                         educationExperience.educationSchool)
+            # educationExperience.educationSchool = re.sub('(\(.+\)|（.+）|【.*】|\|).*$', '',
+            #                                              educationExperience.educationSchool)
             educationExperience.educationStartTime = CVParser.parse_time(educationExperience.educationStartTime)
         for workExperience in cv.workExperience:
             workExperience.workStartTime = CVParser.parse_time(workExperience.workStartTime)
-            workExperience.workCompany = re.sub('\(.+\)|（.+）|【.*】|\|.*$', '', workExperience.workCompany)
+            workExperience.workCompany = re.sub('(\(.+\)|（.+）|【.*】|\|).*$', '', workExperience.workCompany)
             workExperience.workEndTime = CVParser.parse_time(workExperience.workEndTime)
         for projectExperience in cv.projectExperience:
             projectExperience.projectStartTime = CVParser.parse_time(projectExperience.projectStartTime)

@@ -26,7 +26,7 @@ class CV:
                  _id="", insertTime="", updateTime="", source="", fileFormat="",
                  filePath="", attachmentPath="", plainText="", sameCVid="", md5="", zhilianLabels=[],
                  cv_url="",
-                 linked_result="", keyword="", tag="", source_method="", detailInfo="", resumeHead=""):
+                 linked_result="", keyword="", tag="", source_method="", detailInfo="", resumeHead="", msg=""):
         self.phone = phone
         self.birthday = birthday
         self.age = age
@@ -96,6 +96,7 @@ class CV:
         self.detailInfo = detailInfo
         self.source_method = source_method
         self.resumeHead = resumeHead
+        self.msg = msg
 
     def __getitem__(self, item):
         return self.__dict__[item]

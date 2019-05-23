@@ -18,4 +18,4 @@ class KBAcademyController4Mongo(BaseMongoController):
 
     @return_type(kb_academy)
     def get_data_by_name(self, name):
-        return mgservice.query({"schoolName": name}, self._schema, self._table)
+        return mgservice.query({"schoolName": {'$regex':name}}, self._schema, self._table)

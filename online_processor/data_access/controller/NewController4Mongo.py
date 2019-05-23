@@ -2,6 +2,7 @@ from data_access.base.BaseMongoController import BaseMongoController
 from utils.MongoMapTags import DataMap, query
 from settings import mongo_db
 from services.tool_services.MongoService import mgService
+import re
 from data_access.controller.KBPostController4Mongo import KBPostController4Mongo
 import random
 
@@ -20,7 +21,10 @@ def random_image(func):
                 data['IMG_URL'] = data['IMG_URL'].split(';')[:3]
             else:
                 data['IMG_URL'] = random.sample(images, 1)
+
+            # data['IMG_URL'] = [img for img in data['IMG_URL'] if re.match("^http.*\.(jpg|jpeg|gif|png)$", img)]
             data['IMG_URL'] = ";".join(data['IMG_URL'])
+            # data['IMG_URL'] = "" if data['IMG_URL'] == "[]" else data['IMG_URL']
         return datas
 
     return _wrapper

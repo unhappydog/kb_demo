@@ -16,7 +16,7 @@ def is_good(data, min_length=1):
     check_list = {'workExperience': ['workDescription', 'workDuty', 'workSummary'],
                   'projectExperience': ['projectName', 'projectDuty', 'projectSummary', 'projectDescription'],
                   'trainingExperience': ['trainingCourse', 'trainingDescription']}
-                  # 'associationExperience': ['practiceName', 'practiceDescription']}
+    # 'associationExperience': ['practiceName', 'practiceDescription']}
     for k, v in check_list.items():
         if data.get(k, None) is not None and data.get(k, None) != []:
             for sub_item in v:
@@ -121,11 +121,11 @@ class TalentBank:
 
     @filter_data
     def search_by_source(self, source, page, limit, mode, name):
-
         return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode, name=name)
 
     @filter_data
-    def search_by_keyword(self, keyword, page, limit):
+    def search_by_keyword(self, keyword, location, experience, educationDegree, page, limit):
+
         reg_pattern = "({0})".format("|".join(self.post_prefix))
         if re.match(".+" + reg_pattern + "$", keyword):
             keyword = re.sub(reg_pattern, '', keyword)

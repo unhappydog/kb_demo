@@ -33,6 +33,14 @@ class ACLinker:
                 final_result.append(result_tupe)
         return final_result
 
+    def remove_over_lab(self, tupes1, tupes2):
+        final_result = []
+        result = tupes1 + tupes2
+        for result_tupe in result:
+            if self.is_good_result(result_tupe, final_result):
+                final_result.append(result_tupe)
+        return final_result
+
     def is_good_result(self, result_tupe, final_result):
         """
         如果该结果不和已知的结果中的每一个相交，那么这就是一个好的结果

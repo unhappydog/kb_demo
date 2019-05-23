@@ -18,18 +18,21 @@ def link_cv():
     """
     logging.debug("accepted data")
     if request.method == 'POST':
-        logging.debug(dir(request))
+        # logging.debug(dir(request))
         json_data = request.form["json"]
-        logging.debug(json_data)
+        # logging.debug(json_data)
         cv = linkerService.parse(json_data)
         dataService.save(cv)
         academies = linkerService.link_academy(cv)
         companys = linkerService.link_company(cv)
         terminologys = linkerService.link_terminology(cv)
+        logging.debug("terminologys is :" + json.dumps(terminologys, ensure_ascii=False, cls=JSONEncoder))
         cv_dict = parse_data_to_dict(cv)
         risks = linkerService.risk_recongnize(cv_dict)
         result = {}
         result['academies'] = academies
+        logging.debug("_________academies\n")
+        logging.debug(academies)
         result['companies'] = companys
         result['terminologys'] = terminologys
         result['risks'] = risks
