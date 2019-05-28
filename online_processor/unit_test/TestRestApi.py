@@ -1,9 +1,14 @@
+import sys
+print(sys.path)
+sys.path.append(".")
+print(sys.path)
 import unittest
 import requests
 from rest_apps import create_app
 import json
 import os
 from settings import BASE_DIR
+
 
 # host = "rembern.com"
 
@@ -35,17 +40,17 @@ class TestRestApi(unittest.TestCase):
         for mod in ['none','zhilian','upload']:
             print(mod)
             result = requests.get(
-                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'keyword', "机器学习算法工程师", 1, 10, mod))
+                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}/{6}'.format(host, 'keyword', "机器学习算法工程师", 1, 10, mod,'123'))
             print(result.json())
             # print(result.text)
             result = requests.get(
-                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'education', "硕士", 1, 10, mod))
+                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}/{6}'.format(host, 'education', "硕士", 1, 10, mod,'123'))
             print(result.json())
             result = requests.get(
-                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'source', "zhilian", 1, 10, mod))
+                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}/{6}'.format(host, 'source', "zhilian", 1, 10, mod,'123'))
             print(result.json())
             result = requests.get(
-                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}'.format(host, 'none', "none", 1, 10, mod))
+                'http://{0}:18081/online/talent_bank/search/{1}/{2}/{3}/{4}/{5}/{6}'.format(host, 'none', "none", 1, 10, mod,'123'))
             print(result.json())
 
     def test_similar(self):
@@ -62,25 +67,25 @@ class TestRestApi(unittest.TestCase):
         print(result.json())
 
     def test_count_datas(self):
-        result = requests.get("http://{0}:18081/online/count_talent_banks".format(host))
+        result = requests.get("http://{0}:18081/online/count_talent_banks/123".format(host))
         print(result.json())
 
     def test_upload_data(self):
         files = {
             "file": open(os.path.join(BASE_DIR,'resources','智联招聘_常先生_中文_20190415_1555294995349.pdf'), 'rb')
         }
-        result = requests.post("http://{0}:18081/online/upload/zhilian".format(host), files=files)
+        result = requests.post("http://{0}:18081/online/upload/zhilian/123".format(host), files=files)
         print(result.text)
 
     def test_save_data(self):
         with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
             self.json_str = f.read()
             # json.loads(self.json_str, encoding='utf8')
-        result = requests.post('http://{0}:18081/online/save_to_bank'.format(host), data={'json': self.json_str})
+        result = requests.post('http://{0}:18081/online/save_to_bank/123'.format(host), data={'json': self.json_str})
         print(result.text)
 
     def test_count_tags(self):
-        result = requests.get("http://{0}:18081/online/count_talent_tags".format(host))
+        result = requests.get("http://{0}:18081/online/count_talent_tags/123".format(host))
         print(result.json())
 
     def test_jd_statics(self):
@@ -88,7 +93,7 @@ class TestRestApi(unittest.TestCase):
         print(result.json())
 
     def test_search_talent(self):
-        result = requests.get("http://{0}:18081/online/sourcing/search_talent_bank/{1}/{2}/{3}".format(host,"机器学习", 1,10))
+        result = requests.get("http://{0}:18081/online/sourcing/search_talent_bank/{1}/{2}/{3}/123".format(host,"机器学习", 1,10))
         print(result.json())
 
     def test_new_api(self):
@@ -103,21 +108,21 @@ class TestRestApi(unittest.TestCase):
         for mod in ['none', 'zhilian', 'upload']:
             print(mod)
             result = requests.get(
-                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'keyword', "机器学习算法工程师", 1,
-                                                                                        10, mod,'李先生'))
+                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}/{7}'.format(host, 'keyword', "机器学习算法工程师", 1,
+                                                                                        10, mod,'李先生','123'))
             print(result.json())
             # print(result.text)
             result = requests.get(
-                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'education', "硕士", 1, 10,
-                                                                                        mod,'李先生'))
+                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}/{7}'.format(host, 'education', "硕士", 1, 10,
+                                                                                        mod,'李先生',123))
             print(result.json())
             result = requests.get(
-                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'source', "zhilian", 1,
-                                                                                        10, mod,'李先生'))
+                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}/{7}'.format(host, 'source', "zhilian", 1,
+                                                                                        10, mod,'李先生',123))
             print(result.json())
             result = requests.get(
-                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}'.format(host, 'none', "none", 1, 10,
-                                                                                        mod,'T女士'))
+                'http://{0}:18081/online/talent_bank/search_with_name/{6}/{1}/{2}/{3}/{4}/{5}/{7}'.format(host, 'none', "none", 1, 10,
+                                                                                        mod,'T女士',123))
             print(result.json())
 
 
