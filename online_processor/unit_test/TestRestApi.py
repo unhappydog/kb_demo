@@ -1,7 +1,5 @@
 import sys
-print(sys.path)
 sys.path.append(".")
-print(sys.path)
 import unittest
 import requests
 from rest_apps import create_app
