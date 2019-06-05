@@ -7,6 +7,7 @@ from utils.Encoder import JSONEncoder
 from services.LinkerService import linkerService
 from services.CVService import cv_service
 from services.TalentBankService import tbService
+from services.DataService import dataService
 from werkzeug.utils import secure_filename
 from settings import BASE_DIR
 import datetime
@@ -16,8 +17,8 @@ import os
 def test_hellow_v2():
     return "hellow v2"
 
-@inf_restful.route("/online/sourcing/search_talent_bank/<string:keyword>/<string:location>/<string:experience>/<string:education>/<string:talent_bank_id>/<int:page>/<int:limit>")
-def search_talent_by_keyword_v2(keyword, location, experience, education,talent_bank_id, page, limit):
+@inf_restful.route("/online/sourcing/search_talent_bank/<string:keyword>/<string:location>/<string:experience>/<string:education>/<string:sort_by>/<string:talent_bank_id>/<int:page>/<int:limit>")
+def search_talent_by_keyword_v2(keyword, location, experience, education, sort_by,talent_bank_id, page, limit):
     """
     search talent by keyword,
     """
@@ -26,9 +27,12 @@ def search_talent_by_keyword_v2(keyword, location, experience, education,talent_
     location = None if location == 'none' else location
     experience = None if experience == 'none' else experience
     education = None if education == 'none' else education
+    sort_by = None if sort_by == 'none' else sort_by
+
     # import pdd; pdb.set_trace()
-    datas = tbService.search_by_keyword(keyword=keyword, location=location, experience=experience, educationDegree=education, talent_bank_id=talent_bank_id,page=page, size=limit)
+    datas = tbService.search_by_keyword(keyword=keyword, location=location, experience=experience, educationDegree=education, talent_bank_id=talent_bank_id,sort_by=sort_by,page=page, size=limit)
     return json.dumps(datas,ensure_ascii=False,cls=JSONEncoder)
+
 
 @inf_restful.route('/online/sourcing/move_to_talent_bank/<string:job_title>/<string:source>/<string:source_method>/<string:talent_bank_id>', methods=['POST'])
 def move_to_talent_bank(job_title, source, source_method, talent_bank_id):
@@ -44,6 +48,8 @@ def move_to_talent_bank(job_title, source, source_method, talent_bank_id):
     # print("start debug")
     try:
         cv = linkerService.parse(json_data)
+        skill_tags = linkerService.gen_skill_tag(cv)
+        cv.skill_tag = skill_tags
     except Exception as e:
         logging.error(e)
         return json.dumps({"state":"failed","log":"parsing error"})
@@ -68,12 +74,12 @@ def move_to_talent_bank(job_title, source, source_method, talent_bank_id):
 def upload(talent_bank_id=None):
     if request.method == 'POST':
         try:
-            logging.error(request.__dict__)
             f = request.files['file']
             f_path = os.path.join(BASE_DIR, 'resources', 'static', 'uploads', secure_filename(f.filename))
             f.save(f_path)
             data = cv_service.parse_from_local(f_path)
             data.source_method = 'upload'
+            data.skill_tag = linkerService.gen_skill_tag(data)
             logging.info("sucess")
             tbService.save(data, talent_bank_id)
         except Exception as e:
@@ -84,42 +90,120 @@ def upload(talent_bank_id=None):
         cv = cv[0] if cv else None
         return json.dumps(cv, cls=JSONEncoder, ensure_ascii=False)
 
-@inf_restful.route("/online/talent_bank/get_talent_by/<string:location>/<string:experience>/<string:education>/<string:source>/<string:job_title>/<string:source_method>/<string:talent_bank_id>/<int:page>/<int:limit>")
-def get_talent_by(location, experience, education, source, job_title, source_method, talent_bank_id, page, limit):
+@inf_restful.route("/online/talent_bank/search_by_keyword/<string:keyword>/<string:update_time>/<string:experience>/<string:education>/<string:source>/<string:job_title>/<string:source_method>/<string:sort_by>/<string:talent_bank_id>/<int:page>/<int:limit>")
+def search_talent_by_Keyword_position_company(keyword, update_time, experience,education,source,job_title, source_method, sort_by, talent_bank_id, page, limit):
     if talent_bank_id == 'none':
         talent_bank_id = None
-    location = None if location == 'none' else location
+    update_time = None if update_time == 'none' else update_time
     experience = None if experience == 'none' else experience
     education = None if education == 'none' else education
-    source = None if source == 'none' else education
+    source = None if source == 'none' else source
     job_title = None if job_title == 'none' else job_title
     source_method = None if source_method =='none' else source_method
+    sort_by = None if sort_by == 'none' else sort_by
 
-    datas = tbService.get_datas_by(location=location, experience=experience, educationDegree=education, source=source, source_method=source_method, job_title=job_title,talent_bank_id=talent_bank_id, page=page, size=limit)
+    datas = tbService.get_datas_by(keyword=keyword,update_time=update_time, experience=experience, educationDegree=education, source=source, source_method=source_method, job_title=job_title, sort_by=sort_by,talent_bank_id=talent_bank_id, page=page, size=limit)
+    return json.dumps(datas,ensure_ascii=False, cls=JSONEncoder)
 
-    # if by == "source":
-    #     datas = tbService.get_datas_by(location=location, experience=experience, educationDegree=education, source=value,talent_bank_id=talent_bank_id, page=page, size=limit)
 
-    # elif by == "job_title":
-    #     datas = tbService.get_datas_by(location=location, experience=experience, educationDegree=education, job_title=value,talent_bank_id=talent_bank_id, page=page, size=limit)
+@inf_restful.route("/online/talent_bank/get_talent_by/<string:update_time>/<string:experience>/<string:education>/<string:source>/<string:job_title>/<string:source_method>/<string:sort_by>/<string:talent_bank_id>/<int:page>/<int:limit>")
+def get_talent_by(update_time, experience, education, source, job_title, source_method, sort_by, talent_bank_id, page, limit):
+    if talent_bank_id == 'none':
+        talent_bank_id = None
+    update_time = None if update_time == 'none' else update_time
+    experience = None if experience == 'none' else experience
+    education = None if education == 'none' else education
+    source = None if source == 'none' else source
+    job_title = None if job_title == 'none' else job_title
+    source_method = None if source_method =='none' else source_method
+    sort_by = None if sort_by == 'none' else sort_by
 
+    datas = tbService.get_datas_by(update_time=update_time, experience=experience, educationDegree=education, source=source, source_method=source_method, job_title=job_title, sort_by=sort_by, talent_bank_id=talent_bank_id, page=page, size=limit)
     return json.dumps(datas,ensure_ascii=False, cls=JSONEncoder)
 
 @inf_restful.route("/online/talent_bank/add_to_favorite/<string:cv_id>/<string:talent_bank_id>/<string:user_id>")
 def add_to_favorite(cv_id, talent_bank_id, user_id):
-    if tbService.add_to_favorite(cv_id, user_id, talent_bank_id):
-        return "sucess"
+    cv = tbService.get_by_id(cv_id,talent_bank_id=talent_bank_id)
+    if cv:
+
+        cv = cv[0]
+        cv_object = linkerService.parse(cv)
+        cv['skill_tag'] = linkerService.gen_skill_tag(cv_object)
+
+        if tbService.add_to_favorite(cv, user_id, talent_bank_id):
+            return "success"
+        else:
+            return "failed"
+    else:
+        cv = dataService.get(cv_id)
+        if cv:
+            cv = linkerService.parse(cv)
+            cv.skill_tag = linkerService.gen_skill_tag(cv)
+            tbService.save(cv, talent_bank_id)
+            if tbService.add_to_favorite(cv_id, user_id, talent_bank_id):
+                return "success"
+        return "failed"
+
+@inf_restful.route("/online/talent_bank/remove_from_favorite/<string:cv_id>/<string:talent_bank_id>/<string:user_id>")
+def remove_from_favorite(cv_id, talent_bank_id, user_id):
+    if tbService.remove_from_favorite(cv_id, user_id, talent_bank_id):
+        return "success"
     else:
         return "failed"
 
-@inf_restful.route("/online/talent_bank/get_favorite/<string:user_id>/<string:location>/<string:experience>/<string:education>/<string:source>/<string:source_method>/<string:talent_bank_id>/<int:page>/<int:limit>")
-def get_favorite(user_id, location, experience, education, source,source_method, talent_bank_id, page, limit):
-    location = None if location == 'none' else location
+@inf_restful.route("/online/talent_bank/remove_from_favorite_v2/<string:talent_bank_id>/<string:user_id>", methods=["POST"])
+def remove_from_favorite_v2(talent_bank_id, user_id):
+    if request.method == 'POST':
+        # import pdb; pdb.set_trace()
+        cv_list = request.form['json']
+        try:
+            cv_list = json.loads(cv_list, encoding='utf8')
+            for cv_id in cv_list['cv_list']:
+                if not tbService.remove_from_favorite(cv_id, user_id, talent_bank_id):
+                    return "failed"
+            else:
+                return "success"
+        except:
+            return "failed"
+
+
+@inf_restful.route("/online/talent_bank/get_favorite/<string:user_id>/<string:update_time>/<string:experience>/<string:education>/<string:source>/<string:source_method>/<string:sort_by>/<string:talent_bank_id>/<int:page>/<int:limit>")
+def get_favorite(user_id, update_time, experience, education, source,source_method, sort_by, talent_bank_id, page, limit):
+    update_time = None if update_time == 'none' else update_time
     experience = None if experience == 'none' else experience
     education = None if education == 'none' else education
     source = None if source == 'none' else education
     source_method = None if source_method == 'none' else education
+    sort_by = None if sort_by == 'none' else sort_by
+    datas = tbService.get_favorite(user_id, None, update_time, experience, education, source,source_method, None, None, page, limit, talent_bank_id, sort_by)
+    return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
-    datas = tbService.get_favorite(user_id, location, experience, education, source,source_method, None, None, page, limit, talent_bank_id)
+@inf_restful.route("/online/talent_bank/count_talent_bank/<string:talent_bank_id>", methods=['GET'])
+def count_talent_bank(talent_bank_id):
 
+    datas = {
+        'job_title': tbService.count_column("jobTitle", talent_bank_id),
+        'source': tbService.count_column("source", talent_bank_id)
+    }
+    return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/talent_bank/gen_talent_map/<string:company>", methods=["GET"])
+def gen_talent_map(company):
+    datas = tbService.gen_map(company)
+    return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/talent_bank/goto/<string:company>/<string:academy>/<string:skill_tag>/<string:update_time>/<string:experience>/<string:education>/<string:source>/<string:source_method>/<string:sort_by>/<string:talent_bank_id>/<int:page>/<int:limit>")
+def goto(company, academy, skill_tag,update_time, experience, education, source,source_method, sort_by, talent_bank_id, page, limit):
+    company = None if company == 'none' else company
+    academy = None if academy == 'none' else academy
+    skill_tag = None if skill_tag == 'none' else skill_tag
+    update_time = None if update_time == 'none' else update_time
+    experience = None if experience == 'none' else experience
+    education = None if education == 'none' else education
+    source = None if source == 'none' else education
+    source_method = None if source_method == 'none' else education
+    sort_by = None if sort_by == 'none' else sort_by
+    datas = tbService.get_datas_by(update_time=update_time, experience=experience, educationDegree=education,source=source, source_method=source_method, sort_by=sort_by, company=company, academy=academy, skill_tag=skill_tag, talent_bank_id=talent_bank_id)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
