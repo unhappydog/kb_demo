@@ -106,8 +106,8 @@ def search_talent_by_Keyword_position_company(keyword, update_time, experience,e
     return json.dumps(datas,ensure_ascii=False, cls=JSONEncoder)
 
 
-@inf_restful.route("/online/talent_bank/get_talent_by/<string:update_time>/<string:experience>/<string:education>/<string:source>/<string:job_title>/<string:source_method>/<string:sort_by>/<string:talent_bank_id>/<int:page>/<int:limit>")
-def get_talent_by(update_time, experience, education, source, job_title, source_method, sort_by, talent_bank_id, page, limit):
+@inf_restful.route("/online/talent_bank/get_talent_by/<string:update_time>/<string:experience>/<string:education>/<string:source>/<string:job_title>/<string:source_method>/<string:sort_by>/<string:talent_bank_id>/<string:location>/<int:page>/<int:limit>")
+def get_talent_by(update_time, experience, education, source, job_title, source_method, sort_by, talent_bank_id, location, page, limit):
     if talent_bank_id == 'none':
         talent_bank_id = None
     update_time = None if update_time == 'none' else update_time
@@ -117,8 +117,9 @@ def get_talent_by(update_time, experience, education, source, job_title, source_
     job_title = None if job_title == 'none' else job_title
     source_method = None if source_method =='none' else source_method
     sort_by = None if sort_by == 'none' else sort_by
+    location = None if location == 'none' else location
 
-    datas = tbService.get_datas_by(update_time=update_time, experience=experience, educationDegree=education, source=source, source_method=source_method, job_title=job_title, sort_by=sort_by, talent_bank_id=talent_bank_id, page=page, size=limit)
+    datas = tbService.get_datas_by(update_time=update_time, experience=experience, educationDegree=education, source=source, source_method=source_method, job_title=job_title, sort_by=sort_by, talent_bank_id=talent_bank_id,location=location, page=page, size=limit)
     return json.dumps(datas,ensure_ascii=False, cls=JSONEncoder)
 
 @inf_restful.route("/online/talent_bank/add_to_favorite/<string:cv_id>/<string:talent_bank_id>/<string:user_id>")
@@ -180,7 +181,6 @@ def get_favorite(user_id, update_time, experience, education, source,source_meth
 
 @inf_restful.route("/online/talent_bank/count_talent_bank/<string:talent_bank_id>", methods=['GET'])
 def count_talent_bank(talent_bank_id):
-
     datas = {
         'job_title': tbService.count_column("jobTitle", talent_bank_id),
         'source': tbService.count_column("source", talent_bank_id)

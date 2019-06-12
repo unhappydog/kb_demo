@@ -54,22 +54,30 @@ def get_company_by_job_title(job_title, page, limit):
 
 
 
+@inf_restful.route("/online/get_news_by_company/<string:company>/<int:page>/<int:size>")
+def get_news_by_company(company, page, size):
+    company = None if company == 'none' else company
+    data = dataService.get_news_by(company=company, page=page, limit=size)
+    return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
 
 @inf_restful.route("/online/get_news_by_tag/<string:tag>/<int:page>/<int:size>", methods=['GET'])
 def get_news_by_tags(tag, page, size):
-    data = dataService.get_news_by_tag(tag, page,size)
+    tag = None if tag =='none' else tag
+    data = dataService.get_news_by(tag=tag, page=page, limit=size)
+    # data = dataService.get_news_by_tag(tag, page,size)
     return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
 
 
 @inf_restful.route("/online/get_news/<int:page>/<int:size>", methods=['GET'])
 def get_news(page, size):
-    data = dataService.get_news(page, size)
+    data = dataService.get_news_by(page=page, limit=size)
     return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
 
 
 @inf_restful.route("/online/get_news_by_domain/<string:domain>/<int:page>/<int:size>", methods=['GET'])
 def get_news_by_domain(domain, page, size):
-    data = dataService.get_news_by_domain(domain, page, size)
+    domain = None if domain == 'none' else domain
+    data = dataService.get_news_by(domain=domain, page=page, limit=size)
     return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
 
 
