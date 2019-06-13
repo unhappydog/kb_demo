@@ -10,6 +10,13 @@ from utils.Constants import post_prefix, REGEX_CN
 class ProjectExperienceController4Mongo(BaseMongoController):
 
     def get_datas_by_name(self, name="", sort_by="projectEndTime", ascending=-1, page=1, size=10):
+        # add hot 算法工程师
+        if name == "算法工程师":
+            return mgservice.query_sort(query_cond={'keyword':{"$regex":"算法"}},
+                                    db=self._schema,
+                                    table=self._table,sort_by=sort_by,
+                                    ascending=ascending, page=page, size=size)
+
         reg_pattern = "({0})".format("|".join(post_prefix))
         if re.match(".+" + reg_pattern + "$", name):
             keyword = re.sub(reg_pattern, '', name)

@@ -19,8 +19,8 @@ class TalentBankService:
     def search_by_source(self, source, page, size, mode, name=None):
         return self.talent_bank.search_by_source(source, page, size, mode, name)
 
-    def search_by_keyword(self, keyword, page, size):
-        return self.talent_bank.search_by_keyword(keyword,page, size)
+    def search_by_keyword(self, keyword, location=None, experience=None, educationDegree=None, page=1, size=10):
+        return self.talent_bank.search_by_keyword(keyword, location, experience, educationDegree,page, size)
 
     def get_by_id(self, id):
         return self.talent_bank.get_by_id(id)

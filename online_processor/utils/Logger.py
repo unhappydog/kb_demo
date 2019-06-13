@@ -2,6 +2,7 @@ import logging
 import settings
 import sys
 from settings import BASE_DIR
+from logging.handlers import RotatingFileHandler
 import os
 
 log_file = os.path.join(BASE_DIR, "logs", settings.log_file)
@@ -13,6 +14,9 @@ logging.basicConfig(level=settings.log_level,
                     filemode='w+')
 
 console = logging.StreamHandler()
+# console = logging.FileHandler(log_file, encoding='utf8')
+# console = RotatingFileHandler(log_file, maxBytes=1024, backupCount=4, encoding='utf8')
+# console.namer = lambda x:"backup."+x.split(".")[-1]
 console.setLevel(settings.log_level)
 formatter = logging.Formatter("%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s")
 console.setFormatter(formatter)
@@ -49,6 +53,7 @@ logging = logging
 if __name__ == '__main__':
     a = Exception()
     try:
+        logging.info("test")
         print(1/0)
     except Exception as e:
         # logging.exception('a', sys.exc_info())

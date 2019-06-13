@@ -39,14 +39,20 @@ def syn_academy():
             data.__dict__['ranksource'] = source_map.get(data.id)
             data.__dict__['rankurl'] = url_map.get(data.id)
             if data.speciality is not None:
-                data.__dict__['tags'] = [tag for tag in data.speciality.split(';') if '211工程' == tag or '985工程' == tag or '双一流' == tag]
+                data.__dict__['tags'] = [tag for tag in data.speciality.split(';') if '211工程' == tag or '985工程' == tag
+                                         or '双一流' == tag or re.match('^211工程（.*）$', tag) or re.match('^985工程（.*）$', tag) or
+                                         tag == '世界一流大学和一流学科']
             else:
                 data.__dict__['tags'] = []
             kb_mongo.update_by_id(data)
 
         #     kb_mongo.update_by_id(data)
         else:
-            kb_mongo.insert_data(data)
+            try:
+                kb_mongo.insert_data(data)
+            except Exception as e:
+                print(e)
+                # print(data['_id'])
 
 
 def syn_company():

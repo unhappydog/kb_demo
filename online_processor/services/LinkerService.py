@@ -49,4 +49,4 @@ class LinkerService:
 
 linkerService = LinkerService()
 if __name__ == '__main__':
-    print(linkerService.link_terminology_in_text(" canal+kafka+spark+mysql+es 1为算法组提供实时特征产"))
+    print(linkerService.link_terminology_in_text(" canal+kafka+spark+mysql+es CNN 为算法组提供实时特征产"))
