@@ -83,6 +83,21 @@ class MongoService:
         x = [doc for doc in query_result]
         return x
 
+    def remove_dul(self, dul_col, db, table):
+        dul_ids = self.client[db][table].aggregate([
+            {"$group": {
+                "_d_id": {"$min": '$_id'},
+                "_id": {"id": "${0}".format(dul_col)},
+                "num": {"$sum": 1},
+            }},
+            {"$match": {
+                "num": {"$gt": 1}
+            }}
+            # {"$project": {"_id": 0, dul_col: "$_id", "num": 1}}
+        ])
+        x = [data for data in dul_ids]
+        return x
+
 
 mgService = MongoService()
 

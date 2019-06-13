@@ -29,4 +29,4 @@ redis_host = ""
 redis_port = ""
 
 host = "0.0.0.0"
-port = 18081
+port = 18082

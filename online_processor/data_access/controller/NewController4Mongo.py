@@ -19,8 +19,8 @@ def random_image(func):
         for data in datas:
             if data['IMG_URL'] != "":
                 data['IMG_URL'] = data['IMG_URL'].split(';')[:3]
-            else:
-                data['IMG_URL'] = random.sample(images, 1)
+            # else:
+            #     data['IMG_URL'] = random.sample(images, 1)
 
             # data['IMG_URL'] = [img for img in data['IMG_URL'] if re.match("^http.*\.(jpg|jpeg|gif|png)$", img)]
             data['IMG_URL'] = ";".join(data['IMG_URL'])
@@ -43,62 +43,100 @@ class NewController4Mongo(BaseMongoController):
         return name
 
     @random_image
-    def get_news_by_domain(self, domain, orderBy="PUBTIME", page=1, limit=10):
-        if domain is None:
-            domain = {}
-        else:
-            domain = {
-                'DomainTag': domain
-            }
-        return mgService.query_sort(query_cond=domain, table=self._table, db=self._schema, sort_by=orderBy,
-                                    ascending=-1,
-                                    page=page, size=limit, projection={
-                "ID": 1,
-                "TITLE": 1,
-                "PUBTIME": 1,
-                "BRIEF": 1,
-                "CONTENT": 1,
-                "AUTHOR": 1,
-                "URL": 1,
-                "IMG_URL": 1,
-                "SOURCE": 1,
-                "Tag": 1
+    def get_news_by(self, domain, tag, company_tag, orderBy="PUBTIME", page=1, limit=10):
+        cond = {'ISREPLICATE': 0,
+                      "ISBAD": 0}
+        if domain:
+            cond['DomainTag'] = domain
+
+        if tag:
+            cond['Tag'] = tag
+
+        if company_tag:
+            cond['CompanyTag'] = company_tag
+
+        return mgService.query_sort(query_cond=cond, table=self._table, db=self._schema, sort_by=orderBy,ascending=-1,page=page, size=limit, projection={
+                                        "ID": 1,
+                                        "TITLE": 1,
+                                        "PUBTIME": 1,
+                                        "BRIEF": 1,
+                                        "CONTENT": 1,
+                                        "AUTHOR": 1,
+                                        "URL": 1,
+                                        "IMG_URL": 1,
+                                        "SOURCE": 1,
+                                        "Tag": 1,
+                                        "companys":1,
+                                        "persons":1
             })
 
-    @random_image
-    def get_news_by_tag(self, tag, orderBy="PUBTIME", page=1, limit=10):
-        if tag is None:
-            cond = {}
-        else:
-            cond = {
-                "Tag": tag
-            }
-        return mgService.query_sort(query_cond=cond, table=self._table, db=self._schema, sort_by=orderBy, ascending=-1,
-                                    page=page, size=limit, projection={
-                "ID": 1,
-                "TITLE": 1,
-                "PUBTIME": 1,
-                "BRIEF": 1,
-                "CONTENT": 1,
-                "AUTHOR": 1,
-                "URL": 1,
-                "IMG_URL": 1,
-                "SOURCE": 1,
-                "Tag": 1
-            })
 
-    @random_image
-    def get_news(self, orderBy="PUBTIME", page=1, limit=10):
-        return mgService.query_sort(query_cond={}, table=self._table, db=self._schema, sort_by=orderBy, ascending=-1,
-                                    page=page, size=limit, projection={
-                "ID": 1,
-                "TITLE": 1,
-                "PUBTIME": 1,
-                "BRIEF": 1,
-                "CONTENT": 1,
-                "AUTHOR": 1,
-                "URL": 1,
-                "IMG_URL": 1,
-                "SOURCE": 1,
-                "Tag": 1
-            })
+    # @random_image
+    # def get_news_by_domain(self, domain, orderBy="PUBTIME", page=1, limit=10):
+    #     if domain is None:
+    #         domain = {'ISREPLICATE': 0,
+    #                   "ISBAD": 0}
+    #     else:
+    #         domain = {
+    #             'DomainTag': domain,
+    #             'ISREPLICATE': 0,
+    #             'ISBAD': 0
+    #         }
+    #     return mgService.query_sort(query_cond=domain, table=self._table, db=self._schema, sort_by=orderBy,
+    #                                 ascending=-1,
+    #                                 page=page, size=limit, projection={
+    #             "ID": 1,
+    #             "TITLE": 1,
+    #             "PUBTIME": 1,
+    #             "BRIEF": 1,
+    #             "CONTENT": 1,
+    #             "AUTHOR": 1,
+    #             "URL": 1,
+    #             "IMG_URL": 1,
+    #             "SOURCE": 1,
+    #             "Tag": 1
+    #         })
+
+    # @random_image
+    # def get_news_by_tag(self, tag, orderBy="PUBTIME", page=1, limit=10):
+    #     if tag is None:
+    #         cond = {
+    #             'ISREPLICATE': 0,
+    #             'ISBAD': 0
+    #         }
+    #     else:
+    #         cond = {
+    #             "Tag": tag,
+    #             'ISREPLICATE': 0,
+    #             'ISBAD': 0
+    #         }
+    #     return mgService.query_sort(query_cond=cond, table=self._table, db=self._schema, sort_by=orderBy, ascending=-1,
+    #                                 page=page, size=limit, projection={
+    #             "ID": 1,
+    #             "TITLE": 1,
+    #             "PUBTIME": 1,
+    #             "BRIEF": 1,
+    #             "CONTENT": 1,
+    #             "AUTHOR": 1,
+    #             "URL": 1,
+    #             "IMG_URL": 1,
+    #             "SOURCE": 1,
+    #             "Tag": 1
+    #         })
+
+    # @random_image
+    # def get_news(self, orderBy="PUBTIME", page=1, limit=10):
+    #     return mgService.query_sort(query_cond={'ISREPLICATE': 0, 'ISBAD': 0}, table=self._table, db=self._schema,
+    #                                 sort_by=orderBy, ascending=-1,
+    #                                 page=page, size=limit, projection={
+    #             "ID": 1,
+    #             "TITLE": 1,
+    #             "PUBTIME": 1,
+    #             "BRIEF": 1,
+    #             "CONTENT": 1,
+    #             "AUTHOR": 1,
+    #             "URL": 1,
+    #             "IMG_URL": 1,
+    #             "SOURCE": 1,
+    #             "Tag": 1
+    #         })

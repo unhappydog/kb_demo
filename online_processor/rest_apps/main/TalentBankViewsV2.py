@@ -85,7 +85,7 @@ def upload(talent_bank_id=None):
         except Exception as e:
             logging.error("some thing is wrong")
             logging.exception(e)
-            return {"status": "fail"}
+            return json.dumps({"status": "fail"}, cls=JSONEncoder)
         cv = tbService.get_by_id(data._id, talent_bank_id)
         cv = cv[0] if cv else None
         return json.dumps(cv, cls=JSONEncoder, ensure_ascii=False)

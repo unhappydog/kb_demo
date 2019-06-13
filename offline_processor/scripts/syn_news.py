@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 from data_access.controller.NewController4Mongo import NewController4Mongo
 from data_access.controller.NewController import NewController
 from services.tool_services.mysql_service import mysqlService
@@ -15,7 +17,7 @@ def syn_talent():
 def syn_new():
     # for data in new_controller.get_news_as_gen():
     #     print(data)
-    for datas in mysqlService.execute_as_gen("select * from kb_news"):
+    for datas in mysqlService.execute_as_gen("select * from kb_news_2019"):
         for data in datas:
             mgService.insert(data, 'kb_demo', 'kb_news')
             print(data)
@@ -41,8 +43,8 @@ def syn_talent():
 
 
 if __name__ == '__main__':
-    # syn_new()
+    syn_new()
     # syn_talent()
     # syn_weixin()
-    syn_talent()
+    # syn_talent()
     pass
