@@ -50,5 +50,8 @@ class DataService:
     def get_news_by_domain(self, domain, page, limit):
         return self.news_controller.get_news_by_domain(domain, page=page, limit=limit)
 
+    def get_news_by(self, domain=None, tag=None, company=None, orderBy="PUBTIME", page=1, limit=10):
+        return self.news_controller.get_news_by(domain, tag, company, orderBy, page, limit)
+
 
 dataService = DataService()

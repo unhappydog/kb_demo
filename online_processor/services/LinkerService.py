@@ -25,6 +25,9 @@ class LinkerService:
     def link_terminology(self, cv):
         return self.terminology.link(cv)
 
+    def gen_skill_tag(self, cv):
+        return self.terminology.skill_tag(cv)
+
     def link_terminology_in_text(self, text):
         return self.terminology.simple_word_linker(text)
 
@@ -32,7 +35,7 @@ class LinkerService:
         return self.parser.parse(cv_json)
 
     def recongnize_terminology(self, word_list, language='cn'):
-        return self.terminology.recongnize_termnology(word_list,language)
+        return self.terminology.recongnize_termnology(word_list, language)
 
     def risk_recongnize(self, cv_dict):
         temp_object = riskPoint()
@@ -41,7 +44,7 @@ class LinkerService:
         return risk_points
 
     def link_jd(self, jd):
-        columns = ["requirement","duty"]
+        columns = ["requirement", "duty"]
         return {
             column: self.link_terminology_in_text(jd[column]) for column in columns
         }

@@ -22,6 +22,9 @@ class MongoService:
     def update(self, spec, doc, db, table):
         self.client[db][table].update_one(spec, {"$set": doc})
 
+    def update_without_set(self, spec, doc, db, table):
+        self.client[db][table].update_one(spec, doc)
+
     def delete(self, query_cond, db, table):
         self.client[db][table].delete_many(query_cond)
 
@@ -89,13 +92,21 @@ class MongoService:
         return x
 
     def count_column_with_cond(self, cond, column_name, db, table):
-        query_result = self.client[db][table].aggregate([
-            {"$match": cond},
-            {"$group": {
-                "_id": "${0}".format(column_name),
-                "num": {"$sum": 1}}},
-            {"$project": {"_id": 0, column_name: "$_id", "num": 1}},
-            {"$sort": {"num": -1}}])
+        if cond == None:
+            query_result = self.client[db][table].aggregate([
+                {"$group": {
+                    "_id": "${0}".format(column_name),
+                    "num": {"$sum": 1}}},
+                {"$project": {"_id": 0, column_name: "$_id", "num": 1}},
+                {"$sort": {"num": -1}}])
+        else:
+            query_result = self.client[db][table].aggregate([
+                {"$match": cond},
+                {"$group": {
+                    "_id": "${0}".format(column_name),
+                    "num": {"$sum": 1}}},
+                {"$project": {"_id": 0, column_name: "$_id", "num": 1}},
+                {"$sort": {"num": -1}}])
         x = [doc for doc in query_result]
         return x
 
