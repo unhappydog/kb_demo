@@ -1,4 +1,4 @@
 from .NewsProcessor import NewsProcessor
 newsProcessor = NewsProcessor()
-from .tasks import DistinctTask, PreProcessTask
+from .tasks import DistinctTask, PreProcessTask, TagTask
 

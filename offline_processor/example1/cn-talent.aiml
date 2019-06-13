@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<aiml version="1.0">
+
+<meta name="author" content="Shuang0420"/>
+<meta name="language" content="zh"/>
+    <category>
+        <pattern>*以上学历，*相关专业*</pattern>
+        <template>{专业:<star index="2"/>,学历:<star index="1"/> }</template>
+    </category>
+    <category>
+        <pattern>*以上学历，*相关专业</pattern>
+        <template>{专业:<star index="2"/>,学历:<star index="1"/> }</template>
+    </category>
+
+</aiml>

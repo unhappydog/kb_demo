@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 from core.processors.news_processor import newsProcessor
 from core.processors.weixin_processor import weixinProcessor
 from core.processors.talent_processor import talentProcessor
@@ -56,7 +58,6 @@ class ProcessorManager:
         controller = self.controller[datasource]
         while True:
             datas = q.get()
-
             print("{0} is processing data".format(os.getpid()))
             data = pd.DataFrame([data for data in datas])
             data = processor.start_process(data)
@@ -65,7 +66,7 @@ class ProcessorManager:
 
 if __name__ == '__main__':
     process = ProcessorManager()
-    # process.execute_processor(DataSources.new, 100)
+    process.execute_processor(DataSources.new, 100)
     # process.execute_processor(DataSources.weixin, 100)
-    process.execute_processor(DataSources.talent, 100)
+    # process.execute_processor(DataSources.talent, 100)
     # process.multi_process_execute(DataSources.talent, 10)

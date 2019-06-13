@@ -38,7 +38,7 @@ class TestRestApi(unittest.TestCase):
     def test_upload_data(self):
         print("testing upload")
         files = {
-            "file": open(os.path.join(BASE_DIR,'resources','智联招聘_常先生_中文_20190415_1555294995349.pdf'), 'rb')
+            "file": open(os.path.join(BASE_DIR,'resources','智联招聘_郝先生_中文_20190415_1555295349103.doc'), 'rb')
         }
         result = requests.post("http://{0}:18082/online/talent_bank/upload/123".format(host), files=files)
         self.assertEqual(result.status_code, 200)
@@ -46,10 +46,10 @@ class TestRestApi(unittest.TestCase):
     def test_get_talent_by(self):
         print("testing get")
         for l,s,e1,e2 in zip(location, source_methods, education, experience):
-            result = requests.get("http://{0}:18082/online/talent_bank/get_talent_by/{1}/{2}/{3}/{4}/{5}/{6}/{10}/{7}/{10}/{8}/{9}".format(host, 100, e2,e1,'zhilian','none',s,'none',"1",1,10,'北京-北京'))
+            result = requests.get("http://{0}:18082/online/talent_bank/get_talent_by/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{11}/{9}/{10}".format(host, 100, e2,e1,'zhilian','none',s,'none',"1",1,10,'北京-北京'))
             self.assertEqual(result.status_code, 200)
         for l,j,s,e1,e2 in zip(location, job_titles,source_methods, education, experience):
-            result = requests.get("http://{0}:18082/online/talent_bank/get_talent_by/{1}/{2}/{3}/{4}/{5}/{6}/{10}/{7}/{10}/{8}/{9}".format(host, 100, e2,e1,'zhilian',j,s,'none',"1",'北京-北京',1,10))
+            result = requests.get("http://{0}:18082/online/talent_bank/get_talent_by/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{11}/{9}/{10}".format(host, 100, e2,e1,'zhilian',j,s,'none',"1",1,10,'北京-北京'))
             self.assertEqual(result.status_code, 200)
 
     def test_search_talent_by_keyword(self):

@@ -5,8 +5,15 @@ from core.common.tasks.DistinctTask import BaseDistinctTask
 @newsProcessor.add_as_processors(order=1, stage=1,
                                  content_column="CONTENT", pubtime_column="PUBTIME",
                                  replicate_column="ISREPLICATE",
-                                 min_score=0.7, max_length=10)
+                                 min_score=0.7, max_length=1000)
 class DistinctTask(BaseDistinctTask):
+    # def fit(self, data):
+    #     data = super().fit(data)
+    #     # data[self.replicate_column] = data.apply(lambda x:self.dt_if_replicate(x), axis=1)
+    #
+    # def dt_if_replicate(self, x):
+    #     if x[self.replicate_column] == 1:
+    #         return 1
     pass
     # def __init__(self, content_column, pubtime_column,
     #              replicate_column, min_score, max_length):

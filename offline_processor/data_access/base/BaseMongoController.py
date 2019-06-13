@@ -40,9 +40,9 @@ class BaseMongoController:
                 return
             data = {}
             for column in columns:
-                if row[column] is None or row[column] == "":
-                    continue
-                elif type(row[column]) is float:
+                # if row[column] is None or row[column] == "":
+                #     continue
+                if type(row[column]) is float:
                     if math.isnan(row[column]):
                         continue
                     else:
@@ -63,9 +63,9 @@ class BaseMongoController:
             columns = list(row.index)
             data = {}
             for column in columns:
-                if row[column] is None or row[column] == "":
-                    continue
-                elif type(row[column]) is float:
+                # if row[column] is None or row[column] == "":
+                #     continue
+                if type(row[column]) is float:
                     if math.isnan(row[column]):
                         continue
                     else:

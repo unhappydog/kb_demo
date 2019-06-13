@@ -55,3 +55,7 @@ def upate_add_dict(d1, d2):
         if k not in d1.keys():
             temp[k] = v
     return temp
+
+
+if __name__ == '__main__':
+    print(len(compute_min_hash(['aaa']).digest()))

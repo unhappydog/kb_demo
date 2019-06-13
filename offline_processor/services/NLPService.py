@@ -18,8 +18,11 @@ class NLPService:
         word_list = [word.name for word in words]
         self.stop_words['cn'] = set(word_list)
 
-    def seg_words(self, doc):
-        return [word for word in ltpService.segment(doc) if word not in self.stop_words['cn']]
+    def seg_words(self, doc, remove_stop_words=True):
+        if remove_stop_words:
+            return [word for word in ltpService.segment(doc) if word not in self.stop_words['cn']]
+        else:
+            return [word for word in ltpService.segment(doc)]
 
     def tag_words(self, words):
         return [tag for tag in ltpService.postag(words)]
@@ -38,6 +41,26 @@ class NLPService:
         docs = [doc for doc in re.split(r'[%s]+' % (hanzi.stops), doc_origin) if len(doc) >= 1]
         return docs
 
+    def ner_recong(self, doc):
+        docs = self.sentencesize(doc)
+        result = []
+
+        for doc in docs:
+            words = self.seg_words(doc, False)
+            tags = self.tag_words(words)
+            ners = self.recongize(words, tags)
+            result.extend(zip(words, ners))
+        result = [word for word in result if word[1] != 'O']
+        final_result = []
+        temp_word = []
+        for word in result:
+            word_pos, word_tag = word[1].split('-')
+            temp_word.append(word[0])
+            if word_pos == 'S' or word_pos == 'E':
+                final_result.append(("".join(temp_word), word_tag))
+                temp_word = []
+        return final_result
+
+
 
 nlpService = NLPService()
-
