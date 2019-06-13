@@ -211,18 +211,21 @@ class riskPoint(object):
     #时间间隔（教育时间间隔，工作时间间隔）
     def edutimegap(self,singaldata):
         edugapdata=singaldata['educationExperience']
-        eduyeargap,edumongap,ge,ga=util().gap(edugapdata,self.updatetime,0)
-        if len(eduyeargap) > 0:
-            temp = {}
-            maxgap = max(eduyeargap)
-            if maxgap > 0:
-                temp['label'] = '教育间隔'
-                temp['error'] = '候选人的教育经历时间有' + str(maxgap) + '年的间隔'
-                return temp
+        try:
+            eduyeargap,edumongap,ge,ga=util().gap(edugapdata,self.updatetime,0)
+            if len(eduyeargap) > 0:
+                temp = {}
+                maxgap = max(eduyeargap)
+                if maxgap > 0:
+                    temp['label'] = '教育间隔'
+                    temp['error'] = '候选人的教育经历时间有' + str(maxgap) + '年的间隔'
+                    return temp
+                else:
+                    return False
             else:
                 return False
-        else:
-            return False
+        except:
+            print('edutimgapError')
 
     def worktimegap(self, singaldata):
         workdata = singaldata['workExperience']
