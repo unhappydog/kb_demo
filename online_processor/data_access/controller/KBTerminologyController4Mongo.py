@@ -1,6 +1,6 @@
 from utils.MongoMapTags import query, delete, update, DataMap
 from utils.Tags import return_type
-from utils.Logger import logging
+# from utils.Logger import logging
 from data_access.base.BaseMongoController import BaseMongoController
 from data_access.models.KB_Terminology import KB_Terminology
 from services.tool_services.MongoService import mgService as mgservice
@@ -29,8 +29,8 @@ class KBTerminologyController4Mongo(BaseMongoController):
             cond = {"_id": _id}
         elif type(_id) == int:
             cond = {"_id": _id}
-        else:
-            logging.error("message _id should be type str or objectId")
+        # else:
+        #     logging.error("message _id should be type str or objectId")
         datas = mgservice.query(query_cond=cond, db=self._schema, table=self._table)
         if datas:
             return datas

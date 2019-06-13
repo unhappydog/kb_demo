@@ -65,20 +65,23 @@ class riskPoint(object):
         timeclash = []
         worksmalltime = min(self.workStrattime)
         edumaxtime = max(self.eduEndtime)
-        if not isinstance(util().time_difference(edumaxtime,worksmalltime),bool):
-            year, month = util().time_difference(edumaxtime,worksmalltime)
-            if year > 0 and year<10:
-                temp={}
-                temp["label"] = "工作时间异常"
-                if month == 0:
-                    temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年'
-                else:
-                    temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年' + str(month) + '个月'
-                timeclash.append(temp)
-            elif month > 6:
-                temp={}
-                temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(month) + '月'
-                timeclash.append(temp)
+        try:
+            if not isinstance(util().time_difference(edumaxtime,worksmalltime),bool):
+                year, month = util().time_difference(edumaxtime,worksmalltime)
+                if year > 0 and year<10:
+                    temp={}
+                    temp["label"] = "工作时间异常"
+                    if month == 0:
+                        temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年'
+                    else:
+                        temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(year) + '年' + str(month) + '个月'
+                    timeclash.append(temp)
+                elif month > 6:
+                    temp={}
+                    temp['error'] = '候选人第一段工作经历晚于毕业时间' + str(month) + '月'
+                    timeclash.append(temp)
+        except:
+            print('timeclashTypeError')
         count=0
         for ws, we in zip(self.workStrattime, self.workEndtime):
             for es, ew in zip(self.eduStarttime, self.eduEndtime):
@@ -102,29 +105,32 @@ class riskPoint(object):
         count=0
         for es,ew,ed,en,em in  zip(self.eduStarttime,self.eduEndtime,educationDegree,eduname,edumajor):
             count+=1
-            year,month=util().time_difference(es,ew)
-            if ed=='本科':
-                temp={}
-                if  year<=3 and month<11:
-                    temp['label']='本科异常'
-                    temp['error'] = '候选人本科不足4年'
-                    eduerror.append(temp)
-            if ed=='硕士':
+            try:
+                year,month=util().time_difference(es,ew)
+                if ed=='本科':
                     temp={}
-                    if "香港" in en or bool(re.search('[a-z]', en)):
-                        if year<1:
-                          temp['label']='硕士异常'
-                          temp['error']='候选人硕士读了不到'+str(month)+'个月'
-                          eduerror.append(temp)
-                    else:
-                        if (year<=1 and month<6) :
-                            temp['label']='硕士异常'
-                            temp['error']='候选人硕士读了不到2年'
-                            eduerror.append(temp)
-                        elif year>3:
-                            temp['label']='硕士异常'
-                            temp['error']='候选人读了'+str(year)+'硕士'
-                            eduerror.append(temp)
+                    if  year<=3 and month<11:
+                        temp['label']='本科异常'
+                        temp['error'] = '候选人本科不足4年'
+                        eduerror.append(temp)
+                if ed=='硕士':
+                        temp={}
+                        if "香港" in en or bool(re.search('[a-z]', en)):
+                            if year<1:
+                              temp['label']='硕士异常'
+                              temp['error']='候选人硕士读了不到'+str(month)+'个月'
+                              eduerror.append(temp)
+                        else:
+                            if (year<=1 and month<6) :
+                                temp['label']='硕士异常'
+                                temp['error']='候选人硕士读了不到2年'
+                                eduerror.append(temp)
+                            elif year>3:
+                                temp['label']='硕士异常'
+                                temp['error']='候选人读了'+str(year)+'硕士'
+                                eduerror.append(temp)
+            except:
+                print('eduTypeError')
             if ed=='其他':
                 temp={}
                 temp['label']='学历异常'
@@ -202,8 +208,6 @@ class riskPoint(object):
         else:
             return False
 
-
-
     #时间间隔（教育时间间隔，工作时间间隔）
     def edutimegap(self,singaldata):
         edugapdata=singaldata['educationExperience']
@@ -227,16 +231,19 @@ class riskPoint(object):
             if workyear:
                 workyeargap, workmongap,ge,ga = util().gap(workdata, self.updatetime, 1)
                 jobhopping = []
-                if workyear != 0:
-                    year, month = util().time_difference(min(self.workStrattime), max(self.workEndtime))
-                    if month > 6:
-                        year = year + 1
-                    if workyear>2:
-                        if self.eduEndtime[0]>singaldata['updateTime']:
-                            temp={}
-                            temp['label']='工作经验异常'
-                            temp['error']='候选人尚未毕业但已有'+str(workyear)+'年工作经验'
-                            jobhopping.append(temp)
+                try:
+                    if workyear != 0:
+                        year, month = util().time_difference(min(self.workStrattime), max(self.workEndtime))
+                        if month > 6:
+                            year = year + 1
+                        if workyear>2:
+                            if self.eduEndtime[0]>singaldata['updateTime']:
+                                temp={}
+                                temp['label']='工作经验异常'
+                                temp['error']='候选人尚未毕业但已有'+str(workyear)+'年工作经验'
+                                jobhopping.append(temp)
+                except:
+                    print('workTypeError')
                 count = len(workdata) + 1
                 if len(workdata) > 1:
                     for wy, wk,e,a in zip(workyeargap, workmongap,ge,ga):
@@ -247,11 +254,6 @@ class riskPoint(object):
                             temp['label'] = '工作间隔'
                             temp['error'] = '候选人'+e+'至' +a+ '月的工作经历存在空档期'
                             jobhopping.append(temp)
-                        # elif wy == 0 and wk > 6:
-                        #     temp = {}
-                        #     temp['label'] = '工作间隔'
-                        #     temp['error'] = '候选人在第' +Utils.int_to_hanzi(strsum)+ '段工作经历与第' + Utils.int_to_hanzi(count) + '段工作经历之间的空档期超过半年'
-                        #     jobhopping.append(temp)
                     if util().iszero(workyeargap) and util().iszero(workmongap):
                         temp = {}
                         temp['label'] = '工作间隔'

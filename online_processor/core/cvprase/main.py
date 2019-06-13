@@ -10,7 +10,7 @@ class CV_main(object) :
         self.root = root
         self.predicates = ['name', 'updateTime', 'id', 'gender', 'age', 'birthday', 'workYear', 'highestEducationBackground', 'currentAddress',
                        'domicilePlace', 'politicsStatus', 'marital', 'selfEvaluation',
-                        'expectedWorkplace', 'expectedSalary', 'expectedStatus', 'expectedOccupation', 'expectedIndustry',
+                        'expectedWorkplace', 'expectedSalary', 'expectedStatus', 'expectedOccupation', 'expectedIndustry','expectedWorkNature'
                         'workExperience','projectExperience', 'educationExperience', 'certificate', 'trainingExperience', 'award',
                         'associationExperience', 'language','skill', 'hobby']
 
@@ -45,6 +45,7 @@ class CV_main(object) :
                          domicilePlace=dict['domicilePlace'],
                          politicsStatus=dict['politicsStatus'],
                          marital=dict['marital'],
+                         expectedWorkNature=dict['expectedWorkNature'],
                          selfEvaluation=dict['selfEvaluation'],
                          expectedWorkplace=dict['expectedWorkplace'],
                          expectedSalary=dict['expectedSalary'],

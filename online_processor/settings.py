@@ -16,6 +16,8 @@ mysql_db = "kb_demo"
 
 mongo_host = "172.16.6.10"
 mongo_port = 32317
+# mongo_host = "127.0.0.1"
+# mongo_port = 27017
 mongo_db = "kb_demo"
 # mongo_table="kb_tablent_table"
 

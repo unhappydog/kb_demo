@@ -39,4 +39,4 @@ class KBCompanyController4Mongo(BaseMongoController):
 
 if __name__ == '__main__':
     a = KBCompanyController4Mongo()
-    print(a.get_data_by_name("美团点评")[0].regCapital)
+    print(a.get_data_by_name("华云智能")[0].regCapital)

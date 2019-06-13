@@ -2,7 +2,6 @@ from utils.Tags import Singleton
 from core.parser.CVParser import CVParser
 from core.cvprase.main import CV_main
 
-
 @Singleton
 class CVService:
     def __init__(self):
