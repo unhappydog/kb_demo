@@ -83,6 +83,9 @@ def remove_null(temp):
                     remove_null(value[index])
             temp[key] = [data for data in value if data]
 
+def check_if_none(element):
+    return None if element == 'none' else element
+
 
 if __name__ == '__main__':
     # print(convert_str_2_date('2012-09-01 00:00:00'))

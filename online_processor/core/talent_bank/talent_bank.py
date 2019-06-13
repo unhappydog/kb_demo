@@ -1,7 +1,9 @@
 import re
 from data_access.controller.KbTalentBankController4Mongo import KBTalentBankController4Mongo
+from core.talent_bank.TalentMap import TalentMap
 import datetime
 from utils.Utils import remove_null
+from threading import Lock
 
 
 def filter_data(func):
@@ -47,11 +49,29 @@ def is_good(data, min_length=1):
         data['projectExperience'] = tem_experi
 
         # if data['projectExperience'][0]['projectEndTime'] is None or data['projectExperience'][0]['projectEndTime'] == "":
-        #     data['projectExperience'][0]['projectEndTime'] = "至今"
+        #     data['projectExperience'][0]['projectEndTime'] =a "至今"
     remove_null(data)
 
     return data
 
+
+def _switch_table_tag(func):
+    def _func(self, *args, **kwargs):
+        if 'talent_bank_id' in kwargs:
+            talent_bank_id = kwargs['talent_bank_id']
+            del kwargs['talent_bank_id']
+            if talent_bank_id:
+                with self.controller.switch_to_table(name_talent(talent_bank_id)):
+                    return func(self, *args, **kwargs)
+            else:
+                return func(self, *args, **kwargs)
+        else:
+            return func(self, *args, **kwargs)
+    return _func
+
+
+def name_talent(id):
+    return "talent_bank_%s" %id
 
 class TalentBank:
     post_prefix = [
@@ -97,64 +117,60 @@ class TalentBank:
     ]
 
     def __init__(self):
-        self.contoller = KBTalentBankController4Mongo()
+        self.controller = KBTalentBankController4Mongo()
 
-    def save(self, cv):
-        data = self.contoller.get_data_by_id(_id=cv._id)
+    @_switch_table_tag
+    def save(self, cv, save_tag=True):
+        data = self.controller.get_data_by_id(_id=cv['_id'])
         if data:
-            self.contoller.update_by_id(cv)
+            if not save_tag:
+                cv['tag'] = data[0]['tag']
+            self.controller.update_by_id(cv)
         else:
-            self.contoller.insert_data(cv)
+            self.controller.insert_data(cv)
 
+    @_switch_table_tag
     @filter_data
-    def search_by_name(self, name, page, limit, mode, keyword):
-        # reg_pattern = "({0})".format("|".join(self.post_prefix))
-        # if re.match(".+" + reg_pattern + "$", name):
-        #     name = re.sub(reg_pattern,'', name)
-        return self.contoller.get_datas_by_name(keyword=name, page=page, size=limit, mode=mode, name=keyword)
-
-    @filter_data
-    def search_by_education(self, education, page, limit, mode, name):
-        # return self.
-        return self.contoller.get_datas_by_education(education, page=page, size=limit, mode=mode, name=name)
-        pass
-
-    @filter_data
-    def search_by_source(self, source, page, limit, mode, name):
-        return self.contoller.get_datas_by_source(source=source, page=page, size=limit, mode=mode, name=name)
-
-    @filter_data
-    def search_by_keyword(self, keyword, location, experience, educationDegree, page, limit):
+    def search_by_keyword(self, keyword, location, experience, educationDegree, page, limit, sort_by):
 
         reg_pattern = "({0})".format("|".join(self.post_prefix))
         if re.match(".+" + reg_pattern + "$", keyword):
             keyword = re.sub(reg_pattern, '', keyword)
-        return self.contoller.search_datas_by_keyword(keyword=keyword, page=page, size=limit)
+        return self.controller.search_datas_by_keyword(keyword=keyword, location=location, experience=experience, educationDegree=educationDegree, page=page, size=limit,sort_by=sort_by)
 
+    @_switch_table_tag
     @filter_data
     def get_by_id(self, _id):
-        data = self.contoller.get_data_by_id(_id=_id)
+        data = self.controller.get_data_by_id(_id=_id)
         if data:
             return data
         else:
             return []
 
+    @_switch_table_tag
     def delete_by_id(self, _id):
-        self.contoller.delete_by_id(_id)
+        self.controller.delete_by_id(_id)
 
+    @_switch_table_tag
     def update(self, cv):
         # cv.updateTime = datetime.datetime.now()
-        self.contoller.update_by_id(cv)
+        self.controller.update_by_id(cv)
 
+    @_switch_table_tag
     @filter_data
     def get_datas(self, page, limit, mode, name):
-        return self.contoller.get_datas_order_by(page=page, size=limit, mode=mode, name=name)
+        return self.controller.get_datas_order_by(page=page, size=limit, mode=mode, name=name)
 
-    def count_datas(self, cond):
-        return self.contoller.count_datas(cond)
+    @_switch_table_tag
+    @filter_data
+    def get_datas_by(self,keyword=None, location=None, update_time=None, experience=None, educationDegree=None, source=None, source_method=None, job_title=None, searchword=None,company=None, academy=None, skill_tag=None, tag=[],page=1, size=10, sort_by=None):
+        return self.controller.get_datas_by(keyword,location, update_time, experience, educationDegree,source,source_method, job_title, searchword, company, academy, skill_tag, tag, -1, page, size,sort_by)
 
-    def count_datas_update_after(self, time):
-        return self.contoller.count_datas(cond={"updateTime": {"$gt": time}})
+    @_switch_table_tag
+    @filter_data
+    def count_column(self, column_name, cond=None):
+        datas = self.controller.count_column(column_name, cond)
+        return [data for data in datas if data.get(column_name)]
 
-    def count_tags(self):
-        return self.contoller.count_tags()
+    def gen_map(self, company_name):
+        return TalentMap.instance(KBTalentBankController4Mongo()).gen_map(company_name)

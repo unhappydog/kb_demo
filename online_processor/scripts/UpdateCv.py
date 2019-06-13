@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 from data_access.controller.CVController4Mongo import CVController4Mongo
 from services.LinkerService import linkerService
 from services.DataService import dataService
@@ -10,7 +12,7 @@ from services.tool_services.MongoService import mgService
 if __name__ == '__main__':
     cv_controller = CVController4Mongo()
     datas = cv_controller.get_datas()
-    datas = mgService.query({}, 'kb_demo', 'kb_CV_origin')
+    datas = mgService.query({}, 'kb_demo', 'kb_CV_2019')
     for data in datas:
         cv = linkerService.parse(data)
         word_experiences = cv.workExperience
@@ -22,7 +24,8 @@ if __name__ == '__main__':
         # dataService.save(cv)
         cv.source = "zhilian"
         cv.source_method='zhilian'
-        tbService.save(cv)
+        cv.skill_tag = linkerService.gen_skill_tag(cv)
+        tbService.save(cv,'1')
 
     datas = mgService.query({}, 'kb_demo','kb_CV')
     for data in datas:
@@ -36,5 +39,6 @@ if __name__ == '__main__':
         cv.recentPosition = word_experiences[0]['workPosition']
         cv.source = 'zhilian'
         cv.source_method = 'upload'
-        tbService.save(cv)
+        cv.skill_tag = linkerService.gen_skill_tag(cv)
+        tbService.save(cv,'1')
     # print(tbService.search_by_name("机器学习算法工程师", 2, 10))

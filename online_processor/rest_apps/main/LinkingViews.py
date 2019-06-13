@@ -7,6 +7,9 @@ from utils.Encoder import JSONEncoder
 from services.LinkerService import linkerService
 from services.DataService import dataService
 from services.KgizeService import kgService
+from services.UserService import UserService
+
+userService = UserService.instance()
 
 
 @inf_restful.route('/online/link',
@@ -32,7 +35,7 @@ def link_cv():
         result = {}
         result['academies'] = academies
         logging.debug("_________academies\n")
-        logging.debug(academies)
+        # logging.debug(academies)
         result['companies'] = companys
         result['terminologys'] = terminologys
         result['risks'] = risks
@@ -65,6 +68,34 @@ def kgize():
         result = kgService.kgsizer_4tupe(cv, terminologys, academies, companys)
         return json.dumps(result, ensure_ascii=False, cls=JSONEncoder)
     pass
+
+
+@inf_restful.route('/online/linkv2/<string:user_id>',
+                   methods=["POST"])
+def link_cv_v2(user_id):
+    """
+    linking academies, companies, majors in cv
+    :return: json format cv
+    """
+    logging.debug("accepted data")
+    if request.method == 'POST':
+        # logging.debug(dir(request))
+        json_data = request.form["json"]
+        # logging.debug(json_data)
+        cv = linkerService.parse(json_data)
+        dataService.save(cv)
+        academies = linkerService.link_academy(cv)
+        companys = linkerService.link_company(cv)
+        terminologys = linkerService.link_terminology(cv)
+        logging.debug("terminologys is :" + json.dumps(terminologys, ensure_ascii=False, cls=JSONEncoder))
+        cv_dict = parse_data_to_dict(cv)
+        risks = linkerService.risk_recongnize(cv_dict)
+
+        result = userService.is_followed(companys, academies, terminologys, user_id)
+        result['risks'] = risks
+        cv.__dict__['linked_result'] = result
+        dataService.save(cv)
+        return json.dumps(result, ensure_ascii=False, cls=JSONEncoder)
 
 
 @inf_restful.route('/online/save', methods=['POST'])

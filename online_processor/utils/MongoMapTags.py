@@ -55,8 +55,13 @@ def delete(by=None):
 def update():
     def wrapper(func):
         def _sql(self, data, *args, **kwargs):
-            spec = {"_id": data._id}
-            doc = parse_data(data)
+            if isinstance(data, dict):
+                spec = {"_id": data['_id']}
+                doc = data
+            else:
+                spec = {"_id": data._id}
+                doc = parse_data(data)
+
             del doc["_id"]
             mgservice.update(spec, doc, self._schema, self._table)
             return True

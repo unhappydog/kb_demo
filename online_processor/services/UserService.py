@@ -31,3 +31,6 @@ class UserService:
 
     def get_interest_by_id(self,_id, followed_company,followed_academy, followed_skill):
         return self.userCore.get_interest_by_id(_id, followed_company, followed_academy, followed_skill)
+
+    def is_followed(self,company_result, academy_result, terminology_result, user_id):
+        return self.userCore.is_followed(company_result, academy_result, terminology_result, user_id)

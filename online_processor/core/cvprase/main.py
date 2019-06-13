@@ -15,7 +15,7 @@ class CV_main(object) :
                         'associationExperience', 'language','skill', 'hobby']
 
     def main_prase(self):
-            print(self.root)
+            # print(self.root)
             dict={}
             if self.root.endswith('html'):
                 dict = htmlparse().parsemain(self.root)
@@ -32,7 +32,7 @@ class CV_main(object) :
                       dict[pre]
                    except:
                         dict[pre]=''
-            print(dict)
+            # print(dict)
             self.cv = CV(name=dict['name'],
                          updateTime=dict['updateTime'],
                          _id=dict['id'],
@@ -61,7 +61,7 @@ class CV_main(object) :
                          language=dict['language'],
                          skill=dict['skill'],
                          hobby=dict['hobby'])
-            print(self.cv)
+            # print(self.cv)
             return self.cv
 
 
