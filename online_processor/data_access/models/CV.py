@@ -26,7 +26,8 @@ class CV:
                  _id="", insertTime="", updateTime="", source="", fileFormat="",
                  filePath="", attachmentPath="", plainText="", sameCVid="", md5="", zhilianLabels=[],
                  cv_url="",
-                 linked_result="", keyword="", tag="", source_method="", detailInfo="", resumeHead="", msg=""):
+                 linked_result="", keyword="", tag="", source_method="", detailInfo="", resumeHead="", msg="",
+                 unknown_field="", skill_tag=[], educationNature = "", **kwargs):
         self.phone = phone
         self.birthday = birthday
         self.age = age
@@ -97,6 +98,12 @@ class CV:
         self.source_method = source_method
         self.resumeHead = resumeHead
         self.msg = msg
+        self.unknown_field = unknown_field
+        self.skill_tag = skill_tag
+        self.educationNature = educationNature
 
     def __getitem__(self, item):
         return self.__dict__[item]
+
+    def __setitem__(self, index, value):
+        self.__dict__[index] = value
