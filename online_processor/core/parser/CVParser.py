@@ -13,7 +13,7 @@ from data_access.models.properties.Award import Award
 from data_access.models.properties.Patent import Patent
 from data_access.models.properties.Paper import Paper
 from utils.Utils import convert_str_2_date
-from utils.Logger import logging
+# from utils.Logger import logging
 import datetime
 import re
 

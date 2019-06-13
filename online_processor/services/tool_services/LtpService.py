@@ -59,4 +59,4 @@ class LtpService:
         pass
 
 
-ltpService = LtpService()
+# ltpService = LtpService()

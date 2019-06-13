@@ -1,4 +1,5 @@
-from utils.Logger import logging
+# from utils.Logger import logging
+import resources
 from data_access.controller.KBAcademyController4Mongo import KBAcademyController4Mongo
 from data_access.controller.KBCompanyController4Mongo import KBCompanyController4Mongo
 
@@ -24,6 +25,7 @@ class Linker:
             school = educationExperience.educationSchool
             schools.append(school)
         result = {}
+        print(schools)
         for school in schools:
             original_school = school
             school = re.sub("大学.*$", '大学', school) if '大学' in school else re.sub("学院.*$", "学院",

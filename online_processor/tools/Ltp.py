@@ -1,7 +1,7 @@
 import os
 import platform
 from pyltp import Segmentor, Postagger, Parser, NamedEntityRecognizer, SementicRoleLabeller
-from utils.Logger import logging
+# from utils.Logger import logging
 from settings import BASE_DIR
 
 
@@ -61,11 +61,11 @@ class Ltp:
         """
         return self.labeller.label(word_list, tag_list, arcs)
 
-    def verify_dict(self, user_dict_path, user_dict):
-        with open(user_dict_path, 'w+', encoding='utf-8') as f:
-            word_list = f.read().split('\n')
-            word_not_in_dict = set(user_dict) - set(word_list)
-            if word_not_in_dict:
-                logging.warning("there is {0}s word not in dict, adding them".format(len(word_not_in_dict)))
-                f.write("\n".join(word_not_in_dict))
-        pass
+    # def verify_dict(self, user_dict_path, user_dict):
+    #     with open(user_dict_path, 'w+', encoding='utf-8') as f:
+    #         word_list = f.read().split('\n')
+    #         word_not_in_dict = set(user_dict) - set(word_list)
+    #         if word_not_in_dict:
+    #             logging.warning("there is {0}s word not in dict, adding them".format(len(word_not_in_dict)))
+    #             f.write("\n".join(word_not_in_dict))
+    #     pass

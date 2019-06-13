@@ -4,7 +4,7 @@ from services.tool_services.MongoService import mgService as mgservice
 import settings
 
 
-@DataMap(_schema=settings.mysql_db, _table="jd_company")
+@DataMap(_schema=settings.mysql_db, _table="company_mark")
 class JDCompanyController4Mongo(BaseMongoController):
 
     def get_data_by_name(self, name):
@@ -13,3 +13,6 @@ class JDCompanyController4Mongo(BaseMongoController):
     def get_data_by_job_title(self, job_title, page, limit):
         return mgservice.query_sort(query_cond={'jobTitle': job_title}, table=self._table,
                                     db=self._schema, sort_by='startDate', page=page, size=limit)
+if __name__=='__main__':
+    res=JDCompanyController4Mongo().get_datas()
+    print(res)

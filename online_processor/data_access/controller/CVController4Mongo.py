@@ -4,7 +4,7 @@ from data_access.base.BaseMongoController import BaseMongoController
 from services.tool_services.MongoService import mgService as mgservice
 
 
-@DataMap(_schema="kb_demo", _table="CV")
+@DataMap(_schema="kb_talent_banks", _table="Copy_of_talent_bank_1")
 class CVController4Mongo(BaseMongoController):
     def get_datas_order_by(self, sort_by="", ascending=-1, page=1, size=10):
         return mgservice.query_sort(None, self._table, self._schema, sort_by, ascending, page, size)

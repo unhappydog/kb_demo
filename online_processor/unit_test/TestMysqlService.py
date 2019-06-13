@@ -1,10 +1,10 @@
 from services.tool_services.mysql_service import mysqlService
 import unittest
-
+import time
 
 class TestMongoService(unittest.TestCase):
     def test_query(self):
-        import time
+
 
         a = time.time()
         print(mysqlService.execute("show databases;"))
