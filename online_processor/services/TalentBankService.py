@@ -1,47 +1,73 @@
 from utils.Tags import Singleton
 from core.talent_bank.talent_bank import TalentBank
+from threading import Lock
 
-
+_lock = Lock()
 @Singleton
 class TalentBankService:
+
     def __init__(self):
         self.talent_bank = TalentBank()
 
-    def save(self, cv):
-        self.talent_bank.save(cv)
+    def save(self, cv, talent_bank_id=None, save_tag=False):
+        with _lock:
+            self.talent_bank.save(cv,talent_bank_id=talent_bank_id, save_tag=save_tag)
 
-    def search_by_name(self, name, page, size, mode, keyword=None):
-        return self.talent_bank.search_by_name(name, page, size, mode, keyword)
+    def search_by_keyword(self, keyword, location=None, experience=None, educationDegree=None, page=1, size=10,talent_bank_id=None, sort_by=None):
+        return self.talent_bank.search_by_keyword(keyword, location, experience, educationDegree,page, size,talent_bank_id=talent_bank_id, sort_by=sort_by)
 
-    def search_by_education(self, education, page, size, mode, name=None):
-        return self.talent_bank.search_by_education(education, page, size, mode, name)
+    def get_datas_by(self, keyword=None, location=None, update_time=None, experience=None, educationDegree=None, source=None, source_method=None, job_title=None, searchword=None, company=None, academy=None, skill_tag=None, tag=[], page=1, size=10, talent_bank_id=None, sort_by=None):
+        return self.talent_bank.get_datas_by(keyword,location, update_time, experience, educationDegree, source,source_method,job_title,searchword,company, academy, skill_tag, tag, page, size, talent_bank_id=talent_bank_id,sort_by=sort_by)
 
-    def search_by_source(self, source, page, size, mode, name=None):
-        return self.talent_bank.search_by_source(source, page, size, mode, name)
+    def get_by_id(self, id,talent_bank_id=None):
+        return self.talent_bank.get_by_id(id,talent_bank_id=talent_bank_id)
 
-    def search_by_keyword(self, keyword, location=None, experience=None, educationDegree=None, page=1, size=10):
-        return self.talent_bank.search_by_keyword(keyword, location, experience, educationDegree,page, size)
+    def delete_by_id(self, id,talent_bank_id=None):
+        self.talent_bank.delete_by_id(id,talent_bank_id=talent_bank_id)
 
-    def get_by_id(self, id):
-        return self.talent_bank.get_by_id(id)
+    def update(self, cv,talent_bank_id=None):
+        with _lock:
+            self.talent_bank.update(cv,talent_bank_id=talent_bank_id)
 
-    def delete_by_id(self, id):
-        self.talent_bank.delete_by_id(id)
+    def get_datas(self, page, size, mode, name=None,talent_bank_id=None):
+        return self.talent_bank.get_datas(page, size, mode, name,talent_bank_id=talent_bank_id)
 
-    def update(self, cv):
-        self.talent_bank.update(cv)
+    def add_to_favorite(self, cv, user_id, talent_bank_id=None):
+        with _lock:
+            # cv = self.get_by_id(cv_id,talent_bank_id=talent_bank_id)
+            if cv:
+                cv['tag'] = cv['tag'] + [user_id] if cv.get('tag', None) else [user_id]
+                cv['tag'] = list(set(cv['tag']))
+                self.talent_bank.save(cv,save_tag=True,talent_bank_id=talent_bank_id)
+                return True
+            else:
+                return False
 
-    def get_datas(self, page, size, mode, name=None):
-        return self.talent_bank.get_datas(page, size, mode, name)
+    def remove_from_favorite(self, cv_id, user_id, talent_bank_id=None):
+        with _lock:
+            cv = self.get_by_id(cv_id,talent_bank_id=talent_bank_id)
+            if cv:
+                cv = cv[0]
+                cv['tag'] = list(set(cv.get('tag', [])))
+                if user_id in cv['tag']:
+                    cv['tag'].remove(user_id)
+                self.talent_bank.save(cv, save_tag=True, talent_bank_id=talent_bank_id)
+                return True
+            else:
+                return False
 
-    def count_all_data(self):
-        return self.talent_bank.count_datas({})
+    def get_favorite(self, user_id, location=None,update_time=None, experience=None, educationDegree=None, source=None, source_method=None, job_title=None, searchword=None, page=1, size=10, talent_bank_id=None, sort_by=None):
+        return self.get_datas_by(None,location, update_time, experience, educationDegree,source, source_method, job_title, searchword, user_id, page, size, talent_bank_id=talent_bank_id, sort_by=sort_by)
 
-    def count_data_after(self,time):
-        return self.talent_bank.count_datas_update_after(time)
+    def count_column(self, column_name, talent_bank_id=None):
+        """
+        统计不同标签的个数
+        """
+        return self.talent_bank.count_column(column_name, talent_bank_id=talent_bank_id)
 
-    def count_tags(self):
-        return self.talent_bank.count_tags()
+    def gen_map(self, company_name):
+        return self.talent_bank.gen_map(company_name)
+
 
 
 tbService = TalentBankService()
