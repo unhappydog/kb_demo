@@ -4,32 +4,33 @@ from utils import  Utils
 class util(object):
     # 时间差
     def time_difference(self, starttime, endtime):
-        if starttime>endtime:
-            return False
-        if isinstance(endtime,str):
-            endtime=Utils.convert_str_2_date(endtime)
-        if isinstance(starttime,str):
-            starttime=Utils.convert_str_2_date(endtime)
-        diff = (endtime - starttime).days
-        start = int("".join(datetime.strftime(starttime, '%Y')))
-        end = int("".join(datetime.strftime(endtime, '%Y')))
-        year = 0
-        month = 0
-        while start <= end:
-            if self.is_leap(start):
-                year = diff // 366
-                month = diff % 366 // 30 + 2
-                if month >= 12:
-                    year = year + 1
-                    month = month % 12
-            else:
-                year = diff // 365
-                month = diff % 365 // 30 + 2
-                if month >= 12:
-                    year = year + 1
-                    month = month % 12
-            start += 1
-        return year, month
+            if starttime>endtime:
+                return False
+            if isinstance(endtime,str):
+                endtime=Utils.convert_str_2_date(endtime)
+            if isinstance(starttime,str):
+                starttime=Utils.convert_str_2_date(endtime)
+            diff = (endtime - starttime).days
+            start = int("".join(datetime.strftime(starttime, '%Y')))
+            end = int("".join(datetime.strftime(endtime, '%Y')))
+            year = 0
+            month = 0
+            while start <= end:
+                if self.is_leap(start):
+                    year = diff // 366
+                    month = diff % 366 // 30 + 2
+                    if month >= 12:
+                        year = year + 1
+                        month = month % 12
+                else:
+                    year = diff // 365
+                    month = diff % 365 // 30 + 2
+                    if month >= 12:
+                        year = year + 1
+                        month = month % 12
+                start += 1
+            return year, month
+
 
     def is_leap(self, years):
         if ((years % 4 == 0 and years % 100 != 0) or (years % 400 == 0)):  # 判断是否是闰年
