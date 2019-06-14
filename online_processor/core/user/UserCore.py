@@ -32,8 +32,51 @@ class UserCore:
         else:
             return None
 
-    def update_add_interest(self,_id, followed_company=None, followed_academy=None, followed_skill=None):
-        self.controller.update_add_interest(_id, followed_company, followed_academy, followed_skill)
+    def update_add_interest(self,_id, followed_company=None, followed_academy=None, followed_skill=None, max_number=5):
+        interests = self.get_interest_by_id(_id)
+        result = {}
+        # import pdb; pdb.set_trace()
+
+        if followed_company:
+            companies = interests['followed_company']
+            if len(companies) >= max_number:
+                result = {"result":"failed", "log":">5"}
+                followed_company = None
+            elif followed_company in companies:
+                result = {'result':'failed', 'log':'already followed'}
+                followed_company = None
+            else:
+                result = {'result':'success'}
+
+        if followed_academy:
+            academies = interests['followed_academy']
+            if len(academies) >= max_number:
+                result = {"result":"failed", "log":">5"}
+                followed_academy = None
+            elif followed_academy in academies:
+                result = {'result':'failed', 'log':'already followed'}
+                followed_academy = None
+            else:
+                result = {'result':'success'}
+
+        if followed_skill:
+            skills = interests['followed_skill']
+            if len(skills) >= max_number:
+                result = {"result":"failed", "log":">5"}
+                followed_skill = None
+            elif followed_skill in skills:
+                result = {'result':'failed', 'log':'already followed'}
+                followed_skill = None
+            else:
+                result = {'result':'success'}
+
+        # import pdb; pdb.set_trace()
+        try:
+            if followed_skill or followed_company or followed_academy:
+                self.controller.update_add_interest(_id, followed_company, followed_academy, followed_skill)
+        except Exception as e:
+            result = {'result':'failed', 'log':'unhandle exception'}
+        return result
 
     def update_remove_interest(self,_id, followed_company=None, followed_academy=None, followed_skill=None):
         self.controller.update_remove_interest(_id, followed_company, followed_academy, followed_skill)
@@ -53,19 +96,26 @@ class UserCore:
                 else:
                     v['is_followed'] = False
             result['companies'] = company_result
+        else:
+            result['companies'] = {}
         if academy_result:
             followed_academy = interests['followed_academy']
             for k,v in academy_result.items():
-                if k in academy_result:
+                if k in followed_academy:
                     v['is_followed'] = True
                 else:
                     v['is_followed'] = False
             result['academies'] = academy_result
+        else:
+            result['companies'] = {}
 
         if terminology_result:
             followed_skill = interests['followed_skill']
             terminology = self._is_termnolgoy_followed(terminology_result, followed_skill)
             result['terminologys'] = terminology_result
+        else:
+            result['terminologys'] = {}
+
         return result
 
     def _is_termnolgoy_followed(self, terminology_result, followed_skill):

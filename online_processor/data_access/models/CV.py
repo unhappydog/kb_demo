@@ -27,7 +27,7 @@ class CV:
                  filePath="", attachmentPath="", plainText="", sameCVid="", md5="", zhilianLabels=[],
                  cv_url="",
                  linked_result="", keyword="", tag="", source_method="", detailInfo="", resumeHead="", msg="",
-                 unknown_field="", skill_tag=[], educationNature = "", **kwargs):
+                 unknown_field="", skill_tag=[], educationNature = "", score=0, **kwargs):
         self.phone = phone
         self.birthday = birthday
         self.age = age
@@ -101,6 +101,7 @@ class CV:
         self.unknown_field = unknown_field
         self.skill_tag = skill_tag
         self.educationNature = educationNature
+        self.score = score
 
     def __getitem__(self, item):
         return self.__dict__[item]

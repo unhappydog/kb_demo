@@ -32,7 +32,7 @@ class TestRestApi(unittest.TestCase):
         print("testing moving")
         with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
             self.json_str = f.read()
-        result = requests.post('http://{0}:18082/online/sourcing/move_to_talent_bank/{1}/{2}/{3}/{4}'.format(host, '机器学习', 'upload', 'up','123'), data={'json': self.json_str})
+        result = requests.post('http://{0}:18082/online/sourcing/move_to_talent_bank/{1}/{2}/{3}/{4}/{5}'.format(host, '机器学习工程师', 'none', 'upload', 'up','1'), data={'json': self.json_str})
         self.assertEqual(result.status_code, 200)
 
     def test_upload_data(self):

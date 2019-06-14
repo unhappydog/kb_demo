@@ -3,15 +3,16 @@ from core.base.BaseTask import BaseTask
 from data_access.controller.KBPostController4Mongo import KBPostController4Mongo
 from services.NLPService import nlpService
 from services.data_services.CommonDataService import commonDataService
+from data_access.controller.KBPostController4Mongo import KBPostController4Mongo
 import re
 
 
 @newsProcessor.add_as_processors(order=2, stage=1,
                                  content_column="CONTENT", pubtime_column="PUBTIME",
                                  replicate_column="ISREPLICATE", title_column="TITLE",
-                                 tag_column="Tag", domain_tag="DomainTag", company_tag="CompanyTag", related_company="companys", related_person="persons")
+                                 tag_column="Tag", domain_tag="DomainTag", company_tag="CompanyTag", related_company="companys", related_person="persons", job_tag="job_tag")
 class TagTask(BaseTask):
-    def __init__(self, content_column, pubtime_column, replicate_column, title_column, tag_column, domain_tag, company_tag, related_company, related_person):
+    def __init__(self, content_column, pubtime_column, replicate_column, title_column, tag_column, domain_tag, company_tag, related_company, related_person, job_tag):
         self.title_column = title_column
         self.content_column = content_column
         self.pubtime_column = pubtime_column
@@ -23,6 +24,19 @@ class TagTask(BaseTask):
         self.related_company = related_company
         self.related_person = related_person
         self.companys = commonDataService.get_company_ai_top_50()
+        self.job_tag = job_tag
+        self.keyword_dict = KBPostController4Mongo().get_prefix_dict()
+
+        self.keyword_dict['自然语言处理工程师'].remove('知识图谱')
+        self.word_to_title = {}
+        for job_title, keywords in self.keyword_dict.items():
+            for keyword in keywords:
+                if keyword in self.word_to_title.keys():
+                    self.word_to_title[keyword].append(job_title)
+                else:
+                    self.word_to_title[keyword] = [job_title]
+        self.word_to_title['知识图谱'] = ['知识图谱工程师']
+
 
     def fit(self, data):
         data[self.tag_column] = data[self.title_column].apply(lambda x: self.add_tag(x))
@@ -31,6 +45,7 @@ class TagTask(BaseTask):
         data['ner'] = data[self.content_column].apply(lambda x: self.ner_recong(x))
         data[self.related_company] = data['ner'].apply(lambda x:self.ner_extract(x, 'Ni'))
         data[self.related_person] = data['ner'].apply(lambda x: self.ner_extract(x))
+        data[self.job_tag] = data.apply(lambda x: self.related_position(x[self.title_column], x[self.content_column]), axis=1)
         return data
 
     def add_tag(self, x):
@@ -124,6 +139,20 @@ class TagTask(BaseTask):
 
     def ner_recong(self,content):
         return nlpService.ner_recong(content)
+
+    def related_position(self, title, content):
+        for key,value in self.word_to_title.items():
+            if key in title:
+                return value
+        score = {}
+        for key, value in self.word_to_title.items():
+            if key in content:
+                score[key] = score.get(key, 0) + 1
+        if score:
+            score =sorted(score.items(),key=lambda x: x[1], reverse=True)
+            return self.word_to_title[score[0][0]]
+        else:
+            return []
 
     def ner_extract(self, ners, ner_type="Nh"):
         return [word for word in ners if word[1] == ner_type]

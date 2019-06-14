@@ -5,6 +5,7 @@ from data_access.controller.ExperienceController4Mongo import ProjectExperienceC
 from data_access.controller.JDCompanyController4Mongo import JDCompanyController4Mongo
 from services.tool_services.MongoService import mgService
 from data_access.controller.NewController4Mongo import NewController4Mongo
+from data_access.controller.PositionController import PositionController
 
 
 @Singleton
@@ -15,6 +16,7 @@ class DataService:
         self.experienc_contorller = ProjectExperienceController4Mongo()
         self.jd_company_controller = JDCompanyController4Mongo()
         self.news_controller = NewController4Mongo()
+        self.position_controller = PositionController()
 
     def save(self, cv):
         if self.cv_controller.get_data_by_id(_id=cv._id):
@@ -41,17 +43,11 @@ class DataService:
     def get_company_by_jd(self, name, page, limit):
         return self.jd_company_controller.get_data_by_job_title(name, page, limit)
 
-    def get_news_by_tag(self, tag, page, limit):
-        return self.news_controller.get_news_by_tag(tag, page=page, limit=limit)
-
-    def get_news(self, page, limit):
-        return self.news_controller.get_news(page=page, limit=limit)
-
-    def get_news_by_domain(self, domain, page, limit):
-        return self.news_controller.get_news_by_domain(domain, page=page, limit=limit)
-
     def get_news_by(self, domain=None, tag=None, company=None, orderBy="PUBTIME", page=1, limit=10):
         return self.news_controller.get_news_by(domain, tag, company, orderBy, page, limit)
+
+    def get_position_by(self, name=None):
+        return self.position_controller.get_data_by_name(name)
 
 
 dataService = DataService()

@@ -31,6 +31,9 @@ class LinkerService:
     def link_terminology_in_text(self, text):
         return self.terminology.simple_word_linker(text)
 
+    def gen_skill_tag_from_text(self, text):
+        return self.terminology.recongnize_termnology_in_text(text)
+
     def parse(self, cv_json):
         return self.parser.parse(cv_json)
 

@@ -26,8 +26,8 @@ def follow(user_id, company, academy, skill):
     academy = check_if_none(academy)
     skill = check_if_none(skill)
     if userService.get_user(user_id):
-        userService.update_add_interest(user_id, company, academy, skill)
-        return json.dumps({"result":"success"})
+        result = userService.update_add_interest(user_id, company, academy, skill)
+        return json.dumps(result)
     else:
         if userService.add_user(user_id, company, academy, skill):
             return json.dumps({"result":"success"})

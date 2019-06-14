@@ -1,4 +1,4 @@
-# from utils.Logger import logging
+from utils.Logger import logging
 import resources
 from data_access.controller.KBAcademyController4Mongo import KBAcademyController4Mongo
 from data_access.controller.KBCompanyController4Mongo import KBCompanyController4Mongo

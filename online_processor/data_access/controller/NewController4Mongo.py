@@ -56,87 +56,19 @@ class NewController4Mongo(BaseMongoController):
             cond['CompanyTag'] = company_tag
 
         return mgService.query_sort(query_cond=cond, table=self._table, db=self._schema, sort_by=orderBy,ascending=-1,page=page, size=limit, projection={
-                                        "ID": 1,
-                                        "TITLE": 1,
-                                        "PUBTIME": 1,
-                                        "BRIEF": 1,
-                                        "CONTENT": 1,
-                                        "AUTHOR": 1,
-                                        "URL": 1,
-                                        "IMG_URL": 1,
-                                        "SOURCE": 1,
-                                        "Tag": 1,
-                                        "companys":1,
-                                        "persons":1
+            "ID": 1,
+            "TITLE": 1,
+            "PUBTIME": 1,
+            "BRIEF": 1,
+            "CONTENT": 1,
+            "AUTHOR": 1,
+            "URL": 1,
+            "IMG_URL": 1,
+            "SOURCE": 1,
+            "Tag": 1,
+            "companys":1,
+            "persons":1,
+            "job_tag":1
             })
 
 
-    # @random_image
-    # def get_news_by_domain(self, domain, orderBy="PUBTIME", page=1, limit=10):
-    #     if domain is None:
-    #         domain = {'ISREPLICATE': 0,
-    #                   "ISBAD": 0}
-    #     else:
-    #         domain = {
-    #             'DomainTag': domain,
-    #             'ISREPLICATE': 0,
-    #             'ISBAD': 0
-    #         }
-    #     return mgService.query_sort(query_cond=domain, table=self._table, db=self._schema, sort_by=orderBy,
-    #                                 ascending=-1,
-    #                                 page=page, size=limit, projection={
-    #             "ID": 1,
-    #             "TITLE": 1,
-    #             "PUBTIME": 1,
-    #             "BRIEF": 1,
-    #             "CONTENT": 1,
-    #             "AUTHOR": 1,
-    #             "URL": 1,
-    #             "IMG_URL": 1,
-    #             "SOURCE": 1,
-    #             "Tag": 1
-    #         })
-
-    # @random_image
-    # def get_news_by_tag(self, tag, orderBy="PUBTIME", page=1, limit=10):
-    #     if tag is None:
-    #         cond = {
-    #             'ISREPLICATE': 0,
-    #             'ISBAD': 0
-    #         }
-    #     else:
-    #         cond = {
-    #             "Tag": tag,
-    #             'ISREPLICATE': 0,
-    #             'ISBAD': 0
-    #         }
-    #     return mgService.query_sort(query_cond=cond, table=self._table, db=self._schema, sort_by=orderBy, ascending=-1,
-    #                                 page=page, size=limit, projection={
-    #             "ID": 1,
-    #             "TITLE": 1,
-    #             "PUBTIME": 1,
-    #             "BRIEF": 1,
-    #             "CONTENT": 1,
-    #             "AUTHOR": 1,
-    #             "URL": 1,
-    #             "IMG_URL": 1,
-    #             "SOURCE": 1,
-    #             "Tag": 1
-    #         })
-
-    # @random_image
-    # def get_news(self, orderBy="PUBTIME", page=1, limit=10):
-    #     return mgService.query_sort(query_cond={'ISREPLICATE': 0, 'ISBAD': 0}, table=self._table, db=self._schema,
-    #                                 sort_by=orderBy, ascending=-1,
-    #                                 page=page, size=limit, projection={
-    #             "ID": 1,
-    #             "TITLE": 1,
-    #             "PUBTIME": 1,
-    #             "BRIEF": 1,
-    #             "CONTENT": 1,
-    #             "AUTHOR": 1,
-    #             "URL": 1,
-    #             "IMG_URL": 1,
-    #             "SOURCE": 1,
-    #             "Tag": 1
-    #         })

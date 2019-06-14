@@ -8,10 +8,13 @@ from services.LinkerService import linkerService
 from services.CVService import cv_service
 from services.TalentBankService import tbService
 from services.DataService import dataService
+from services.PersonJobFitService import PersonJobFitService
 from werkzeug.utils import secure_filename
 from settings import BASE_DIR
 import datetime
 import os
+
+personJobFitService = PersonJobFitService.instance()
 
 @inf_restful.route("/online/sourcing/test_hellow")
 def test_hellow_v2():
@@ -34,18 +37,23 @@ def search_talent_by_keyword_v2(keyword, location, experience, education, sort_b
     return json.dumps(datas,ensure_ascii=False,cls=JSONEncoder)
 
 
-@inf_restful.route('/online/sourcing/move_to_talent_bank/<string:job_title>/<string:source>/<string:source_method>/<string:talent_bank_id>', methods=['POST'])
-def move_to_talent_bank(job_title, source, source_method, talent_bank_id):
+@inf_restful.route('/online/sourcing/move_to_talent_bank/<string:job_title>/<string:user_tag>/<string:source>/<string:source_method>/<string:talent_bank_id>', methods=['POST'])
+def move_to_talent_bank(job_title, user_tag, source, source_method, talent_bank_id):
     """
     收藏到简历库功能
     """
     source= None if source == 'none' else source
     source_method = None if source_method == 'none' else source_method
     talent_bank_id = None if talent_bank_id == 'none' else talent_bank_id
+    job_title = None if job_title == 'none' else job_title
+    user_tag = None if user_tag == 'none' else user_tag
+    if job_title and user_tag:
+        return json.dumps({"state":"failed", "log":"job_title and user_tag cannot be set at the same time"})
+    elif user_tag:
+        job_title=user_tag
+
     json_data = request.form['json']
 
-    # import pdb; pdb.set_trace()
-    # print("start debug")
     try:
         cv = linkerService.parse(json_data)
         skill_tags = linkerService.gen_skill_tag(cv)
@@ -58,6 +66,14 @@ def move_to_talent_bank(job_title, source, source_method, talent_bank_id):
     if source_method:
         cv['source_method'] = source_method
     cv['jobTitle'] = job_title
+    # job person fit
+    position = dataService.get_position_by(job_title)
+    if not position:
+        return json.dumps({"state":"failed", "log":"positon doesn't exists"})
+    position = position[0]
+    score = personJobFitService.score(cv, position)
+    cv['score'] = score
+
     try:
         tbService.save(cv, talent_bank_id)
     except Exception as e:

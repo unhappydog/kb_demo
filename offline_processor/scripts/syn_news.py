@@ -5,6 +5,7 @@ from data_access.controller.NewController import NewController
 from services.tool_services.mysql_service import mysqlService
 from services.tool_services.MongoService import mgService
 from decimal import Decimal
+from tqdm import tqdm
 
 
 def syn_talent():
@@ -17,10 +18,13 @@ def syn_talent():
 def syn_new():
     # for data in new_controller.get_news_as_gen():
     #     print(data)
-    for datas in mysqlService.execute_as_gen("select * from kb_news_2019"):
+    for datas in tqdm(mysqlService.execute_as_gen("select * from kb_news_2019")):
         for data in datas:
-            mgService.insert(data, 'kb_demo', 'kb_news')
-            print(data)
+            data['_id'] = data['ID']
+            try:
+                mgService.insert(data, 'kb_demo', 'kb_news')
+            except Exception as e:
+                print(e)
 
 
 def syn_weixin():
