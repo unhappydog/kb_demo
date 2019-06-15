@@ -4,7 +4,8 @@ from services.tool_services.MongoService import mgService as mgservice
 import settings
 
 
-@DataMap(_schema=settings.mysql_db, _table="company_mark")
+# @DataMap(_schema=settings.mysql_db, _table="company_mark")
+@DataMap(_schema=settings.mysql_db, _table="jd_company")
 class JDCompanyController4Mongo(BaseMongoController):
 
     def get_data_by_name(self, name):

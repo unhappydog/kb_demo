@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 from services.LinkerService import linkerService
 from services.KgizeService import kgService
 from data_access.controller.KbTalentBankController4Mongo import KBTalentBankController4Mongo
@@ -30,5 +32,5 @@ def remove_dual():
 
 
 if __name__ == '__main__':
-    # parse_one()
-    remove_dual()
+    parse_one()
+    # remove_dual()

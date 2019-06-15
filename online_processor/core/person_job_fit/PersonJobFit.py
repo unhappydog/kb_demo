@@ -1,6 +1,7 @@
 from data_access.controller.PositionController import PositionController
 from data_access.models.Position import Position
 from services.LinkerService import linkerService
+import math
 import re
 
 
@@ -14,60 +15,68 @@ class PersonJobFit:
         # import pdb; pdb.set_trace()
 
         score = 0
-        #score education
+        #score education 10
         cv_education = cv.highestEducationDegree
         position_education = position['education']
         education_score = self.score_education(cv_education, position_education)
-        score += education_score
+        score += education_score *5
 
-        #score education experiences
+        #score education experiences 10
         cv_education_experience = cv.educationExperience
         education_experience_score = self.score_education_experience(cv_education_experience)
-        score += education_experience_score
+        score += education_experience_score *5
 
-        #score experience
+        #score experience 10
         cv_work_experience = cv.workYear
         position_work_experience = position['workYear']
         work_experience_score = self.score_work_experience(cv_work_experience, position_work_experience)
-        score += work_experience_score
+        score += work_experience_score *5
 
-        #score skill
+        #score skill 60
         cv_skill_tags = linkerService.gen_skill_tag(cv)
         position_skill_tags = self._extract_skills_from_position(position)
         work_skill_score = self.score_skill(cv_skill_tags, position_skill_tags)
-        score += 10 * work_skill_score
+        score += 60 * work_skill_score
 
-        #score project
+        #score project 10
         cv_project_experience = cv.projectExperience
         position_project_experience = position['workDescription']
         project_experience_score = self.score_project_experience(cv_project_experience, position_project_experience)
+        if project_experience_score >= 10:
+            project_experience_score = 10
         score  += project_experience_score
 
-        #score company
+        #score company 5
+        score +=5
 
-        #scre risk
+        #scre risk 10
         cv_risk = linkerService.risk_recongnize(cv)
         risk_score = self.score_risk(cv_risk)
-        score += risk_score
+        score += risk_score * 2
 
-        #score_location
+        #score_location 5
         cv_location = cv.expectedWorkplace
         position_location = position['workCity']
         location_score = self.score_location(cv_location, position_location)
-        score += location_score
+        score += location_score *5
 
-        #score age
+        #score age 5
         cv_age = cv.age
         age_score = self.score_age(cv_age)
-        score += age_score
+        score += age_score *5
 
-        #score salary
+        #score salary 5
         cv_salary = cv.expectedSalary
         position_salary = position['salary']
         salary_score = self.score_salary(cv_salary, position_salary)
-        score += salary_score
+        score += salary_score *5
 
         #score industry
+        score = int(score)
+        if score <= 0:
+            score =0
+        elif score >=95:
+            score = 95
 
         return score
         pass
@@ -106,8 +115,8 @@ class PersonJobFit:
     def score_skill(self,cv_skill, position_skill):
         if not cv_skill or not position_skill:
             return 0
-        a , b, c = set(cv_skill), set(position_skill), set(cv_skill + position_skill)
-        return (len(a) + len(b)) /len(c)
+        a , b, c = set(position_skill) - set(cv_skill), set(position_skill), set(cv_skill + position_skill)
+        return len(a) /len(b)
 
     def score_project_experience(self,cv_project_experience, position_project_experience):
         return len(cv_project_experience)

@@ -60,7 +60,8 @@ class Linker:
             else:
                 # Logger.waring("{0} is not in database.".format(company))
                 # logging.warning("{0} is not in database".format(company))
-                print(company)
+                with open('company.txt','a+', encoding='utf8') as f:
+                    f.write("{0}\n".format(company))
         return result
 
     def get_company_info(self, company):

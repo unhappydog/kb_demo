@@ -107,7 +107,7 @@ class UserCore:
                     v['is_followed'] = False
             result['academies'] = academy_result
         else:
-            result['companies'] = {}
+            result['academies'] = {}
 
         if terminology_result:
             followed_skill = interests['followed_skill']
