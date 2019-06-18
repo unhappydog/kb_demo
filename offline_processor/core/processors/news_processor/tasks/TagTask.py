@@ -155,5 +155,5 @@ class TagTask(BaseTask):
             return []
 
     def ner_extract(self, ners, ner_type="Nh"):
-        return [word for word in ners if word[1] == ner_type]
+        return list(set([word for word in ners if word[1] == ner_type and len(word)>=2]))
 

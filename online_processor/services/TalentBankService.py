@@ -57,7 +57,7 @@ class TalentBankService:
                 return False
 
     def get_favorite(self, user_id, location=None,update_time=None, experience=None, educationDegree=None, source=None, source_method=None, job_title=None, searchword=None, page=1, size=10, talent_bank_id=None, sort_by=None):
-        return self.get_datas_by(None,location, update_time, experience, educationDegree,source, source_method, job_title, searchword, user_id, page, size, talent_bank_id=talent_bank_id, sort_by=sort_by)
+        return self.get_datas_by(None,location, update_time, experience, educationDegree,source, source_method, job_title, searchword,None,None, None, user_id, page, size, talent_bank_id=talent_bank_id, sort_by=sort_by)
 
     def count_column(self, column_name, talent_bank_id=None):
         """
@@ -67,6 +67,15 @@ class TalentBankService:
 
     def gen_map(self, company_name):
         return self.talent_bank.gen_map(company_name)
+
+    def gen_chart_data(self, company_name, in_office, job_type, job_title):
+        return self.talent_bank.gen_chart_data(company_name,in_office, job_type, job_title)
+
+    def get_all_cv(self, company, academy, skill_tag, sort_by="updateTime", ascending=-1, page=1, size=10):
+        return self.talent_bank.get_all_cv(company, academy, skill_tag, sort_by="updateTime", ascending=-1, page=1, size=10)
+
+    def get_map_cv(self, company_name, in_office):
+        return self.talent_bank.get_map_cv(company_name, in_office)
 
 
 

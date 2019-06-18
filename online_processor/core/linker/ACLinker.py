@@ -20,6 +20,8 @@ class ACLinker:
         :param text:
         :return:
         """
+        if text is None:
+            return ""
         text = text.lower()
         result = []
         final_result = []

@@ -13,8 +13,43 @@ personJobFitService = PersonJobFitService.instance()
 
 # from core.parser.CVParser import CVParser
 
+def update_for_map():
+    cv_controller = CVController4Mongo()
+    datas = cv_controller.get_datas()
+    datas = mgService.query({}, 'kb_demo', 'kb_CV_2019')
+    for data in tqdm(datas):
+        cv = linkerService.parse(data)
+        word_experiences = cv.workExperience
+        if len(word_experiences) <= 0:
+            continue
+        word_experiences = sorted(word_experiences, key=lambda x: x.workStartTime, reverse=True)
+        cv.recentPosition = word_experiences[0]['workPosition']
+        cv.source = "zhilian"
+        cv.source_method='zhilian'
+        cv.skill_tag = linkerService.gen_skill_tag(cv)
+        # work_experience_new = []
+        for work_experience in word_experiences:
+            if work_experience['workEndTime'] == cv.updateTime:
+                work_experience.workEndTime = None
+        cv.workExperience = word_experiences
+        tbService.save(cv)
 
-if __name__ == '__main__':
+    datas = mgService.query({}, 'kb_demo','kb_CV')
+    for data in tqdm(datas):
+        print(data)
+        cv = linkerService.parse(data)
+        cv.highestEducationDegree = cv.highestEducationBackground
+        word_experiences = cv.workExperience
+        if len(word_experiences) <=0:
+            continue
+        word_experiences = sorted(word_experiences, key=lambda x: x.workStartTime, reverse=True)
+        cv.recentPosition = word_experiences[0]['workPosition']
+        cv.source = 'zhilian'
+        cv.source_method = 'upload'
+        cv.skill_tag = linkerService.gen_skill_tag(cv)
+        tbService.save(cv)
+
+def update_cv():
     keyword_dict = KBPostController4Mongo().get_prefix_dict()
     keyword_dict['自然语言处理工程师'].remove('知识图谱')
     word_to_title = {}
@@ -79,3 +114,11 @@ if __name__ == '__main__':
         cv['score'] = score
         tbService.save(cv,'1')
     # print(tbService.search_by_name("机器学习算法工程师", 2, 10))
+
+
+
+
+
+if __name__ == '__main__':
+    # update_for_map()
+    update_cv()

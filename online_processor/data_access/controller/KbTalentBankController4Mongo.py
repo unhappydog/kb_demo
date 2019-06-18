@@ -93,7 +93,7 @@ class KBTalentBankController4Mongo(BaseMongoController):
             cond['educationExperience.educationSchool'] = academy
 
         if skill_tag:
-            cond['skill_tag'] = tag
+            cond['skill_tag'] = skill_tag
         return mgservice.query_sort(query_cond=cond,
                                     table=self._table,
                                     db=self._schema,
@@ -131,12 +131,28 @@ class KBTalentBankController4Mongo(BaseMongoController):
     def get_datas_by_company(self, company):
         if company:
             cond = {
-                'workExperience.workCompany':company
+                'workExperience.workCompany': {"$regex":company}
             }
         else:
             return []
         return mgservice.query(cond, db=self._schema, table=self._table)
 
+    def get_all_cv(self, company, academy, skill_tag, sort_by="updateTime", ascending=-1, page=1, size=10):
+        cond = {}
+        if company is not None:
+            cond['workExperience.workCompany'] = {'$in': company}
+        if academy is not None:
+            cond['educationExperience.educationSchool'] = {'$in':academy}
+        if skill_tag is not None:
+            cond['skill_tag'] = {'$in': skill_tag}
+
+        return mgservice.query_sort(query_cond=cond,
+                                    table=self._table,
+                                    db=self._schema,
+                                    sort_by=sort_by,
+                                    ascending=ascending,
+                                    page=page,
+                                    size=size)
 
 if __name__ == '__main__':
     controller = KBTalentBankController4Mongo()

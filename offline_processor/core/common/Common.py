@@ -12,7 +12,7 @@ def compute_abuse_id(data, column_list, id_column, min_length_list, detect_messy
     for column, min_length, detect_messy in columns_lengths_ifmessys:
         if detect_messy:
             abuse_df.append(data[data[column].apply(
-                lambda x: x is None or len(x) <= min_length or x == "" or detect_messy_cod(x) < 1.2)])
+                lambda x: x is None or len(x) <= min_length or x == "" or detect_messy_cod(x) < 2)])
         else:
             abuse_df.append(data[data[column].apply(
                 lambda x: x is None or len(x) <= min_length or x == "")])
@@ -60,3 +60,12 @@ def detect_messy_cod(doc):
     # seg_list = ltpService.segment(doc)
     seg_list = nlpService.seg_words(doc)
     return len(doc) / new_len(seg_list)
+
+def detect_messy_cod_v2(doc, min_code=20):
+    messy_code = b"\xef\xbf\xbd"
+    doc_str = doc
+    count = doc_str.count(messy_code.decode(), 0, len(doc_str))
+    if count >= min_code:
+        return True
+    else:
+        return False

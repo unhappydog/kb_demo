@@ -115,7 +115,7 @@ class PersonJobFit:
     def score_skill(self,cv_skill, position_skill):
         if not cv_skill or not position_skill:
             return 0
-        a , b, c = set(position_skill) - set(cv_skill), set(position_skill), set(cv_skill + position_skill)
+        a , b, c = set(cv_skill) & set(position_skill), set(position_skill), set(cv_skill + position_skill)
         return len(a) /len(b)
 
     def score_project_experience(self,cv_project_experience, position_project_experience):

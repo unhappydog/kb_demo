@@ -55,6 +55,8 @@ class Linker:
             if ("大学" in company or "学院" in company) and not data:
                 data = self.academy_controller.get_data_by_name(company)
             # if company.
+            if not data:
+                data = self.process_add_hoc(company)
             if data:
                 result[company] = data[0].__dict__
             else:
@@ -73,3 +75,12 @@ class Linker:
             # Logger.waring("{0} is not in database.".format(company))
             logging.warning("{0} is not in database".format(company))
         return result
+
+    def process_add_hoc(self, company):
+        add_hoc_words = ['阿里巴巴','阿里', '百度', '京东', '新浪', '搜狐', '腾讯', '华为', '小米','三星']
+        for word in add_hoc_words:
+            if word in company:
+                data = self.company_controller.get_data_by_sub_name(word)
+                return data
+        return None
+

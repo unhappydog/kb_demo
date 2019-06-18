@@ -27,7 +27,7 @@ class BasePreProcessTask(BaseTask):
         logging.info("starting processing data")
         # abuse bad data
         abuse_ids = Common.compute_abuse_id(data, [self.content_column, self.title_column], self.key_column,
-                                            min_length_list=self.min_length, detect_messy_list=[False, True])
+                                            min_length_list=self.min_length, detect_messy_list=[True, True])
         # data = data[data[self.key_column].apply(lambda x: x not in abuse_ids)]
         data[self.bad_column] = data[self.key_column].apply(lambda x: 0 if x not in abuse_ids else 1)
 

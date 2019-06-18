@@ -9,12 +9,14 @@ from services.CVService import cv_service
 from services.TalentBankService import tbService
 from services.DataService import dataService
 from services.PersonJobFitService import PersonJobFitService
+from services.UserService import UserService
 from werkzeug.utils import secure_filename
 from settings import BASE_DIR
 import datetime
 import os
 
 personJobFitService = PersonJobFitService.instance()
+userService = UserService.instance()
 
 @inf_restful.route("/online/sourcing/test_hellow")
 def test_hellow_v2():
@@ -31,6 +33,7 @@ def search_talent_by_keyword_v2(keyword, location, experience, education, sort_b
     experience = None if experience == 'none' else experience
     education = None if education == 'none' else education
     sort_by = None if sort_by == 'none' else sort_by
+    keyword = "" if keyword == 'none' else keyword
 
     # import pdd; pdb.set_trace()
     datas = tbService.search_by_keyword(keyword=keyword, location=location, experience=experience, educationDegree=education, talent_bank_id=talent_bank_id,sort_by=sort_by,page=page, size=limit)
@@ -117,6 +120,7 @@ def search_talent_by_Keyword_position_company(keyword, update_time, experience,e
     job_title = None if job_title == 'none' else job_title
     source_method = None if source_method =='none' else source_method
     sort_by = None if sort_by == 'none' else sort_by
+    keyword = '' if keyword == 'none' else keyword
 
     datas = tbService.get_datas_by(keyword=keyword,update_time=update_time, experience=experience, educationDegree=education, source=source, source_method=source_method, job_title=job_title, sort_by=sort_by,talent_bank_id=talent_bank_id, page=page, size=limit)
     return json.dumps(datas,ensure_ascii=False, cls=JSONEncoder)
@@ -209,9 +213,44 @@ def gen_talent_map(company):
     datas = tbService.gen_map(company)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
+@inf_restful.route("/online/talent_bank/gen_talent_map_chart_data/<string:company>/<string:in_office>", methods=['GET'])
+def gen_talent_map_chart_data(company, in_office):
+    in_office = None if in_office == 'none' else in_office
+    if in_office == 'true':
+        in_office = True
+    elif in_office == 'false':
+        in_office = False
+    datas = tbService.gen_chart_data(company, in_office, None, None)
+    return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
 
-@inf_restful.route("/online/talent_bank/goto/<string:company>/<string:academy>/<string:skill_tag>/<string:update_time>/<string:experience>/<string:education>/<string:source>/<string:source_method>/<string:sort_by>/<string:talent_bank_id>/<int:page>/<int:limit>")
-def goto(company, academy, skill_tag,update_time, experience, education, source,source_method, sort_by, talent_bank_id, page, limit):
+@inf_restful.route("/online/talent_bank/get_map_cv/<string:company>/<string:in_office>")
+def get_map_cv(company, in_office):
+    in_office = None if in_office == 'none' else in_office
+    if in_office == 'true':
+        in_office = True
+    elif in_office == 'false':
+        in_office = False
+    datas = tbService.get_map_cv(company, in_office)
+    return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
+
+@inf_restful.route("/online/talent_bank/goto/<string:all_follow>/<string:company>/<string:academy>/<string:skill_tag>/<string:update_time>/<string:experience>/<string:education>/<string:source>/<string:source_method>/<string:sort_by>/<string:user_id>/<string:talent_bank_id>/<int:page>/<int:limit>")
+def goto(all_follow,company, academy, skill_tag,update_time, experience, education, source,source_method, sort_by, user_id, talent_bank_id, page, limit):
+    all_follow = None if all_follow == 'none' else all_follow
+    user_id = None if user_id == 'none' else user_id
+    sort_by = None if sort_by == 'none' else sort_by
+    if all_follow:
+        user_interest = userService.get_interest_by_id(user_id, True, True, True)
+        if all_follow == 'company':
+            interest = user_interest['followed_company']
+            datas = tbService.get_all_cv(interest, None, None, None, None, page, limit)
+        elif all_follow == 'academy':
+            interest = user_interest['followed_academy']
+            datas = tbService.get_all_cv(None, interest,  None, None, None, page, limit)
+        elif all_follow == 'skill':
+            interest = user_interest['followed_skill']
+            datas = tbService.get_all_cv(None, None, interest,  None, None, page, limit)
+        return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
+
     company = None if company == 'none' else company
     academy = None if academy == 'none' else academy
     skill_tag = None if skill_tag == 'none' else skill_tag
@@ -220,6 +259,5 @@ def goto(company, academy, skill_tag,update_time, experience, education, source,
     education = None if education == 'none' else education
     source = None if source == 'none' else education
     source_method = None if source_method == 'none' else education
-    sort_by = None if sort_by == 'none' else sort_by
     datas = tbService.get_datas_by(update_time=update_time, experience=experience, educationDegree=education,source=source, source_method=source_method, sort_by=sort_by, company=company, academy=academy, skill_tag=skill_tag, talent_bank_id=talent_bank_id)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)

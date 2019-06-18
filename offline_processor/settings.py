@@ -23,5 +23,5 @@ log_file = "log.log"
 error_log_file = "error.log"
 log_level = DEBUG
 
-redis_host = ""
-redis_port = ""
+redis_host = "rembern.com"
+redis_port = "32379"

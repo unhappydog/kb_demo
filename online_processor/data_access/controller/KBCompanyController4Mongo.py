@@ -36,6 +36,11 @@ class KBCompanyController4Mongo(BaseMongoController):
     def get_data_by_name(self, name):
         return mgservice.query({"$or":[{"companyName":name}, {"entName":name}]},self._schema, self._table)
 
+    @filter_data
+    @return_type(kb_Company)
+    def get_data_by_sub_name(self, name):
+        return mgservice.query({"companyName":{"$regex":name}}, self._schema, self._table)
+
 
 if __name__ == '__main__':
     a = KBCompanyController4Mongo()

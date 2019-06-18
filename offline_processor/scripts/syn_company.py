@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 from services.tool_services.MongoService import mgService
 import datetime
 import json
@@ -102,8 +104,10 @@ def syn_company_from_xin():
             _id = data['_id']
             del data['_id']
             mgService.update({'_id': _id}, data, 'kb_demo', 'kb_company')
+            # print(data['entName'])
         else:
             mgService.insert(data, 'kb_demo', 'kb_company')
+            print(data['entName'])
 
 
 def parse_company(data):

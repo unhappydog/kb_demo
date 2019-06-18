@@ -54,6 +54,8 @@ class BaseMongoController:
                 del data[key_column]
                 mgService.update(cond, data, self._schema, self._table)
             except Exception as e:
+                # import pdb; pdb.set_trace()
+
                 logging.exception(e)
 
     def insert_datas_from_df(self, df):

@@ -168,9 +168,21 @@ class TalentBank:
 
     @_switch_table_tag
     @filter_data
+    def get_all_cv(self, company, academy, skill_tag, sort_by="updateTime", ascending=-1, page=1, size=10):
+        return self.controller.get_all_cv(company, academy, skill_tag, sort_by, ascending, page, size)
+
+
+    @_switch_table_tag
+    @filter_data
     def count_column(self, column_name, cond=None):
         datas = self.controller.count_column(column_name, cond)
         return [data for data in datas if data.get(column_name)]
 
     def gen_map(self, company_name):
         return TalentMap.instance(KBTalentBankController4Mongo()).gen_map(company_name)
+
+    def get_map_cv(self, company_name, in_office):
+        return TalentMap.instance(KBTalentBankController4Mongo()).get_map_cv(company_name, in_office)
+
+    def gen_chart_data(self, company_name, in_office, job_type, job_title):
+        return TalentMap.instance(KBTalentBankController4Mongo()).gen_chart_data(company_name, in_office, job_type, job_title)

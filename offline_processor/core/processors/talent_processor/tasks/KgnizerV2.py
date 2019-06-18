@@ -60,6 +60,8 @@ class KgnizerV2(BaseTask):
         data[self.duty] = data[self.jobDescription].apply(lambda x: self.preprocess_des(x)[0])
         data[self.require] = data[self.jobDescription].apply(lambda x: self.preprocess_des(x)[1])
         data[self.graph] = data.apply(lambda x: self.kgnize(x), axis=1)
+        data['ISBAD'] = data[self.duty].apply(lambda x: 1 if x is None else 0)
+        data['ISBAD'] = data[self.require].apply(lambda x: 1 if x is None else 0)
         return data
 
     def preprocess_des(self, des):
@@ -130,7 +132,7 @@ class KgnizerV2(BaseTask):
         }
         cv = self.remove_null(cv)
         result = self.json2tupe(cv)
-        print(result)
+        # print(result)
         result = json.dumps(result, ensure_ascii=False, cls=JSONEncoder)
         return result
 
@@ -175,7 +177,7 @@ class KgnizerV2(BaseTask):
                     self.kgize_subitem_parse_line(kg_property_list, base_property, sub_value, root_id)
                 else:
                     sub_id = kg_property_list.push_property(sub_value)
-                    kg_property_list.push_path(sub_id, root_id, base_property, None)
+                    kg_property_list.push_path(sub_id, root_id, base_property, '')
 
         return {
             "ids": kg_property_list.id_table,
@@ -196,7 +198,7 @@ class KgnizerV2(BaseTask):
                     self.kgize_subitem(kg_property_list, base_property, sub_value, par_id)
                 else:
                     sub_id = kg_property_list.push_property(sub_value)
-                    kg_property_list.push_path(sub_id, par_id, base_property, None)
+                    kg_property_list.push_path(sub_id, par_id, base_property, "")
 
     def kgize_subitem(self, kg_property_list, key, value, par_id):
         if type(value) == list:
@@ -207,16 +209,16 @@ class KgnizerV2(BaseTask):
                 sub_value = value[base_property]
                 if type(sub_value) == dict:
                     sub_id = kg_property_list.push_property(base_property)
-                    kg_property_list.push_path(sub_id, par_id, key, None)
+                    kg_property_list.push_path(sub_id, par_id, key, "")
                     self.kgize_subitem_parse_line(kg_property_list, base_property, sub_value, sub_id)
                 elif type(sub_value) == list:
                     print("unexpected list got")
                 else:
                     sub_id = kg_property_list.push_property(sub_value)
-                    kg_property_list.push_path(sub_id, par_id, base_property, None)
+                    kg_property_list.push_path(sub_id, par_id, base_property, "")
         else:
             sub_id = kg_property_list.push_property(value)
-            kg_property_list.push_path(sub_id, par_id, key, None)
+            kg_property_list.push_path(sub_id, par_id, key, "")
 
     def remove_null(self, temp):
         result = {}

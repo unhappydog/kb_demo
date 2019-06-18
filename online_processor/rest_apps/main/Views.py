@@ -22,12 +22,19 @@ def get_similar_jd(name, page, limit):
     # datas = [{"link":linkerService.link_jd(data)} for data in datas]
     split_with_br = lambda x: re.sub('<br/>{2,}','',re.sub('[0-9]{1,2}(、|：|,|，)', '<br/>', x))
     for data in datas:
+        if data['Name']:
+            continue
         data['Name'] = re.sub("（.*）|\(.*\)", '', data['Name'])
         # data['Salary'] = (lambda x: "-".join(["{:.0f}k".format(float(ele) / 1000) for ele in x.split('-')]) \
         #     if re.match('[0-9]{1,10}-[0-9]{1,10}', x) else "")(data['Salary'])
         data['link'] = linkerService.link_jd(data)
+
+        if not data['requirement']:
+            continue
         data['requirement'] = split_with_br(data['requirement']).strip().strip(':').strip('【').strip('】').strip()
         data['requirement'] = data['requirement'][5:] if data['requirement'].startswith('<br/>') else data['requirement']
+        if not data['duty']:
+            continue
 
         data['duty'] = split_with_br(data['duty']).strip().strip(':').strip('【').strip()
         data['duty'] = data['duty'][5:] if data['duty'].startswith('<br/>') else data['duty']

@@ -41,7 +41,8 @@ class KBTalentController4Mongo(BaseMongoController):
             "ISBAD": 0,
             "ISREPLICATE": 0,
             "duty": {"$exists": True},
-            "requirement": {"$exists": True}
+            "requirement": {"$exists": True},
+            "graph":{"$exists":True}
         }, db=self._schema, table=self._table, projection={
             "_id": 1,
             "Name": 1,

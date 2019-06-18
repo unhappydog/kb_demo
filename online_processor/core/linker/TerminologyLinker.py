@@ -181,6 +181,8 @@ class TerminologyLinker:
         # return self.linke_with_ac(text)
         result = self.linke_with_ac(text)
         # 检查一个术语是否作为独立的单词存在
+        if text is None:
+            return ""
         text_en = text.lower()
         en_result = self.linke_with_ac_en(text_en)
         result = result + en_result
