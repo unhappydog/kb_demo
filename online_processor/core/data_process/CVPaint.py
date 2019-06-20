@@ -363,14 +363,17 @@ class CVPaint:
         # return dict(Counter(words)), dict(Counter(skill_words).most_common(10))
         count_words = Counter(words)
         count_skill_words = Counter(skill_words).most_common(10)
-        count_words = [{'text': k, 'weight': v} for k, v in count_words.items() if self.is_bad_words(k)]
+        count_words = [{'text': k, 'weight': v} for k, v in count_words.items() if self.is_bad_words(k) and k != 'br']
         count_words = sorted(count_words, key=lambda x:x['weight'], reverse=True)[:50]
-        count_skill_words = [{'name': k, 'weights': v} for k, v in count_skill_words]
+        count_skill_words = [{'name': k, 'weights': v} for k, v in count_skill_words if k != 'br']
         return count_words, count_skill_words
 
     def is_bad_words(self, word):
         word = re.sub(r"[%s]+" % (hanzi.punctuation + string.punctuation), "", word)
         word = re.sub(r"[0-9]+", "", word)
+        bad_words = ['进行', '得到']
+        if word in bad_words:
+            return False
         if len(word) > 1:
             return True
         else:

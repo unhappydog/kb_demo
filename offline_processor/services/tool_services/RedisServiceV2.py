@@ -1,6 +1,7 @@
 import redis as pyredis
 from settings import redis_host, redis_port
 import threading
+"""This model is a impelmention"""
 
 
 class RedisService:
@@ -42,6 +43,12 @@ class RedisService:
 
         Returns:
             func: the publish function or subscribe function
+
+        Samples:
+            create a topic:
+            publish = channel('topic')
+            for i in range(100):
+                publish(i)
 
         """
         redis = pyredis.StrictRedis(connection_pool=self.pool)

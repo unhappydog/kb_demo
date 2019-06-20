@@ -66,7 +66,7 @@ class ProcessorManager:
 
 if __name__ == '__main__':
     process = ProcessorManager()
-    # process.execute_processor(DataSources.new, 100)
+    process.execute_processor(DataSources.new, 100)
     # process.execute_processor(DataSources.weixin, 100)
-    process.execute_processor(DataSources.talent, 100)
+    # process.execute_processor(DataSources.talent, 100)
     # process.multi_process_execute(DataSources.talent, 10)

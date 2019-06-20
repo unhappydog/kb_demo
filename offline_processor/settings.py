@@ -25,3 +25,7 @@ log_level = DEBUG
 
 redis_host = "rembern.com"
 redis_port = "32379"
+
+bert_ip = "gpu1"
+bert_in_port = 5555
+bert_out_port = 5556

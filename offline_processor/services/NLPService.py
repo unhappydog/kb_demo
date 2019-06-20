@@ -1,6 +1,7 @@
 from utils.Tags import Singleton
 from services.tool_services.LtpService import ltpService
 from data_access.controller.KBStopWordsController import KBStopWordsController
+from tools.BertTool import BertTool
 import re
 from zhon import hanzi
 import string
@@ -61,6 +62,23 @@ class NLPService:
                 temp_word = []
         return final_result
 
-
+    def ner_recong_with_bert(self, doc):
+        docs = self.sentencesize(doc)
+        result = []
+        for doc in docs:
+            tags = BertTool.ner(doc)
+            words = list(doc)
+            result.extend(zip(words, tags))
+        final_result = []
+        temp_word = []
+        for word in result:
+            if '-' not in word[1]:
+                continue
+            word_pos, word_tag = word[1].split('-')
+            temp_word.append(word[0])
+            if word_pos == 'S' or word_pos == 'E':
+                final_result.append(("".join(temp_word), word_tag))
+                temp_word = []
+        return final_result
 
 nlpService = NLPService()

@@ -68,7 +68,8 @@ class NewController4Mongo(BaseMongoController):
             "Tag": 1,
             "companys":1,
             "persons":1,
-            "job_tag":1
+            "job_tag":1,
+            "htmlContent":1
             })
 
 

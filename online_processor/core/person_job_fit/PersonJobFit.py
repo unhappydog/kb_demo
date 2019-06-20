@@ -52,7 +52,7 @@ class PersonJobFit:
         #scre risk 10
         cv_risk = linkerService.risk_recongnize(cv)
         risk_score = self.score_risk(cv_risk)
-        score += risk_score * 2
+        score += risk_score * 1
 
         #score_location 5
         cv_location = cv.expectedWorkplace
@@ -90,9 +90,11 @@ class PersonJobFit:
             "博士":3
         }
         if education_embed.get(cv_education, -0.5) >= education_embed.get(position_education, 0):
-            return 1
-        else:
+            return education_embed.get(cv_education,1)
+        elif position_education:
             return 0
+        else:
+            return education_embed.get(cv_education,1)
         pass
 
 

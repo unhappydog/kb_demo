@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 from data_access.controller.KbTalentBankController4Mongo import KBTalentBankController4Mongo
 from services.tool_services.MongoService import mgService
 import datetime
@@ -28,7 +30,7 @@ def extract_expericen():
             for projectExperience in projectExperiences:
                 count +=1
                 temp = {}
-                temp['_id'] = data['_id'] + str(count)
+                temp['_id'] = str(data['_id']) + str(count)
                 temp['projectStartTime'] = projectExperience['projectStartTime']
                 temp['projectEndTime'] = projectExperience['projectEndTime']
                 temp['projectName'] = projectExperience['projectName']
@@ -51,7 +53,9 @@ def save_experience(doc):
     try:
         mgService.insert(doc, 'kb_demo', 'kb_project_experience')
     except:
-        mgService.update({'_id', doc['_id']},doc,'kb_demo','kb_project_experience')
+        spec = {'_id':doc['_id']}
+        del doc['_id']
+        mgService.update(spec,doc,'kb_demo','kb_project_experience')
 
 
 if __name__ == '__main__':

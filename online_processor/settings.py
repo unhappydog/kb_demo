@@ -30,3 +30,7 @@ redis_port = ""
 
 host = "0.0.0.0"
 port = 18082
+
+bert_ip = "gpu1"
+bert_in_port = 5555
+bert_out_port = 5556

@@ -138,7 +138,14 @@ class TagTask(BaseTask):
         return ""
 
     def ner_recong(self,content):
-        return nlpService.ner_recong(content)
+        # return nlpService.ner_recong(content)
+        content = content.replace("\x85", "").replace("\xa0","").replace("\u200a", "")
+        try:
+            result = nlpService.ner_recong_with_bert(content)
+            return result
+        except Exception as e:
+            print(e)
+        return ""
 
     def related_position(self, title, content):
         for key,value in self.word_to_title.items():
