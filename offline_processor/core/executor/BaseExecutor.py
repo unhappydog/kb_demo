@@ -12,11 +12,7 @@ class BaseExecutor(object):
 
     def add_as_processor(self, order=0):
         def wrapper(cls):
-            print("hellow")
             self.processors.append(cls)
-            print(self)
-            print(self.processors)
-
         return wrapper
 
     def execute(self, *args, **kwargs):

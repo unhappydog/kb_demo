@@ -35,11 +35,7 @@ class BaseDistinctTask(BaseTask):
 
         m = Utils.compute_min_hash(Utils.parse_segged_word(x[self.content_column + seg_suffix]))
         x['min_hash'] = m
-        # min_hash_scores = self.history.value.apply(lambda x: m.jaccard(x['min_hash']), axis=1)
-        # min_hash_scores = self.history.get_max_similar(m)
-        # m_score = min_hash_scores.max()
         m_score = self.history.get_max_similar(m)
-        # self.history.push_data(x)
         self.history.add(m)
         if m_score > self.min_score:
             return 1

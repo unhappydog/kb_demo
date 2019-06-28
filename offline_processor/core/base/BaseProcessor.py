@@ -21,14 +21,13 @@ class BaseProcessor(object):
         logging.info("there is {0} processors to be executed".format(len(processors)))
         count = 0
         for processor in processors:
+            logging.info("executing processors {0}".format(processor))
             start_time = time.time()
             datas = processor[0].fit(datas)
             end_time = time.time()
             count += 1
             logging.info("processor {0} cost time {1}".format(count, end_time - start_time))
         print(len(datas))
-
-        # self.processors.clear()
         return datas
 
     def update_result(self, df, controller, key_column="_id"):
@@ -36,3 +35,6 @@ class BaseProcessor(object):
 
     def save_result(self, df, controller):
         controller.insert_datas_from_df(df)
+
+    def save_result_to_processed(self, df, controller, key_column="_id"):
+        controller.insert_datas_from_df(df,key_column,True)

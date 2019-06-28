@@ -51,6 +51,7 @@ class RedisService:
                 publish(i)
 
         """
+
         redis = pyredis.StrictRedis(connection_pool=self.pool)
         def publish(msg):
             redis.publish(topic, msg)

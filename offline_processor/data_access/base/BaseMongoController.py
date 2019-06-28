@@ -30,7 +30,11 @@ class BaseMongoController:
     def get_datas_as_gen(self, data):
         pass
 
-    def update_datas_from_df(self, df, key_column="_id"):
+    def update_datas_from_df(self, df, key_column="_id", save_to_processed_table=False):
+        if save_to_processed_table:
+            _table =  "{0}_processed".format(self._table)
+        else:
+            _table = self._table
         if df is None or df.empty:
             return
         for index, row in df.iterrows():
@@ -52,13 +56,16 @@ class BaseMongoController:
             try:
                 cond = {key_column: data[key_column]}
                 del data[key_column]
-                mgService.update(cond, data, self._schema, self._table)
+                mgService.update(cond, data, self._schema, _table)
             except Exception as e:
-                # import pdb; pdb.set_trace()
-
                 logging.exception(e)
 
-    def insert_datas_from_df(self, df):
+    def insert_datas_from_df(self, df, key_column="_id", save_to_processed_table=False):
+        if save_to_processed_table:
+            _table = "{0}_processed".format(self._table)
+        else:
+            _table = self._table
+
         if df is None or df.empty:
             return
         for index, row in df.iterrows():
@@ -78,11 +85,12 @@ class BaseMongoController:
                 self.insert_data(data)
             except DuplicateKeyError as e:
                 logging.warning("data {0} is duplicated, trying to update".format(data.get("_id", "")))
-                if "_id" not in data.keys():
-                    logging.exception("_id is not in data")
+                if key_column not in data.keys():
+                    logging.exception("{0} is not in data".format(key_column))
                 else:
-                    cond = {"_id": data["_id"]}
-                    mgService.update(cond, data, self._schema, self._table)
+                    cond = {key_column: data[key_column]}
+                    del data[key_column]
+                    mgService.update(cond, data, self._schema, _table)
 
     @query_as_gen(by=None)
     def get_datas_as_gen(self, data): pass

@@ -3,9 +3,11 @@ sys.path.append(".")
 from core.processors.news_processor import newsProcessor
 from core.processors.weixin_processor import weixinProcessor
 from core.processors.talent_processor import talentProcessor
+from core.processors.cv_processor import cvProcessor
 from data_access.controller.NewController4Mongo import NewController4Mongo
 from data_access.controller.WeixinController4Mongo import WeixinController4Mongo
 from data_access.controller.TalentController4Mongo import TalentController4Mongo
+from data_access.controller.CommonController4Mongo import CommonController4Mongo
 from core.common.DataSources import DataSources
 from multiprocessing import Queue, Process
 import pandas as pd
@@ -18,13 +20,14 @@ class ProcessorManager:
             DataSources.new: newsProcessor,
             DataSources.weixin: weixinProcessor,
             DataSources.talent: talentProcessor,
-            # DataSources.talent_bank:
+            DataSources.cv: cvProcessor
         }
 
         self.controller = {
             DataSources.new: NewController4Mongo(),
             DataSources.weixin: WeixinController4Mongo(),
-            DataSources.talent: TalentController4Mongo()
+            DataSources.talent: TalentController4Mongo(),
+            DataSources.cv: CommonController4Mongo(schema="kb_demo", table="kb_CV_2019")
         }
 
     def execute_processor(self, datasource, batch):
@@ -34,11 +37,6 @@ class ProcessorManager:
             data = pd.DataFrame([data for data in datas])
             data = processor.start_process(data)
             controller.update_datas_from_df(data)
-            # if_con = input("if coninue:")
-            # if if_con == 'y':
-            #     pass
-            # else:
-            #     return
 
     def multi_process_execute(self, datasource, batch, n_thread=2):
         processor = self.processors[datasource]

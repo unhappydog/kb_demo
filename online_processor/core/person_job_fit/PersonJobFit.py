@@ -102,7 +102,7 @@ class PersonJobFit:
         if not cv_education_experience:
             return 0
         for education_experience in cv_education_experience:
-            if education_experience.educationNature == "统招":
+            if education_experience.get('educationNature', None) == "统招":
                 return 1
         return 0
     def score_work_experience(self,cv_work_experience, position_work_experience):

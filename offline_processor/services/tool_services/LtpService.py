@@ -2,9 +2,20 @@ from utils.Tags import Singleton
 from tools.Ltp import Ltp
 from data_access.controller.KBTerminologyController4Mongo import KBTerminologyController4Mongo
 from data_access.controller.KBCompanyController4Mongo import KBCompanyController4Mongo
+from threading import Lock
 
 
 class LtpService:
+    _instance = None
+    _lock = Lock()
+
+    @classmethod
+    def instance(cls):
+        if LtpService._instance is None:
+            with LtpService._lock:
+                if LtpService._instance is None:
+                    LtpService._instance = cls()
+        return LtpService._instance
     def __init__(self):
         self.kb_terminology_controller = KBTerminologyController4Mongo()
         id_names = self.kb_terminology_controller.get_name_ids()
@@ -48,6 +59,3 @@ class LtpService:
         """
         return self.ltp.label(word_list, tag_list, arcs)
         pass
-
-
-ltpService = LtpService()

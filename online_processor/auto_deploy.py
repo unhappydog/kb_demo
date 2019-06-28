@@ -24,7 +24,7 @@ def update():
 
 def update_test():
     with Connection(host='rembern.com', user='root') as con:
-        # con.connect_kwargs.password='1!P@ssword'
+        con.connect_kwargs.password='1!P@ssword'
         rm_cm_format = "rm -rf {0}"
         scp_format = "scp -r {0} root@rembern.com:/home/lxl/online_processor_test/"
         rm_cm = ";".join([rm_cm_format.format("/home/lxl/online_processor_test/" + x) for x in update_list])

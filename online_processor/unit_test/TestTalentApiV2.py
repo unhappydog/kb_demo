@@ -40,7 +40,7 @@ class TestRestApi(unittest.TestCase):
         files = {
             "file": open(os.path.join(BASE_DIR,'resources','智联招聘_郝先生_中文_20190415_1555295349103.doc'), 'rb')
         }
-        result = requests.post("http://{0}:18082/online/talent_bank/upload/123".format(host), files=files)
+        result = requests.post("http://{0}:18082/online/talent_bank/upload/数据挖掘工程师/none/none/none/2".format(host), files=files)
         self.assertEqual(result.status_code, 200)
 
     def test_get_talent_by(self):
@@ -94,7 +94,7 @@ class TestRestApi(unittest.TestCase):
 
     def test_goto(self):
         print("starting testing goto api")
-        result = requests.get("http://{0}:18082/online/talent_bank/goto/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}/{11}/{12}".format(host,'none', 'none', 'none', 100,'3-5','硕士','zhilian','upload','updateTime','1',1,10))
+        result = requests.get("http://{0}:18082/online/talent_bank/goto/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}/{11}/{12}/{13}".format(host,'none', 'none', 'none', 100,'3-5','硕士','zhilian','upload','updateTime','1','2',1,10))
         self.assertEqual(result.status_code, 200)
 
 

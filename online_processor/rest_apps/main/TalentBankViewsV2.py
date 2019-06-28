@@ -54,6 +54,14 @@ def move_to_talent_bank(job_title, user_tag, source, source_method, talent_bank_
         return json.dumps({"state":"failed", "log":"job_title and user_tag cannot be set at the same time"})
     elif user_tag:
         job_title=user_tag
+        position = False
+    elif job_title:
+        position = dataService.get_position_by(job_title)
+        if not position:
+            return json.dumps({"state":"failed", "log":"positon doesn't exists"})
+        position = position[0]
+
+
 
     json_data = request.form['json']
 
@@ -70,27 +78,45 @@ def move_to_talent_bank(job_title, user_tag, source, source_method, talent_bank_
         cv['source_method'] = source_method
     cv['jobTitle'] = job_title
     # job person fit
-    position = dataService.get_position_by(job_title)
-    if not position:
-        return json.dumps({"state":"failed", "log":"positon doesn't exists"})
-    position = position[0]
-    score = personJobFitService.score(cv, position)
-    cv['score'] = score
+    if position:
+       score = personJobFitService.score(cv, position)
+       cv['score'] = score
 
     try:
         tbService.save(cv, talent_bank_id)
     except Exception as e:
         logging.error(e)
-        return "saving error"
+        # return "saving error"
+        return json.dumps({"state":"failed", "log":"saving error"})
 
     if tbService.get_by_id(cv._id, talent_bank_id):
-        return "sucess"
+        # return "sucess"
+        return json.dumps({"state":"success"})
+
     else:
-        return "no exception but save failed"
+        # return "no exception but save failed"
+        return json.dumps({"state":"failed", "log":"no exeception occured but save failed"})
 
 
-@inf_restful.route("/online/talent_bank/upload/<string:talent_bank_id>", methods=['POST'])
-def upload(talent_bank_id=None):
+@inf_restful.route("/online/talent_bank/upload/<string:job_title>/<string:user_tag>/<string:source>/<string:source_method>/<string:talent_bank_id>", methods=['POST'])
+def upload(job_title, user_tag, source, source_method, talent_bank_id):
+    source= None if source == 'none' else source
+    source_method = None if source_method == 'none' else source_method
+    talent_bank_id = None if talent_bank_id == 'none' else talent_bank_id
+    job_title = None if job_title == 'none' else job_title
+    user_tag = None if user_tag == 'none' else user_tag
+    if job_title and user_tag:
+        return json.dumps({"state":"failed", "log":"job_title and user_tag cannot be set at the same time"})
+    elif user_tag:
+        job_title=user_tag
+        position = False
+    elif job_title:
+        position = dataService.get_position_by(job_title)
+        if not position:
+            return json.dumps({"state":"failed", "log":"positon doesn't exists"})
+        position = position[0]
+
+
     if request.method == 'POST':
         try:
             f = request.files['file']
@@ -98,6 +124,13 @@ def upload(talent_bank_id=None):
             f.save(f_path)
             data = cv_service.parse_from_local(f_path)
             data.source_method = 'upload'
+            if source:
+                data['source'] = source
+            data['jobTitle'] = job_title
+            # job person fit
+            if position:
+                score = personJobFitService.score(data, position)
+                data['score'] = score
             data.skill_tag = linkerService.gen_skill_tag(data)
             logging.info("sucess")
             tbService.save(data, talent_bank_id)

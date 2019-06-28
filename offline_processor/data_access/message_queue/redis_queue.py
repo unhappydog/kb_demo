@@ -1,5 +1,5 @@
 import redis
-from settings import redis_port, redis_port
+import settings
 import threading
 
 
@@ -15,7 +15,7 @@ class RedisService:
                     RedisService._instance = cls()
         return RedisService._instance
 
-    def __init__(self, host=settigs.redis_host, port=settings.redis_port):
+    def __init__(self, host=settings.redis_host, port=settings.redis_port):
         self.pool = redis.ConnectionPool(host=host, port=port)
 
     def get_value(self, key):
