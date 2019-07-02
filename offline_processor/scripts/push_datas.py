@@ -17,10 +17,10 @@ redisService = RedisService.instance()
 
 
 @click.command()
-@click.option("--data_source", default='new', help='which datasource to push')
+@click.option("--data_source", default='news', help='which datasource to push')
 def push(data_source):
     source_dict = {'all':[DataSources.new, DataSources.talent, DataSources.weixin, DataSources.cv],
-                   'new': DataSources.new,
+                   'news': DataSources.new,
                    'talent': DataSources.talent,
                    'weixin': DataSources.weixin,
                    'cv': DataSources.cv}

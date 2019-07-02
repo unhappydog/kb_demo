@@ -29,7 +29,7 @@ controllers = {
 }
 
 data_types = {
-    'new': DataSources.new,
+    'news': DataSources.new,
     'weixin': DataSources.weixin,
     'talent': DataSources.talent,
     "cv": DataSources.cv
@@ -86,4 +86,4 @@ class DataBag:
         controller = controllers[datasource]
         data = pd.DataFrame(datas)
         data = processor.start_process(data)
-        controller.update_datas_from_df(data)
+        # controller.update_datas_from_df(data)

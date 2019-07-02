@@ -4,3 +4,7 @@ processed_suffix = "_processed"
 seg_suffix = "_seg"
 is_bad_column = "ISBAD"
 is_replicate_column = "ISREPLICATE"
+
+cv_label = 'cv'
+new_label = 'new'
+

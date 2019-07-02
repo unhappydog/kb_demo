@@ -24,6 +24,7 @@ class BasePreProcessTask(BaseTask):
         self.min_length = min_lenth
 
     def fit(self, data):
+
         logging.info("starting processing data")
         # abuse bad data
         abuse_ids = Common.compute_abuse_id(data, [self.content_column, self.title_column], self.key_column,

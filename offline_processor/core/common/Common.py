@@ -12,10 +12,10 @@ def compute_abuse_id(data, column_list, id_column, min_length_list, detect_messy
     for column, min_length, detect_messy in columns_lengths_ifmessys:
         if detect_messy:
             abuse_df.append(data[data[column].apply(
-                lambda x: x is None or len(x) <= min_length or x == "" or detect_messy_cod(x) < 2)])
+                lambda x: x is None or type(x) != str or len(x) <= min_length or x == "" or detect_messy_cod(x) < 2)])
         else:
             abuse_df.append(data[data[column].apply(
-                lambda x: x is None or len(x) <= min_length or x == "")])
+                lambda x: x is None or type(x) != str or len(x) <= min_length or x == "")])
         try:
             for df in abuse_df:
                 abuse_datas.extend(df[id_column].tolist())

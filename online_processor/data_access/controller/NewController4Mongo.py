@@ -55,21 +55,32 @@ class NewController4Mongo(BaseMongoController):
         if company_tag:
             cond['CompanyTag'] = company_tag
 
-        return mgService.query_sort(query_cond=cond, table=self._table, db=self._schema, sort_by=orderBy,ascending=-1,page=page, size=limit, projection={
-            "ID": 1,
+        datas = mgService.query_sort(query_cond=cond, table=self._table, db=self._schema, sort_by=orderBy,ascending=-1,page=page, size=limit, projection={
+            "title": 1,
             "TITLE": 1,
+            "pubtime": 1,
             "PUBTIME": 1,
+            "brief": 1,
             "BRIEF": 1,
+            "content": 1,
             "CONTENT": 1,
+            "author": 1,
             "AUTHOR": 1,
+            "url": 1,
             "URL": 1,
             "IMG_URL": 1,
-            "SOURCE": 1,
+            "source": 1,
             "Tag": 1,
             "companys":1,
             "persons":1,
             "job_tag":1,
             "htmlContent":1
             })
-
+        upper_column = ['title', 'pubtime', 'brief', 'content', 'author', 'url']
+        for data in datas:
+            for k,v in data.items():
+                if k in upper_column:
+                    data[k.upper] = v
+                    del data[k]
+        return datas
 

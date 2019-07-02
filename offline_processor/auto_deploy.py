@@ -12,7 +12,7 @@ update_list.extend(['resources', 'main.py', 'settings.py', '__init__.py'])
 
 def update():
     with Connection(host='rembern.com', user='root') as con:
-        # con.connect_kwargs.password='1!P@ssword'
+        con.connect_kwargs.password='1!P@ssword'
         rm_cm_format = "rm -rf {0}"
         scp_format = "scp -r {0} root@rembern.com:/home/lxl/offline_processor/"
         rm_cm = ";".join([rm_cm_format.format("/home/lxl/offline_processor/" + x) for x in update_list])

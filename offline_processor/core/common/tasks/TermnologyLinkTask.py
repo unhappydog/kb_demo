@@ -20,9 +20,9 @@ class BaseTermnologyLinkTask(BaseTask):
         pass
 
     def fit(self, data):
+
         data[self.termnology_tag] = data.apply(lambda x:self.link(x), axis=1)
         return data
-        pass
 
     def link(self, x):
         stop_words = ['', '\uf06c']
