@@ -21,6 +21,7 @@ def syn_new():
     for datas in tqdm(mysqlService.execute_as_gen("select * from kb_news_2019")):
         for data in datas:
             data['_id'] = data['ID']
+            print("receving data {0}".format(data['_id']))
             try:
                 mgService.insert(data, 'kb_demo', 'kb_news')
             except Exception as e:

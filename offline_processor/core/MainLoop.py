@@ -10,6 +10,7 @@ from core.processors.news_processor import newsProcessor
 from core.processors.weixin_processor import weixinProcessor
 from core.processors.talent_processor import talentProcessor
 from core.processors.cv_processor import cvProcessor
+from core.processors.company_processor import companyProcessor
 import pandas as pd
 import pickle
 
@@ -18,21 +19,24 @@ processors = {
     DataSources.new: newsProcessor,
     DataSources.weixin: weixinProcessor,
     DataSources.talent: talentProcessor,
-    DataSources.cv: cvProcessor
+    DataSources.cv: cvProcessor,
+    DataSources.company: companyProcessor
 
 }
 controllers = {
     DataSources.new: NewController4Mongo(),
     DataSources.weixin: WeixinController4Mongo(),
     DataSources.talent: TalentController4Mongo(),
-    DataSources.cv: CommonController4Mongo(schema="kb_demo", table="kb_CV_2019")
+    DataSources.cv: CommonController4Mongo(schema="kb_demo", table="kb_CV_2019"),
+    DataSources.company: CommonController4Mongo(schema="kb_demo", table="kb_company")
 }
 
 data_types = {
     'news': DataSources.new,
     'weixin': DataSources.weixin,
     'talent': DataSources.talent,
-    "cv": DataSources.cv
+    "cv": DataSources.cv,
+    "company": DataSources.company
 }
 
 
@@ -83,7 +87,7 @@ class DataBag:
 
     def process(self, datas, datasource):
         processor = processors[datasource]
-        controller = controllers[datasource]
+        # controller = controllers[datasource]
         data = pd.DataFrame(datas)
         data = processor.start_process(data)
         # controller.update_datas_from_df(data)

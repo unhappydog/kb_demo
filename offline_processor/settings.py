@@ -6,12 +6,12 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 neo_host = "rembern.com"
-neo_port = 32474
+neo_port = 32475
 
 mysql_host = "rembern.com"
 mysql_port = 32306
-mysql_user = "root"
-mysql_password = '111111'
+mysql_user = "xiaolong"
+mysql_password = '123456'
 mysql_db = "kb_demo"
 
 mongo_host = "rembern.com"

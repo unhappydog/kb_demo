@@ -23,7 +23,8 @@ def push(data_source):
                    'news': DataSources.new,
                    'talent': DataSources.talent,
                    'weixin': DataSources.weixin,
-                   'cv': DataSources.cv}
+                   'cv': DataSources.cv,
+                   'company':DataSources.company}
     source_name_dict = {v:k for k,v in source_dict.items() if k != 'all'}
     pusher = redisService.channel('scrapy','p')
     if data_source != 'all':
@@ -45,7 +46,8 @@ def get_datas(data_source):
             DataSources.new: NewController4Mongo(),
             DataSources.weixin: WeixinController4Mongo(),
             DataSources.talent: TalentController4Mongo(),
-        DataSources.cv: CommonController4Mongo(schema="kb_demo", table="kb_CV_2019")
+        DataSources.cv: CommonController4Mongo(schema="kb_demo", table="kb_CV_2019"),
+        DataSources.company: CommonController4Mongo(schema="kb_demo", table="kb_company")
         }
     if type(data_source) == list:
         for every_data_source in data_source:

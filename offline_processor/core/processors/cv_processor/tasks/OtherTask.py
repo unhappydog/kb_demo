@@ -13,7 +13,7 @@ import re
 
 neoService = NeoService.instance()
 searcher = Searcher.instance()
-@cvProcessor.add_as_processors(order=11, stage=2, schema='kb_graph', table='kb_graph_news_processed')
+@cvProcessor.add_as_processors(order=11, stage=2, schema='kb_graph', table='kb_graph_cv_processed')
 class SaveTask(BaseTask):
     def __init__(self, schema, table):
         self.schema = schema
@@ -111,16 +111,15 @@ class ExtractTask(BaseTask):
 
     def ontology_and_relation(self, x):
         education_experiences = x.get('educationExperience',[])
-
+        update_time = x.get('updateTime', None)
         for education_experience in education_experiences:
-            self.extract_education_info(education_experience, x['_id'])
+            self.extract_education_info(education_experience, x['_id'], update_time)
             major = education_experience.get('educationMajor')
             # if major:
             #     self.extract_major_info(major, x['_id'])
 
         work_experiences = x.get('workExperience',[])
         for work_experience in work_experiences:
-            update_time = x.get('updateTime', None)
             self.extract_company_info(work_experience, x['_id'], update_time)
             if not (work_experience.get('workEndTime', None) or work_experience.get('workEndTime', None) == update_time):
                 if_now_position = True 
@@ -193,7 +192,7 @@ class ExtractTask(BaseTask):
         self.relations.append(relation)
 
 
-    def extract_education_info(self, education_experience, cv_id):
+    def extract_education_info(self, education_experience, cv_id, update_time):
         """抽取教育相关关系
 
         根据学校名抽取专业相关内容
@@ -201,6 +200,7 @@ class ExtractTask(BaseTask):
         Args:
           education: 学校名称
           cv_id: 简历id
+          update_time: 简历更新时间
         """
         school = education_experience.get('educationSchool')
         if not school:
@@ -226,7 +226,10 @@ class ExtractTask(BaseTask):
             relation['to_type'] = 'school'
             relation['from_id'] = cv_id
             relation['from_type'] = 'candidate'
-        relation['name'] = '就读于'
+        if not (education_experience.get('educationEndTime', None) or education_experience.get('educationEndTime', None) == update_time):
+            relation['name'] = '毕业于'
+        else:
+            relation['name'] = '就读于'
         self.relations.append(relation)
 
     def extract_company_info(self, work_experience, cv_id, update_time):

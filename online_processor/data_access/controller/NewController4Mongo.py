@@ -17,7 +17,7 @@ def random_image(func):
     def _wrapper(*args, **kwargs):
         datas = func(*args, **kwargs)
         for data in datas:
-            if data['IMG_URL'] != "":
+            if data['IMG_URL'] != "" and type(data['IMG_URL']) == str:
                 data['IMG_URL'] = data['IMG_URL'].split(';')[:3]
             # else:
             #     data['IMG_URL'] = random.sample(images, 1)
@@ -43,7 +43,7 @@ class NewController4Mongo(BaseMongoController):
         return name
 
     @random_image
-    def get_news_by(self, domain, tag, company_tag, orderBy="PUBTIME", page=1, limit=10):
+    def get_news_by(self, domain, tag, company_tag, orderBy="pubtime", page=1, limit=10):
         cond = {'ISREPLICATE': 0,
                       "ISBAD": 0}
         if domain:
@@ -74,13 +74,17 @@ class NewController4Mongo(BaseMongoController):
             "companys":1,
             "persons":1,
             "job_tag":1,
-            "htmlContent":1
+            "htmlContent":1,
+            'htmlcontent':1
             })
         upper_column = ['title', 'pubtime', 'brief', 'content', 'author', 'url']
         for data in datas:
             for k,v in data.items():
                 if k in upper_column:
-                    data[k.upper] = v
+                    data[k.upper()] = v
                     del data[k]
+            if 'htmlcontent' in data.keys():
+                data['htmlContent'] = data['htmlcontent']
+                del data['htmlcontent']
         return datas
 

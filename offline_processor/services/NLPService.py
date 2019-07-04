@@ -56,6 +56,8 @@ class NLPService:
         :param doc:
         :return:
         """
+        if not type(doc) == str:
+            return
         doc_origin = re.sub(r' +|	+|　+', '', doc.replace('\n', ' '))
         doc_origin = re.sub(r"[%s]+" % (hanzi.non_stops + string.punctuation), "", doc_origin)
         docs = [doc for doc in re.split(r'[%s]+' % (hanzi.stops), doc_origin) if len(doc) >= 1]

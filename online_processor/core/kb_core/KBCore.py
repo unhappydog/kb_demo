@@ -28,8 +28,8 @@ class KBCore:
 
         if not query:
             return
-        # sql = "match (n:{0})-[r]-(n2) where {1} return n,r,n2 limit {2}"
-        sql = "match (n:{0})-[r]-(n2) with count(n2) as b, n return n order by b desc limit {2}"
+        sql = "match (n:{0})-[r]-(n2) where {1} return n,r,n2 limit {2}"
+        # sql = "match (n:{0})-[r]-(n2) with count(n2) as b, n return n order by b desc limit {2}"
         datas = self.neoService.exec(sql.format(entity_label, " and ".join(query), limit)).data()
         nodes = []
         links = []
@@ -48,7 +48,7 @@ class KBCore:
         return nodes, links
 
     def demo_entity(self, company=True, job=True, candidate=True, limit=10):
-        sql = "match (n:{0}) return n limit {1}"
+        sql = "match (n:{0})-[r]-(n2) with count(n2) as b, n return n order by b desc limit {1}"
         data = {}
         if company:
             companys = self.neoService.exec(sql.format("company", limit)).data()

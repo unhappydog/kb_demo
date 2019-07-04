@@ -8,3 +8,4 @@ class DataSources(Enum):
     weixin = 'weixin',
     talent = 'talent',
     talent_bank = 'talent_bank'
+    company = 'company'

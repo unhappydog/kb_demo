@@ -43,7 +43,7 @@ class DataService:
     def get_company_by_jd(self, name, page, limit):
         return self.jd_company_controller.get_data_by_job_title(name, page, limit)
 
-    def get_news_by(self, domain=None, tag=None, company=None, orderBy="PUBTIME", page=1, limit=10):
+    def get_news_by(self, domain=None, tag=None, company=None, orderBy="pubtime", page=1, limit=10):
         return self.news_controller.get_news_by(domain, tag, company, orderBy, page, limit)
 
     def get_position_by(self, name=None):

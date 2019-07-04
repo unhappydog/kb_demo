@@ -42,8 +42,8 @@ class ExtractTask(BaseTask):
         jds.apply(lambda x: self.save_jd(x), axis=1)
         data.apply(lambda x: self.ontology_and_relation(x), axis=1)
         [self.save_to_neo4j('company', x) for x in self.company if not self.if_exists('company', x['_id'])]
-        [self.save_to_neo4j('city',x) for x in self.cities if not self.if_exists('city', x)]
-        [self.save_to_neo4j('job',x) for x in self.jobs if not self.if_exists('job', x)]
+        [self.save_to_neo4j('city',x) for x in self.cities if not self.if_exists('city', x['_id'])]
+        [self.save_to_neo4j('job',x) for x in self.jobs if not self.if_exists('job', x['_id'])]
         [self.save_relation(x) for x in self.relations]
         self.cities = []
         self.company = []
