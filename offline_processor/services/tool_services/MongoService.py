@@ -21,9 +21,9 @@ class MongoService:
     def query_as_gen(self, query_cond, db, table, projection=None, skip=None, limit=None):
         if query_cond is None or query_cond == {}:
             if skip is None:
-                query_result = self.client[db][table].find(projection=projection, no_cursor_timeout=True)
+                query_result = self.client[db][table].find(projection=projection, no_cursor_timeout=True).batch_size(10)
             else:
-                query_result = self.client[db][table].find(projection=projection, no_cursor_timeout=True).skip(skip).limit(limit)
+                query_result = self.client[db][table].find(projection=projection, no_cursor_timeout=True).batch_size(10).skip(skip).limit(limit)
         else:
             if skip is None:
                 query_result = self.client[db][table].find(query_cond, projection=projection, no_cursor_timeout=True)

@@ -2,6 +2,7 @@ from core.processors.cv_processor import cvProcessor
 from core.base.BaseTask import BaseTask
 from data_access.controller.CommonController4Mongo import CommonController4Mongo
 from services.tool_services.neo_service import NeoService
+from services.data_services.CommonDataService import commonDataService
 from utils.Constants import is_bad_column, is_replicate_column, cv_label
 from utils.Logger import logging
 from core.linker.Searcher import Searcher
@@ -34,6 +35,7 @@ class ExtractTask(BaseTask):
         self.majors = []
         self.skills = []
         self.cities = []
+        self.jobs = []
         self.terminology_linker = TerminologyLinker()
 
     def fit(self, data):
@@ -47,7 +49,8 @@ class ExtractTask(BaseTask):
         [self.save_to_neo4j('project',x) for x in self.project if not self.if_exists('project', x['_id'])]
         [self.save_to_neo4j('skill',x) for x in self.skills if not self.if_exists('skill', x['_id'])]
         [self.save_to_neo4j('city', x) for x in self.cities if not self.if_exists('city', x['_id'])]
-        temp = [self.save_relation(x) for x in self.relations]
+        [self.save_to_neo4j('job', x) for x in self.jobs if not self.if_exists('job', x['_id'])]
+        [self.save_relation(x) for x in self.relations]
         self.schools = []
         self.company = []
         self.project = []
@@ -119,6 +122,13 @@ class ExtractTask(BaseTask):
         for work_experience in work_experiences:
             update_time = x.get('updateTime', None)
             self.extract_company_info(work_experience, x['_id'], update_time)
+            if not (work_experience.get('workEndTime', None) or work_experience.get('workEndTime', None) == update_time):
+                if_now_position = True 
+            else:
+                if_now_position = False 
+            position = work_experience.get('workPosition',None)
+            if position:
+                self.extract_job_info(position, x['_id'], if_now_position)
 
         project_experiences = x.get('projectExperience',[])
         for project_experience in project_experiences:
@@ -133,24 +143,30 @@ class ExtractTask(BaseTask):
         for city in cities:
             city_info = searcher.search_city(city)
             if city_info:
+                city_info['name'] = city
                 self.extract_city_info(city_info, x['_id'])
 
-    # def extract_major_info(self, major, cv_id):
-    #     """从教育相关专业
 
-    #     Args:
-    #         major: 专业名称
-    #         cv_id: 简历名称"""
-    #     major_info = {}
-    #     major_info['name'] = major
-    #     major_info['_id'] =  major
-    #     self.majors.append(major_info)
-    #     relation = {}
-    #     relation['to_id'] = major_info['_id']
-    #     relation['to_type'] = 'major'
-    #     relation['from_id'] = cv_id
-    #     relation['from_type'] = 'candidate'
-    #     relation['name'] = '就读专业'
+    def extract_job_info(self, position, cv_id, if_now_posisiton=False):
+        if not re.match("^.*(师|主管|科学家|经理|专员)$", position):
+            position_info = commonDataService.keyword_to_job(position)
+            if position_info:
+                position = position_info[0]
+        job = {}
+        job['_id'] = position
+        job['name'] = position
+        self.jobs.append(job)
+        relation = {}
+        relation['to_id'] = job['_id']
+        relation['to_type'] = 'job'
+        relation['from_id'] = cv_id
+        relation['from_type'] = 'candidate'
+        if if_now_posisiton:
+            relation['name'] = '现任职位'
+        else:
+            relation['name'] = "曾任职位"
+        self.relations.append(relation)
+
     def extract_city_info(self,city_info, cv_id):
         self.cities.append(city_info)
         relation = {}
@@ -193,6 +209,7 @@ class ExtractTask(BaseTask):
 
         school_info = searcher.search_academy(school)
         if school_info:
+            school_info['name'] = school
             self.schools.append(school_info)
             relation = education_experience
             relation['to_id'] = school_info['_id']
@@ -222,6 +239,7 @@ class ExtractTask(BaseTask):
         company = work_experience['workCompany']
         company_info = searcher.search_company(company)
         if company_info:
+            company_info['name'] = company
             self.company.append(company_info)
             relation = work_experience
             relation['to_id'] = company_info['_id']
@@ -238,17 +256,17 @@ class ExtractTask(BaseTask):
             relation['to_type'] = 'company'
             relation['from_id'] = cv_id
             relation['from_type'] = 'candidate'
-        if not work_experience.get('workEndTime', None) or work_experience.get('workEndTime', None) == update_time:
+        if not (work_experience.get('workEndTime', None) or work_experience.get('workEndTime', None) == update_time):
             relation['name'] = '现就职于'
         else:
             relation['name'] = '曾就职于'
         self.relations.append(relation)
 
     def extract_project_info(self, project_experience, cv_id):
-
         project = project_experience['projectName']
         project_info = searcher.search_project(project)
         if project_info:
+            project_info['name'] = project
             self.project.append(project_info)
             relation = project_experience
             relation['to_id'] = project_info['_id']

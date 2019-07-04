@@ -54,6 +54,9 @@ def get_datas(data_source):
 
     else:
         controller = controllers.get(data_source)
+        if controller is None:
+            print("data source type un supported")
+            return 
         yield from controller.get_datas_as_gen()
 
 if __name__ == '__main__':

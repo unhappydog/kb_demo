@@ -34,6 +34,7 @@ class ExtractTask(BaseTask):
         self.skills = []
         self.relations = []
         self.cities = []
+        self.jobs = []
 
     def fit(self, data):
         data = data[data.apply(lambda x: x[is_bad_column] ==0 and x[is_replicate_column] ==0 , axis=1)]
@@ -42,10 +43,12 @@ class ExtractTask(BaseTask):
         data.apply(lambda x: self.ontology_and_relation(x), axis=1)
         [self.save_to_neo4j('company', x) for x in self.company if not self.if_exists('company', x['_id'])]
         [self.save_to_neo4j('city',x) for x in self.cities if not self.if_exists('city', x)]
+        [self.save_to_neo4j('job',x) for x in self.jobs if not self.if_exists('job', x)]
         [self.save_relation(x) for x in self.relations]
         self.cities = []
         self.company = []
         self.relations = []
+        self.jobs = []
         return data
 
 
@@ -115,6 +118,29 @@ class ExtractTask(BaseTask):
         if city:
             self.extract_city_info(city, x['_id'])
 
+        job = x.get("JobTitle")
+        if job:
+            self.extract_job_info(city, x['_id'])
+
+    def extract_job_info(self, job_title, jd_id):
+        """抽取职位信息
+
+        args:
+            job_title: 职位名称
+            jd_id:  
+        """
+        job = {}
+        job['_id'] = job_title
+        job['name'] = job_title
+        self.jobs.append(job)
+        relation = {}
+        relation['to_id'] = job['_id']
+        relation['to_type'] = 'job'
+        relation['from_id'] = jd_id
+        relation['from_type'] = 'jd'
+        relation['name'] = "招聘职位"
+        self.relations.append(relation)
+
     def extract_skill_info(self, skill, jd_id):
         """抽取技能相关关系
 
@@ -128,13 +154,14 @@ class ExtractTask(BaseTask):
         relation['to_type'] = 'skill'
         relation['from_id'] = jd_id
         relation['from_type'] = 'jd'
-        relation['name'] = "设计"
+        relation['name'] = "涉及"
         self.relations.append(relation)
 
 
     def extract_company_info(self, company, jd_id):
         company_info = searcher.search_company(company)
         if company_info:
+            company_info['name'] = company
             self.company.append(company_info)
         else:
             company_info = {}
@@ -153,6 +180,7 @@ class ExtractTask(BaseTask):
     def extract_city_info(self, city, jd_id):
         city_info = searcher.search_city(city)
         if city_info:
+            city_info['name'] = city
             self.cities.append(city_info)
         else:
             city_info = {}
@@ -165,5 +193,3 @@ class ExtractTask(BaseTask):
         relation['from_type'] = 'jd'
         relation['name'] = "工作城市"
         self.relations.append(relation)
-
-
