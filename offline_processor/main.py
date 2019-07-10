@@ -6,9 +6,10 @@ import click
 @click.command()
 @click.option("--start", default=0, help='if start queu')
 @click.option("--data_type", default='new', help='which data source to execute')
-def _main(start, data_type):
+@click.option("--processors", default=8, help="how many processors to start up")
+def _main(start, data_type, processors):
     if start == 1:
-        main_loop()
+        main_loop(processors)
     elif data_type == 'new':
         process = ProcessorManager()
         process.execute_processor(DataSources.new, 100)

@@ -39,7 +39,7 @@ def push(data_source):
             data = json.dumps(data,ensure_ascii=False, cls=JSONEncoder)
             pusher(data)
             print(data)
-            time.sleep(1)
+            time.sleep(0.5)
 
 def get_datas(data_source):
     controllers = {

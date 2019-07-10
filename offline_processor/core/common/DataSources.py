@@ -9,3 +9,4 @@ class DataSources(Enum):
     talent = 'talent',
     talent_bank = 'talent_bank'
     company = 'company'
+    baidubaipin = 'baipin_firm_basic'

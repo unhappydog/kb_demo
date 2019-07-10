@@ -1,5 +1,6 @@
 from core.processors.talent_processor import talentProcessor
 from core.common.tasks.PreProcessTask import BasePreProcessTask
+import re
 
 
 @talentProcessor.add_as_processors(order=0, stage=1, key_column="_id", title_column="Name",
@@ -20,5 +21,14 @@ class PreProcessor(BasePreProcessTask):
 
     def special_process(self, data):
         data[self.endtime_column] = data[self.endtime_column].apply(lambda x: self.covert(x))
+        data[self.title_column] = data[self.title_column].apply(lambda x: self.extract_name(x))
         return data
-    pass
+
+    def extract_name(self, name):
+        # tricated_name = re.sub("(\(|（).+(\)|）)$", "", name)
+        tricated_name = re.sub("(\(.+?\)|（.+?）)", "", name)
+        if tricated_name:
+            return tricated_name
+        else:
+            print(name)
+            return name

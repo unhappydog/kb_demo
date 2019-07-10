@@ -18,6 +18,12 @@ class KBCore:
                 result.append(item)
         return result
 
+    def lower_dict_key(self, some_dict):
+        new_dict = dict()
+        for  key, value in some_dict.items():
+            new_dict[key.lower()] = value
+        return new_dict
+
     def find_entity(self, entity_label, entity_name=None, entity_id=None, limit=10):
         query = []
         if entity_name is not None:
@@ -36,9 +42,11 @@ class KBCore:
         for data in datas:
             node = dict(data['n'])
             node['_label'] = str(data['n'].labels)[1:]
+            node = self.lower_dict_key(node)
             nodes.append(node)
             node_2 = dict(data['n2'])
             node_2['_label'] = str(data['n2'].labels)[1:]
+            node_2 = self.lower_dict_key(node_2)
             nodes.append(node_2)
             links.append(data['r'])
         nodes = self.distinct_list(nodes)

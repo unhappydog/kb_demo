@@ -72,4 +72,10 @@ class Searcher:
             return data[0]
         return None
 
+    def search_major(self, major):
+        data = mgService.query({"name":major}, 'kb_demo', 'kb_major')
+        if data:
+            return data[0]
+        return None
+
 

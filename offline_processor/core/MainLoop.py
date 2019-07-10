@@ -1,4 +1,5 @@
 from services.tool_services.RedisServiceV2 import RedisService
+from redis.exceptions import RedisError, ConnectionError, TimeoutError
 from core.common.DataSources import DataSources
 from utils.Logger import logging
 import json
@@ -11,8 +12,11 @@ from core.processors.weixin_processor import weixinProcessor
 from core.processors.talent_processor import talentProcessor
 from core.processors.cv_processor import cvProcessor
 from core.processors.company_processor import companyProcessor
+from core.processors.baidu_processor import baiduProcessor
+from multiprocessing import Queue, Process
 import pandas as pd
 import pickle
+import time
 
 redisService = RedisService.instance()
 processors = {
@@ -40,34 +44,27 @@ data_types = {
 }
 
 
-def main_loop(length=5):
+def main_loop(n_processor=8):
     sub = redisService.channel("scrapy", 's')
-    try:
-        with open('temp.data','rb') as cache_file:
-            dataBag = pickle.load(cache_file)
-    except:
-        dataBag = DataBag()
-
-    try:
-        while True:
+    multiProcessorBag = MultiProcessorBag(n_processor=n_processor)
+    multiProcessorBag.start_processors()
+    # try:
+    while True:
+        try:
             data_origin = sub()
-            data = json.loads(data_origin[-1].decode())
-            if '_meta' not in data:
-                logging.error("data has no meta info")
-                continue
-            _meta_data = data['_meta']
-            del data['_meta']
-            data_type = _meta_data.get('dataType', None)
-            data_type = data_types.get(data_type, None)
-            if data_type is None:
-                logging.error("unknow type {0}".format(_meta_data['dataType']))
-                continue
+        except ConnectionError as e:
+            logging.error("redis connection closed for some reason, try to reconnect after 1 s")
+            time.sleep(1)
+            sub = redisService.channel("scrapy", 's')
+            continue
+        except TimeoutError as e:
+            logging.error("redis connection time out, try to reconnect after 1 s")
+            time.sleep(1)
+            sub = redisService.channel("scrapy", 's')
+            continue
 
-            dataBag.put(data, data_type)
-    finally:
-        with open('temp.data', 'wb') as cache_file:
-            pickle.dump(dataBag, cache_file, fix_imports=True)
-
+        data = json.loads(data_origin[-1].decode())
+        multiProcessorBag.put(data)
 
 class DataBag:
     def __init__(self, max_length=5):
@@ -89,5 +86,42 @@ class DataBag:
         processor = processors[datasource]
         # controller = controllers[datasource]
         data = pd.DataFrame(datas)
-        data = processor.start_process(data)
+        try:
+            data = processor.start_process(data)
+        except Exception as e:
+            logging.error("some thing wrong")
+            logging.exception("except as ", e)
         # controller.update_datas_from_df(data)
+
+class MultiProcessorBag:
+    def __init__(self, n_processor=4, batch=5):
+        self.n_processor = 4
+        self.batch = 5
+        self.queue = Queue()
+        self.processors = []
+
+    def start_processors(self):
+        for i in range(self.n_processor):
+            process = Process(target=self.process, args=[self.queue])
+            self.processors.append(process)
+            process.start()
+
+    def put(self, data):
+        self.queue.put(data)
+
+    def process(self, queue):
+        dataBag = DataBag()
+        while True:
+            data = queue.get()
+            if '_meta' not in data:
+                logging.error('data has no meta info')
+                continue
+            _meta_data = data['_meta']
+            del data['_meta']
+            data_type = _meta_data.get('dataType', None)
+            data_type = data_types.get(data_type, None)
+            if data_type is None:
+                logging.error("unknow type {0}".format(_meta_data['dataType']))
+                continue
+            dataBag.put(data, data_type)
+

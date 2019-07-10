@@ -1,7 +1,7 @@
 from utils.Tags import Singleton
 import aiml
 from aiml.constants import *
-from utils.Utils import upate_add_dict
+from utils.Utils import update_add_dict
 from settings import BASE_DIR
 import os
 import json
@@ -32,12 +32,10 @@ class AimlService:
                     for result_item in temp_result:
                         print(result_item)
                         # temp.update(json.loads(result_item))
-                        temp = upate_add_dict(temp, json.loads(result_item))
+                        temp = update_add_dict(temp, json.loads(result_item))
                     result = temp
                 else:
                     result = json.loads(result)
-            # print(result)
-            # result = dict(result)
             result = self._conver_dict(result)
         except Exception as e:
             print(e)

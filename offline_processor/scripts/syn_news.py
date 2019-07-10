@@ -18,7 +18,7 @@ def syn_talent():
 def syn_new():
     # for data in new_controller.get_news_as_gen():
     #     print(data)
-    for datas in tqdm(mysqlService.execute_as_gen("select * from kb_news_2019")):
+    for datas in tqdm(mysqlService.execute_as_gen("select * from kb_news_2019 where PUBTIME > \"2019-07-08\"")):
         for data in datas:
             data['_id'] = data['ID']
             print("receving data {0}".format(data['_id']))
@@ -46,9 +46,18 @@ def syn_talent():
                     data[k] = float(v)
             mgService.insert(data, 'kb_demo', 'kb_talent')
 
+def syn_major():
+    for datas in mysqlService.execute_as_gen("select * from kb_major"):
+        for data in datas:
+            for k, v in data.items():
+                if type(v) == Decimal:
+                    data[k] = float(v)
+            mgService.insert(data, "kb_demo", "kb_major")
+
 
 if __name__ == '__main__':
-    syn_new()
+    syn_major()
+    # syn_new()
     # syn_talent()
     # syn_weixin()
     # syn_talent()

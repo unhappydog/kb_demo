@@ -6,7 +6,7 @@ from utils.Encoder import JSONEncoder
 import json
 import re
 from services.AimlService import aimlService
-from utils.Utils import upate_add_dict
+from utils.Utils import update_add_dict
 
 
 @talentProcessor.add_as_processors(stage=1, order=1, skill_column='skills', education_column='Education',
@@ -14,33 +14,6 @@ from utils.Utils import upate_add_dict
                                    Experience='Experience', Welfare='Welfare', company='Company', graph_column='graph',
                                    jobName="Name", Duty="duty", Require="requirement")
 class KgnizerV2(BaseTask):
-    pattern_dict = {
-        "工作职责": {"负责": [{'pattern': "负责.*$",
-                         'post': [2]}],
-                 "参与": [{'pattern': "参与.*$",
-                         'post': [2]}],
-                 "设计": [{'pattern': "设计.*",
-                         'post': [2]}]},
-        "加分项": {
-        },
-        "经验要求": {
-            "熟悉": [{'pattern': "熟悉.*",
-                    'post': [2]}],
-            "经验": [{'pattern': "具有.*经验",
-                    'post': [2, -2]}]
-        },
-        "教育背景": {
-            '专业': [{
-                'pattern': ',.*专业',
-                'post': [1, -2]
-            }]
-        },
-        "优先条件": {
-            "优先": [{'pattern': "熟悉.*优先",
-                    'post': [2, -2]}]
-        }
-    }
-
     def __init__(self, skill_column, education_column, jobDescription, salary, City, Experience, Welfare, company,
                  graph_column, jobName, Duty, Require):
         self.skill_column = skill_column
@@ -105,7 +78,6 @@ class KgnizerV2(BaseTask):
 
     def kgnize(self, x):
         info = self.extract_info_from_des(x[self.jobDescription])
-        print(info)
         cv = {
             "name": x[self.jobName],
             "_empty": [{"职位要求": {
@@ -143,12 +115,10 @@ class KgnizerV2(BaseTask):
         }
         temp = {}
         for doc in des_list:
-            print(doc)
             if not doc or len(doc) <= 4:
                 continue
             info = aimlService.parse_info(doc)
-            # temp.update(info)
-            temp = upate_add_dict(temp, info)
+            temp = update_add_dict(temp, info)
         result = {
             '工作职责': temp.get("职责", None),
             '优先条件':temp.get("优先", None),

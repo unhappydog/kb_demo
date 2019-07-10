@@ -25,6 +25,8 @@ def format_single_jd(jd):
         jd['Salary'] = "{:.0f}k以上".format(float(jd['Salary'][:-2])/1000)
     else:
         jd['Salary'] = ""
+
+    jd['Name'] = re.sub("(\(|（).+(\)|）)$","",jd['Name'])
     return jd
 
 

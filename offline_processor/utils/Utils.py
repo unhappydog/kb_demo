@@ -28,7 +28,10 @@ def update_min_hash(m, word_list):
     return m
 
 
-def upate_add_dict(d1, d2):
+def update_add_dict(d1, d2):
+    """
+    更新字典，取字段较全者
+    """
     temp = {}
     for k, v in d1.items():
         if k in d2.keys():
@@ -46,7 +49,7 @@ def upate_add_dict(d1, d2):
                 v = d2[k].append(v)
                 temp[k] = v
             elif type(v) == dict and type(d2[k]) == dict:
-                temp[k] = upate_add_dict(v, d2[k])
+                temp[k] = update_add_dict(v, d2[k])
             else:
                 temp[k] = [v, d2[k]]
         else:
