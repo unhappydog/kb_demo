@@ -4,29 +4,11 @@ from core.MainLoop import main_loop
 import click
 
 @click.command()
-@click.option("--start", default=0, help='if start queu')
-@click.option("--data_type", default='new', help='which data source to execute')
-@click.option("--processors", default=8, help="how many processors to start up")
-def _main(start, data_type, processors):
-    if start == 1:
-        main_loop(processors)
-    elif data_type == 'new':
-        process = ProcessorManager()
-        process.execute_processor(DataSources.new, 100)
-    elif data_type == 'talent':
-        process = ProcessorManager()
-        process.execute_processor(DataSources.talent, 100)
-    elif data_type == 'weixin':
-        process = ProcessorManager()
-        process.execute_processor(DataSources.weixin, 100)
-    elif data_type == 'all':
-        process = ProcessorManager()
-        process.execute_processor(DataSources.weixin, 100)
-        process.execute_processor(DataSources.talent, 100)
-        process.execute_processor(DataSources.new, 100)
-    else:
-        print("unknow type")
-
+@click.option("--start", default=True, help='if start queu')
+@click.option("--workers", default=4, help="how many processors to start up")
+def _main(start, workers):
+    if start:
+        main_loop(workers)
 
 if __name__ == '__main__':
     _main()

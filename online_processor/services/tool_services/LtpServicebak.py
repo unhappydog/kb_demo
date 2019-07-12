@@ -1,41 +1,39 @@
 from utils.Tags import Singleton
 from tools.Ltp import Ltp
 from data_access.controller.KBTerminologyController4Mongo import KBTerminologyController4Mongo
-from data_access.controller.KBCompanyController4Mongo import KBCompanyController4Mongo
-from threading import Lock
 
 
 class LtpService:
-    _instance = None
-    _lock = Lock()
-
-    @classmethod
-    def instance(cls):
-        if LtpService._instance is None:
-            with LtpService._lock:
-                if LtpService._instance is None:
-                    LtpService._instance = cls()
-        return LtpService._instance
     def __init__(self):
         self.kb_terminology_controller = KBTerminologyController4Mongo()
         id_names = self.kb_terminology_controller.get_name_ids()
-        user_dict = []
+        self.user_dict = []
         for data in id_names:
             if data['cnName']:
                 for name in data['cnName']:
-                    user_dict.append(name)
+                    self.user_dict.append(name)
             if data['engName']:
                 for name in data['engName']:
-                    user_dict.append(name)
+                    self.user_dict.append(name)
+        self.ltp = Ltp(user_dict=self.user_dict)
 
-        self.kb_company_controller = KBCompanyController4Mongo()
-        company_names = self.kb_company_controller.get_datas()
-        for data in company_names:
-            if data['companyName']:
-                user_dict.append(data['companyName'])
-            if data['entName']:
-                user_dict.append(data['entName'])
-        self.ltp = Ltp(user_dict=user_dict)
+    def reload_dict(self, user_dict=[]):
+        """
+        使用提供的列表重新载入分词字典
+        :param user_dict:
+        :return:
+        """
+        self.user_dict= user_dict
+        self.ltp.reload_dict(self.user_dict)
+
+    def add_dict(self, user_dict=[]):
+        """
+        加入 新的 字典并重新载入
+        :param user_dict:
+        :return:
+        """
+        self.user_dict.extend(user_dict)
+        self.ltp.reload_dict(self.user_dict)
 
     def segment(self, doc):
         return self.ltp.segment(doc)
@@ -60,3 +58,5 @@ class LtpService:
         return self.ltp.label(word_list, tag_list, arcs)
         pass
 
+
+ltpService = LtpService()

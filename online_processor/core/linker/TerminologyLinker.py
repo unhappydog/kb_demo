@@ -1,6 +1,5 @@
 # from data_access.controller.KBTerminologyController import KBTerminologyController
 from data_access.controller.KBTerminologyController4Mongo import KBTerminologyController4Mongo
-from services.tool_services.LtpService import ltpService
 from utils.Logger import logging
 from utils.Constants import REGEX_CN
 from core.linker.ACLinker import ACLinker

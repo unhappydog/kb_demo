@@ -8,8 +8,8 @@ import re
 
 
 @newsProcessor.add_as_processors(order=2, stage=1,
-                                 content_column="content", pubtime_column="pubtime",
-                                 replicate_column="ISREPLICATE", title_column="title",
+                                 content_column="CONTENT", pubtime_column="PUBTIME",
+                                 replicate_column="ISREPLICATE", title_column="TITLE",
                                  tag_column="Tag", domain_tag="DomainTag", company_tag="CompanyTag", related_company="companys", related_person="persons", job_tag="job_tag")
 class TagTask(BaseTask):
     def __init__(self, content_column, pubtime_column, replicate_column, title_column, tag_column, domain_tag, company_tag, related_company, related_person, job_tag):

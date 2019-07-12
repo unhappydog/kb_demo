@@ -1,10 +1,20 @@
 import pymongo
-from utils.Tags import Singleton
 from settings import mongo_host, mongo_port, mongo_db
+from threading import Lock
 
 
-@Singleton
 class MongoService:
+    _lock = Lock()
+    _instance = None
+
+    @classmethod
+    def instance(cls):
+        if MongoService._instance == None:
+            with MongoService._lock:
+                if MongoService._instance == None:
+                    cls._instance = cls()
+        return cls._instance
+
     def __init__(self, ip=mongo_host, port=mongo_port, db=mongo_db):
         self.client = pymongo.MongoClient("mongodb://{0}:{1}/".format(ip, port))
         self.db = db
@@ -132,7 +142,7 @@ class MongoService:
 mgService = MongoService()
 
 if __name__ == '__main__':
-    ms = MongoService()
+    ms = MongoService().instance()
     import time
 
     a = time.time()

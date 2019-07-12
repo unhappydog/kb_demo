@@ -43,7 +43,7 @@ class NewController4Mongo(BaseMongoController):
         return name
 
     @random_image
-    def get_news_by(self, domain, tag, company_tag, orderBy="pubtime", page=1, limit=10):
+    def get_news_by(self, domain, tag, company_tag, orderBy="PUBTIME", page=1, limit=10):
         cond = {'ISREPLICATE': 0,
                       "ISBAD": 0}
         if domain:

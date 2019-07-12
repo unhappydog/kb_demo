@@ -5,7 +5,7 @@ import requests
 import json
 import os
 from settings import BASE_DIR
-host="localhost"
+host="rembern.com"
 
 class TestKB(unittest.TestCase):
 

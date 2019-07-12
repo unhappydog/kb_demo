@@ -15,6 +15,17 @@ import uuid
 neoService = NeoService.instance()
 searcher = Searcher.instance()
 
+@baiduProcessor.add_as_processors(order=11, stage=2, schema='kb_demo', table='kb_company')
+class SaveTask(BaseTask):
+    def __init__(self, schema, table):
+        self.schema = schema
+        self.table = table
+        self.controller = CommonController4Mongo(schema, table)
+
+    def fit(self, data):
+        self.controller.insert_datas_from_df(data)
+        return data
+
 @baiduProcessor.add_as_processors(order=12, stage=2)
 class ExtractTask(BaseTask, Neo4jMixin):
     def __init__(self):

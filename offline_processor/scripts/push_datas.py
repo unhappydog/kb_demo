@@ -16,15 +16,14 @@ import time
 redisService = RedisService.instance()
 
 
-@click.command()
-@click.option("--data_source", default='news', help='which datasource to push')
 def push(data_source):
     source_dict = {'all':[DataSources.new, DataSources.talent, DataSources.weixin, DataSources.cv],
                    'news': DataSources.new,
                    'talent': DataSources.talent,
                    'weixin': DataSources.weixin,
                    'cv': DataSources.cv,
-                   'company':DataSources.company}
+                   'company':DataSources.company,
+                   'baipin_firm_basic':DataSources.baidubaipin}
     source_name_dict = {v:k for k,v in source_dict.items() if k != 'all'}
     pusher = redisService.channel('scrapy','p')
     if data_source != 'all':
@@ -47,7 +46,8 @@ def get_datas(data_source):
             DataSources.weixin: WeixinController4Mongo(),
             DataSources.talent: TalentController4Mongo(),
         DataSources.cv: CommonController4Mongo(schema="kb_demo", table="kb_CV_2019"),
-        DataSources.company: CommonController4Mongo(schema="kb_demo", table="kb_company")
+        DataSources.company: CommonController4Mongo(schema="kb_demo", table="kb_company"),
+        DataSources.baidubaipin: CommonController4Mongo(schema="origin", table="baipin_firm_basic")
         }
     if type(data_source) == list:
         for every_data_source in data_source:
@@ -60,6 +60,3 @@ def get_datas(data_source):
             print("data source type un supported")
             return 
         yield from controller.get_datas_as_gen()
-
-if __name__ == '__main__':
-    push()

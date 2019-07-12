@@ -3,10 +3,10 @@ from redis.exceptions import RedisError, ConnectionError, TimeoutError
 from core.common.DataSources import DataSources
 from utils.Logger import logging
 import json
-from data_access.controller.NewController4Mongo import NewController4Mongo
-from data_access.controller.WeixinController4Mongo import WeixinController4Mongo
-from data_access.controller.TalentController4Mongo import TalentController4Mongo
-from data_access.controller.CommonController4Mongo import CommonController4Mongo
+# from data_access.controller.NewController4Mongo import NewController4Mongo
+# from data_access.controller.WeixinController4Mongo import WeixinController4Mongo
+# from data_access.controller.TalentController4Mongo import TalentController4Mongo
+# from data_access.controller.CommonController4Mongo import CommonController4Mongo
 from core.processors.news_processor import newsProcessor
 from core.processors.weixin_processor import weixinProcessor
 from core.processors.talent_processor import talentProcessor
@@ -24,23 +24,25 @@ processors = {
     DataSources.weixin: weixinProcessor,
     DataSources.talent: talentProcessor,
     DataSources.cv: cvProcessor,
-    DataSources.company: companyProcessor
+    DataSources.company: companyProcessor,
+    DataSources.baidubaipin: baiduProcessor
 
 }
-controllers = {
-    DataSources.new: NewController4Mongo(),
-    DataSources.weixin: WeixinController4Mongo(),
-    DataSources.talent: TalentController4Mongo(),
-    DataSources.cv: CommonController4Mongo(schema="kb_demo", table="kb_CV_2019"),
-    DataSources.company: CommonController4Mongo(schema="kb_demo", table="kb_company")
-}
+# controllers = {
+#     DataSources.new: NewController4Mongo(),
+#     DataSources.weixin: WeixinController4Mongo(),
+#     DataSources.talent: TalentController4Mongo(),
+#     DataSources.cv: CommonController4Mongo(schema="kb_demo", table="kb_CV_2019"),
+#     DataSources.company: CommonController4Mongo(schema="kb_demo", table="kb_company")
+# }
 
 data_types = {
     'news': DataSources.new,
     'weixin': DataSources.weixin,
     'talent': DataSources.talent,
     "cv": DataSources.cv,
-    "company": DataSources.company
+    "company": DataSources.company,
+    'baipin_firm_basic': DataSources.baidubaipin
 }
 
 
