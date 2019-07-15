@@ -84,6 +84,4 @@
         <pattern>精通*</pattern>
         <template>{"技能":{"精通":"<star index="1"/>"}}</template>
     </category>
-
-
 </aiml>

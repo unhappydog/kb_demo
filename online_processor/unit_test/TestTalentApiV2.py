@@ -28,12 +28,12 @@ class TestRestApi(unittest.TestCase):
             result = requests.get("http://{0}:18082/online/sourcing/search_talent_bank/{1}/{2}/{3}/{4}/{8}/{5}/{6}/{7}".format(host, "数据挖掘工程师",l,e2,e1,'none',"1",1,10))
             self.assertEqual(result.status_code, 200)
 
-    def test_move_to_talent_bak(self):
-        print("testing moving")
-        with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
-            self.json_str = f.read()
-        result = requests.post('http://{0}:18082/online/sourcing/move_to_talent_bank/{1}/{2}/{3}/{4}/{5}'.format(host, '机器学习工程师', 'none', 'upload', 'up','1'), data={'json': self.json_str})
-        self.assertEqual(result.status_code, 200)
+    # def test_move_to_talent_bak(self):
+    #     print("testing moving")
+    #     with open(os.path.join(BASE_DIR, "resources", "one_cv.json"), 'r', encoding='utf8') as f:
+    #         self.json_str = f.read()
+    #     result = requests.post('http://{0}:18082/online/sourcing/move_to_talent_bank/{1}/{2}/{3}/{4}/{5}'.format(host, '机器学习工程师', 'none', 'upload', 'up','1'), data={'json': self.json_str})
+    #     self.assertEqual(result.status_code, 200)
 
     def test_upload_data(self):
         print("testing upload")
@@ -94,7 +94,22 @@ class TestRestApi(unittest.TestCase):
 
     def test_goto(self):
         print("starting testing goto api")
-        result = requests.get("http://{0}:18082/online/talent_bank/goto/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}/{11}/{12}/{13}".format(host,'none', 'none', 'none', 100,'3-5','硕士','zhilian','upload','updateTime','1','2',1,10))
+        result = requests.get("http://{0}:18082/online/talent_bank/goto/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}/{10}/{11}/{12}/{13}".format(host,'none','none','none', 'none', 100,'3-5','硕士','zhilian','upload','updateTime','1','2',1,10))
+        self.assertEqual(result.status_code, 200)
+
+    def test_get_cv_by_kanban(self):
+        print("starting test get_cv_by_kanban")
+        result = requests.get("http://{0}:18082/online/kanban/get_cv_by_kanban/{1}/{2}/{3}/{4}/{5}".format(host,'ready','算法工程师',1,10,'1'))
+        self.assertEqual(result.status_code, 200)
+
+    def test_move_to(self):
+        print("starting testing move_to api")
+        result = requests.get("http://{0}:18082/online/kanban/move_to_kanban/{1}/{2}/{3}".format(host,'ready',"E)Y7cckRH5iOrYKUoDC(WA",'1'))
+        self.assertEqual(result.status_code, 200)
+
+    def test_get_cv(self):
+        print("starting test get_by_id")
+        result = requests.get("http://{0}:18082/online/talent_bank/get_cv/{1}/{2}".format(host,'1','1'))
         self.assertEqual(result.status_code, 200)
 
 

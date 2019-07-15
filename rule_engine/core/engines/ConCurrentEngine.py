@@ -13,7 +13,7 @@ def create_method(relation):
     return reverse
 
 
-class ReverseEngine(KnowledgeEngine):
+class ConCurrentEngine(KnowledgeEngine):
     def __init__(self):
         self.load_rules()
         super().__init__()
@@ -30,7 +30,7 @@ class ReverseEngine(KnowledgeEngine):
 
 
 if __name__ == '__main__':
-    engine = ReverseEngine()
+    engine = ConCurrentEngine()
     engine.reset()
     engine.declare(Triples(from_ontology=Ontology('a','b'), to_ontology=Ontology('c','d'),relation='发布公司'))
     engine.run()

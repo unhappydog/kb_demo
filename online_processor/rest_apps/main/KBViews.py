@@ -18,10 +18,19 @@ def expand_entity(label, name, _id, limit):
     return json.dumps(data, ensure_ascii=False, cls=JSONEncoder)
 
 
-@inf_restful.route("/online/kb/demo_entity/<string:company>/<string:job>/<string:candidate>", methods=['GET'])
-def demo_entity(company, job, candidate):
+@inf_restful.route("/online/kb/demo_entity/<string:company>/<string:job>/<string:candidate>/<string:skill>", methods=['GET'])
+def demo_entity(company, job, candidate, skill):
     company = False if company == 'false' else True
     job = False if job == 'false' else True
     candidate = False if candidate == 'false' else True
-    data = kbService.demo_entity(company, job, candidate, 10)
+    skill = False if skill == 'false' else True
+    data = kbService.demo_entity(company, job, candidate, skill, 10)
+    return json.dumps(data, ensure_ascii=False, cls=JSONEncoder) 
+
+@inf_restful.route("/online/kb/demo_entity/<string:company>/<string:job>/<string:candidate>", methods=['GET'])
+def demo_entity_old(company, job, candidate):
+    company = False if company == 'false' else True
+    job = False if job == 'false' else True
+    candidate = False if candidate == 'false' else True
+    data = kbService.demo_entity(company, job, candidate, True, 10)
     return json.dumps(data, ensure_ascii=False, cls=JSONEncoder) 

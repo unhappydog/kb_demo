@@ -145,9 +145,21 @@ class ExtractTask(BaseTask, Neo4jMixin):
         for project_experience in project_experiences:
             self.extract_project_info(project_experience, x['_id'])
 
-        skills = self.terminology_linker.skill_tags(x)
+        skills = x.get('skill', [])
+        if type(skills) == str:
+            skill_tags = self.terminology_linker.simple_word_linker(skills)
+            for skill in skills:
+                self.extract_skill_info(skill, x['_id'])
         for skill in skills:
-            self.extract_skill_info(skill, x['_id'])
+            skill_tags = self.terminology_linker.simple_word_linker(skill['name'])
+            skill_tags = [skill_tag['terminology_detail'] for skill_tag in skill_tags]
+            mastery = skill.get('skillMastery','涉及')
+            for skill_tag in skill_tags:
+                self.extract_skill_info(skill_tag, x['_id'], mastery)
+
+        # skills = self.terminology_linker.skill_tags(x)
+        # for skill in skills:
+        #     self.extract_skill_info(skill, x['_id'])
 
         city = x.get("currentAddress")
         cities = city.split(" ")
@@ -205,7 +217,7 @@ class ExtractTask(BaseTask, Neo4jMixin):
         relation['name'] = "现居地"
         self.relations.append(relation)
 
-    def extract_skill_info(self, skill, cv_id):
+    def extract_skill_info(self, skill, cv_id, mastery = '涉及'):
         """抽取技能相关关系
 
         args:
@@ -217,7 +229,7 @@ class ExtractTask(BaseTask, Neo4jMixin):
         relation['to_type'] = 'skill'
         relation['from_id'] = cv_id
         relation['from_type'] = 'candidate'
-        relation['name'] = "涉及"
+        relation['name'] = mastery
         self.relations.append(relation)
 
 

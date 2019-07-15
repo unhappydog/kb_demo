@@ -60,9 +60,6 @@ def move_to_talent_bank(job_title, user_tag, source, source_method, talent_bank_
         if not position:
             return json.dumps({"state":"failed", "log":"positon doesn't exists"})
         position = position[0]
-
-
-
     json_data = request.form['json']
 
     try:
@@ -179,7 +176,6 @@ def get_talent_by(update_time, experience, education, source, job_title, source_
 def add_to_favorite(cv_id, talent_bank_id, user_id):
     cv = tbService.get_by_id(cv_id,talent_bank_id=talent_bank_id)
     if cv:
-
         cv = cv[0]
         cv_object = linkerService.parse(cv)
         cv['skill_tag'] = linkerService.gen_skill_tag(cv_object)
@@ -294,3 +290,33 @@ def goto(all_follow,company, academy, skill_tag,update_time, experience, educati
     source_method = None if source_method == 'none' else education
     datas = tbService.get_datas_by(update_time=update_time, experience=experience, educationDegree=education,source=source, source_method=source_method, sort_by=sort_by, company=company, academy=academy, skill_tag=skill_tag, talent_bank_id=talent_bank_id)
     return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
+
+
+@inf_restful.route("/online/talent_bank/get_cv/<string:cv_id>/<string:talent_bank_id>")
+def get_cv(cv_id, talent_bank_id):
+    result = tbService.get_by_id(cv_id, talent_bank_id)
+    if result:
+        return json.dumps(datas, ensure_ascii=False, cls=JSONEncoder)
+    else:
+        data = {'result':'failed', 'log':'Unknown'}
+        return json.dumps(data)
+
+@inf_restful.route("/online/kanban/move_to_kanban/<string:kanban_name>/<string:cv_id>/<string:talent_bank_id>")
+def move_to_kanban(kanban_name, cv_id, talent_bank_id):
+    cv = tbService.get_by_id(cv_id,talent_bank_id=talent_bank_id)
+    if not cv:
+        cv = dataService.get(cv_id)
+        tbService.save(cv, talent_bank_id=talent_bank_id, save_tag=True)
+
+    reuslt = tbService.move_cv_to_kanban(cv_id, kanban_name, talent_bank_id)
+    if reuslt:
+        data = {"result":"sucess"}
+    else:
+        data = {"result":"failed", "log":"unknown"}
+    return json.dumps(data)
+
+@inf_restful.route("/online/kanban/get_cv_by_kanban/<string:kanban_name>/<string:job_title>/<int:page>/<int:size>/<string:talent_bank_id>")
+def get_cv_by_kanban(kanban_name, job_title, page, size, talent_bank_id):
+    talent_bank_id = None if talent_bank_id == 'none' else talent_bank_id
+    result = tbService.get_cv_by_kanban(kanban_name, job_title, page, size, talent_bank_id)
+    return json.dumps(result, ensure_ascii=False, cls=JSONEncoder)

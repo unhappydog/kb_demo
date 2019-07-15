@@ -31,3 +31,5 @@ bert_in_port = 5555
 bert_out_port = 5556
 
 nlp_core = "jieba" # ltp
+nlp_host = "localhost"
+nlp_port = "18084"

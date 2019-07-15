@@ -77,6 +77,20 @@ class TalentBankService:
     def get_map_cv(self, company_name, in_office):
         return self.talent_bank.get_map_cv(company_name, in_office)
 
+    def move_cv_to_kanban(self, cv_id, kanban_tag, talent_bank_id=None):
+        data = {'_id': cv_id,
+                "kanban_tag":kanban_tag}
+        self.talent_bank.update(data, talent_bank_id=talent_bank_id)
+        # verify
+        cv = self.get_by_id(cv_id, talent_bank_id=talent_bank_id)
+        if cv:
+            if cv[0]['kanban_tag'] == kanban_tag:
+                return True
+        else:
+            return False
+
+    def get_cv_by_kanban(self, kanban_tag, job_title, page,size, talent_bank_id=None):
+        return self.talent_bank.get_cv_by_kanban(kanban_tag, job_title, page, size)
 
 
 tbService = TalentBankService()

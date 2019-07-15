@@ -178,6 +178,10 @@ class TalentBank:
         datas = self.controller.count_column(column_name, cond)
         return [data for data in datas if data.get(column_name)]
 
+    @_switch_table_tag
+    def get_cv_by_kanban(self, kanban_tag, job_title,page,size):
+        return self.controller.get_datas_by_kanban(kanban_tag, job_title,page=page, size=size)
+
     def gen_map(self, company_name):
         return TalentMap.instance(KBTalentBankController4Mongo()).gen_map(company_name)
 

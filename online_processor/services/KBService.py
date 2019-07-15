@@ -20,5 +20,5 @@ class KBService:
     def find_entity(self, entity_label, entity_name=None, entity_id=None, limit=10):
         return self.kbcore.find_entity(entity_label, entity_name, entity_id, limit)
 
-    def demo_entity(self, company, job, candidate, limit):
-        return self.kbcore.demo_entity(company, job, candidate)
+    def demo_entity(self, company, job, candidate, skill, limit):
+        return self.kbcore.demo_entity(company, job, candidate, skill)

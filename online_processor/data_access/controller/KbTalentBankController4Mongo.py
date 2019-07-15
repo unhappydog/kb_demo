@@ -61,7 +61,6 @@ class KBTalentBankController4Mongo(BaseMongoController):
     def get_datas_by(self,keyword=None, location=None, update_time=None, experience=None, educationDegree=None, source=None, source_method=None, job_title=None,searchword=None, company=None, academy=None, skill_tag=None,
                      tag=None ,ascending=-1, page=1, size=10, sort_by="updateTime"):
         cond = {}
-        # import pdb; pdb.set_trace()
         if keyword:
             cond = {'$or':[{'jobTitle':{'$regex':keyword}},{'workExperience.workCompany':{'$regex':keyword}},{'workExperience.workPosition':{'$regex':keyword}},{'name':keyword}]}
         if location:
@@ -136,6 +135,25 @@ class KBTalentBankController4Mongo(BaseMongoController):
         else:
             return []
         return mgservice.query(cond, db=self._schema, table=self._table)
+
+    def get_datas_by_kanban(self, kanban, job_title, sort_by="updateTime", ascending=-1, page=1, size=100):
+        if kanban:
+            cond = {
+                'kanban_tag':kanban
+            }
+        else:
+            return []
+        if job_title:
+            cond['jobTitle'] = job_title
+
+        return mgservice.query_sort(query_cond=cond,
+                                    table=self._table,
+                                    db=self._schema,
+                                    sort_by=sort_by,
+                                    ascending=ascending,
+                                    page=page,
+                                    size=size)
+
 
     def get_all_cv(self, company, academy, skill_tag, sort_by="updateTime", ascending=-1, page=1, size=10):
         cond = {}

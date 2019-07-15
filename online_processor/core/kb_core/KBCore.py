@@ -55,7 +55,7 @@ class KBCore:
             link['target'] = link['to_id']
         return nodes, links
 
-    def demo_entity(self, company=True, job=True, candidate=True, limit=10):
+    def demo_entity(self, company=True, job=True, candidate=True, skill=True, limit=10):
         sql = "match (n:{0})-[r]-(n2) with count(n2) as b, n return n order by b desc limit {1}"
         data = {}
         if company:
@@ -84,6 +84,15 @@ class KBCore:
             data['candidate_graph'] = {}
             data['candidate_graph']['nodes'] = nodes
             data['candidate_graph']['links'] = links
+
+        if skill:
+            skills = self.neoService.exec(sql.format('skill', limit)).data()
+            skills = [skill['n'] for skill in skills]
+            data['skill'] = [{'name':skill['name'],'_id':skill['_id']} for skill in skills]
+            nodes, links = self.find_entity('skill', entity_name=data['skill'][0]['name'])
+            data['skill_graph'] = {}
+            data['skill_graph']['nodes'] = nodes
+            data['skill_graph']['links'] = links
 
         return data
 

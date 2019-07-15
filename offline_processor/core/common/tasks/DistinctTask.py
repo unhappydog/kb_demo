@@ -4,6 +4,8 @@ from core.base.data.FixSizeDataFrame import FixSizeDataFrame
 from core.base.data.LSHBasedFixSizeHash import LSHBasedFixSizeHash
 from utils.Constants import seg_suffix
 from utils import Utils
+from settings import nlp_host, nlp_port
+from tools.clients.NlpClient import NlpClient
 
 
 #
@@ -21,6 +23,7 @@ class BaseDistinctTask(BaseTask):
         self.max_length = max_length
         # self.history = FixSizeDataFrame(None, max_length=self.max_length, sort_by=self.pubtime_column)
         self.history = LSHBasedFixSizeHash()
+        self.nlp_client = NlpClient(nlp_host,nlp_port)
 
     def fit(self, data):
         data[self.replicate_column] = data.apply(lambda x: self.if_replicate(x), axis=1)
@@ -33,10 +36,15 @@ class BaseDistinctTask(BaseTask):
         if x[self.content_column] is None:
             return 1
 
-        m = Utils.compute_min_hash(Utils.parse_segged_word(x[self.content_column + seg_suffix]))
-        x['min_hash'] = m
-        m_score = self.history.get_max_similar(m)
-        self.history.add(m)
-        if m_score > self.min_score:
+        if self.nlp_client.distinct(x[self.content_column]):
+            return 0
+        else:
             return 1
-        return 0
+
+        # m = Utils.compute_min_hash(Utils.parse_segged_word(x[self.content_column + seg_suffix]))
+        # x['min_hash'] = m
+        # m_score = self.history.get_max_similar(m)
+        # self.history.add(m)
+        # if m_score > self.min_score:
+        #     return 1
+        # return 0
