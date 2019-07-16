@@ -34,25 +34,41 @@ class KBCore:
 
         if not query:
             return
-        sql = "match (n:{0})-[r]-(n2) where {1} return n,r,n2 limit {2}"
+        # sql = "match (n:{0})-[r]-(n2) where {1} return n,r,n2 limit {2}"
+        sql = "match (n:{0})-[r1]-(n1), (n)-[r2]-(n2) where {1} optional match (n1)-[r3]-(n2) return r1,r2,r3,n,n1,n2 limit {2}"
         # sql = "match (n:{0})-[r]-(n2) with count(n2) as b, n return n order by b desc limit {2}"
         datas = self.neoService.exec(sql.format(entity_label, " and ".join(query), limit)).data()
         nodes = []
         links = []
+        _ids = set()
         for data in datas:
             node = dict(data['n'])
             node['_label'] = str(data['n'].labels)[1:]
             node = self.lower_dict_key(node)
             nodes.append(node)
+            _ids.add(node['_id'])
+
             node_2 = dict(data['n2'])
             node_2['_label'] = str(data['n2'].labels)[1:]
             node_2 = self.lower_dict_key(node_2)
             nodes.append(node_2)
-            links.append(data['r'])
+            _ids.add(node_2['_id'])
+
+            node_3 = dict(data['n1'])
+            node_3['_label'] = str(data['n1'].labels)[1:]
+            node_3 = self.lower_dict_key(node_3)
+            nodes.append(node_3)
+            _ids.add(node_3['_id'])
+
+            links.append(data['r1'])
+            links.append(data['r2'])
+            if data['r3'] is not None:
+                links.append(data['r3'])
         nodes = self.distinct_list(nodes)
         for link in links:
             link['source'] = link['from_id']
             link['target'] = link['to_id']
+        links = [link for link in links if link['target'] in _ids and link['source'] in _ids]
         return nodes, links
 
     def demo_entity(self, company=True, job=True, candidate=True, skill=True, limit=10):

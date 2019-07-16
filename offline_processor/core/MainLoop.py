@@ -50,23 +50,25 @@ def main_loop(n_processor=8):
     sub = redisService.channel("scrapy", 's')
     multiProcessorBag = MultiProcessorBag(n_processor=n_processor)
     multiProcessorBag.start_processors()
-    # try:
-    while True:
-        try:
-            data_origin = sub()
-        except ConnectionError as e:
-            logging.error("redis connection closed for some reason, try to reconnect after 1 s")
-            time.sleep(1)
-            sub = redisService.channel("scrapy", 's')
-            continue
-        except TimeoutError as e:
-            logging.error("redis connection time out, try to reconnect after 1 s")
-            time.sleep(1)
-            sub = redisService.channel("scrapy", 's')
-            continue
+    try:
+        while True:
+            try:
+                data_origin = sub()
+            except ConnectionError as e:
+                logging.error("redis connection closed for some reason, try to reconnect after 1 s")
+                time.sleep(1)
+                sub = redisService.channel("scrapy", 's')
+                continue
+            except TimeoutError as e:
+                logging.error("redis connection time out, try to reconnect after 1 s")
+                time.sleep(1)
+                sub = redisService.channel("scrapy", 's')
+                continue
 
-        data = json.loads(data_origin[-1].decode())
-        multiProcessorBag.put(data)
+            data = json.loads(data_origin[-1].decode())
+            multiProcessorBag.put(data)
+    finally:
+        multiProcessorBag.stop_all()
 
 class DataBag:
     def __init__(self, max_length=5):
@@ -126,4 +128,9 @@ class MultiProcessorBag:
                 logging.error("unknow type {0}".format(_meta_data['dataType']))
                 continue
             dataBag.put(data, data_type)
+
+    def stop_all(self):
+        for p in self.processors:
+            p.terminate()
+
 

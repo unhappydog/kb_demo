@@ -14,7 +14,7 @@ import re
 
 neoService = NeoService.instance()
 searcher = Searcher.instance()
-@cvProcessor.add_as_processors(order=11, stage=2, schema='kb_graph', table='kb_graph_cv_processed')
+@cvProcessor.add_as_processors(order=11, stage=2, schema='kb_demo', table='kb_talent_bank')
 class SaveTask(BaseTask):
     def __init__(self, schema, table):
         self.schema = schema

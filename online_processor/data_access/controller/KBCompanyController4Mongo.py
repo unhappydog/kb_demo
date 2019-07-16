@@ -20,11 +20,6 @@ def format_capital(data):
     if type(capital) == str:
         reg_capital = "{:.1f}万元".format(float(capital)) if re.match('^[0-9]+\.?[0-9]*$', capital) else capital
         data.regCapital = reg_capital
-
-    detail = data.brief
-    if type(detail) == str:
-        if detail.endswith('展开'):
-            data.brief = detail[:-2]
     return data
 
 

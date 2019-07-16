@@ -9,7 +9,8 @@ class NlpClient:
     def distinct(self, data):
         url = self.base_url + "/distinct"
         result = requests.post(url, data={'content':data})
-        result = result.json['result']
+        result = result.json()
+        result = result['result']
         if result == 'true':
             return True
         else:

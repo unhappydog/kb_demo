@@ -26,10 +26,10 @@ log_level = DEBUG
 redis_host = "rembern.com"
 redis_port = "32379"
 
-bert_ip = "gpu1"
+bert_ip = "172.16.10.254"
 bert_in_port = 5555
 bert_out_port = 5556
 
 nlp_core = "jieba" # ltp
-nlp_host = "localhost"
+nlp_host = "rembern.com"
 nlp_port = "18084"
