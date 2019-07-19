@@ -68,6 +68,7 @@ def main_loop(n_processor=8):
             data = json.loads(data_origin[-1].decode())
             multiProcessorBag.put(data)
     finally:
+        print("shuting down")
         multiProcessorBag.stop_all()
 
 class DataBag:

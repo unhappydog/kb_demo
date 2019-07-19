@@ -112,6 +112,14 @@ class TestRestApi(unittest.TestCase):
         result = requests.get("http://{0}:18082/online/talent_bank/get_cv/{1}/{2}".format(host,'1','1'))
         self.assertEqual(result.status_code, 200)
 
+    def test_get_by_type_and_id(self):
+        print("starting test get by type and id")
+        result = requests.get("http://{0}:18082/online/kb/get_data/{1}/{2}".format(host,'cv','E)Y7cckRH5iOrYKUoDC(WA'))
+        self.assertEqual(result.status_code, 200)
+
+        result = requests.get("http://{0}:18082/online/kb/get_data/{1}/{2}".format(host,'company','5cabf8da1228a3384cc4f406'))
+        self.assertEqual(result.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()

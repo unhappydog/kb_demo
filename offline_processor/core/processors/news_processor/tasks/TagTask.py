@@ -42,9 +42,9 @@ class TagTask(BaseTask):
         data[self.tag_column] = data[self.title_column].apply(lambda x: self.add_tag(x))
         data[self.domain_tag] = data[self.title_column].apply(lambda x: self.tag_domain(x))
         data[self.company_tag] = data[self.title_column].apply(lambda x:self.tag_company(x))
-        data['ner'] = data[self.content_column].apply(lambda x: self.ner_recong(x))
-        data[self.related_company] = data['ner'].apply(lambda x:self.ner_extract(x, 'Ni'))
-        data[self.related_person] = data['ner'].apply(lambda x: self.ner_extract(x))
+        # data['ner'] = data[self.content_column].apply(lambda x: self.ner_recong(x))
+        # data[self.related_company] = data['ner'].apply(lambda x:self.ner_extract(x, 'Ni'))
+        # data[self.related_person] = data['ner'].apply(lambda x: self.ner_extract(x))
         data[self.job_tag] = data.apply(lambda x: self.related_position(x[self.title_column], x[self.content_column]), axis=1)
         return data
 

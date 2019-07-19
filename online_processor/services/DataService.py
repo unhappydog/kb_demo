@@ -6,6 +6,7 @@ from data_access.controller.JDCompanyController4Mongo import JDCompanyController
 from services.tool_services.MongoService import mgService
 from data_access.controller.NewController4Mongo import NewController4Mongo
 from data_access.controller.PositionController import PositionController
+from data_access.controller.KBCompanyController4Mongo import KBCompanyController4Mongo
 
 
 @Singleton
@@ -17,6 +18,7 @@ class DataService:
         self.jd_company_controller = JDCompanyController4Mongo()
         self.news_controller = NewController4Mongo()
         self.position_controller = PositionController()
+        self.kb_company_controller = KBCompanyController4Mongo()
 
     def save(self, cv):
         if self.cv_controller.get_data_by_id(_id=cv._id):
@@ -48,6 +50,9 @@ class DataService:
 
     def get_position_by(self, name=None):
         return self.position_controller.get_data_by_name(name)
+
+    def get_company_by_id(self, _id):
+        return self.kb_company_controller.get_data_by_id(_id)
 
 
 dataService = DataService()

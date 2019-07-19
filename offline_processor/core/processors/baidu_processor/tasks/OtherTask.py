@@ -48,8 +48,22 @@ class ExtractTask(BaseTask, Neo4jMixin):
         return data
 
     def save_company(self, x):
-        if not self.if_exists('company', x['_id']):
+        # if not self.if_exists('company', x['_id']):
+        if not self.if_company_name_exists('company', x['name']):
             self.save_to_neo4j('company', x)
+
+    def if_company_name_exists(self, label, name):
+        try:
+            data = self.neoService.exec("match (n:{0}) where n.name=\"{1}\" return n".format(label, name)).data()
+        except Exception as e:
+            logging.exception("error occured when checking if exists")
+            return True
+
+        if data:
+            return True
+        else:
+            return False
+
 
     def ontology_and_relation(self, x):
         members = x.get("members", [])
@@ -57,6 +71,12 @@ class ExtractTask(BaseTask, Neo4jMixin):
             members = []
         for member in members:
             self.extract_member_info(member, x['_id'])
+
+        ceos = x.get("ceos", [])
+        if type(ceos) != list:
+            ceos = []
+        for ceo in ceos:
+            self.extract_member_info(ceo, x['_id'])
 
         invests = x.get("invests", [])
         if type(invests) != list:
@@ -75,7 +95,7 @@ class ExtractTask(BaseTask, Neo4jMixin):
          relation['to_type'] = 'member'
          relation['from_id'] = jd_id
          relation['from_type'] = 'company'
-         relation['name'] = '高管'
+         relation['name'] = member_info.get('memberJob','高管').split(",")[0]
          self.relations.append(relation)
 
     def extract_invest_info(self, invest, jd_id):

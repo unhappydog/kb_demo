@@ -44,12 +44,16 @@ class ExtractTask(BaseTask, Neo4jMixin):
     def fit(self, data):
         data = data[data.apply(lambda x: x[is_bad_column] ==0 and x[is_replicate_column] ==0 , axis=1)]
         jds = data.apply(lambda x: x[['_id', 'Name', 'Company','Salary','City','Education','Number','Welfare','Source','JobType','Startdate','Enddate','JobDescription','JobLocation']], axis=1)
+        jds['name'] = jds['Name']
         jds.apply(lambda x: self.save_jd(x), axis=1)
         data.apply(lambda x: self.ontology_and_relation(x), axis=1)
         [self.save_to_neo4j('company', x) for x in self.company if not self.if_exists('company', x['_id'])]
         [self.save_to_neo4j('city',x) for x in self.cities if not self.if_exists('city', x['_id'])]
         [self.save_to_neo4j('job',x) for x in self.jobs if not self.if_exists('job', x['_id'])]
         [self.save_to_neo4j('major', x) for x in self.majors if not self.if_exists('major', x['_id'])]
+        # import ipdb; ipdb.set_trace()
+
+
         [self.save_relation(x) for x in self.relations]
         self.cities = []
         self.company = []
@@ -63,6 +67,8 @@ class ExtractTask(BaseTask, Neo4jMixin):
             self.save_to_neo4j('jd', x)
 
     def ontology_and_relation(self, x):
+        # import ipdb; ipdb.set_trace()
+
         skills = x.get('skills', [])
         for skill in skills:
             skill_info = searcher.search_skill(skill)
@@ -77,9 +83,12 @@ class ExtractTask(BaseTask, Neo4jMixin):
         if city:
             self.extract_city_info(city, x['_id'])
 
-        job = x.get("JobTitle")
-        if job:
-            self.extract_job_info(job, x['_id'])
+        jobs = x.get("JobTitle", [])
+
+        jobs = list(set(jobs))
+        if jobs:
+            for job in jobs:
+                self.extract_job_info(job, x['_id'])
 
         describe = x.get("JobDescription")
         if describe:
@@ -114,7 +123,6 @@ class ExtractTask(BaseTask, Neo4jMixin):
                 relation['from_type'] = 'jd'
                 relation['name'] = "专业要求"
                 self.relations.append(relation)
-
 
     def extract_job_info(self, job_title, jd_id):
         """抽取职位信息

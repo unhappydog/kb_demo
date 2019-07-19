@@ -5,6 +5,8 @@ from threading import Lock
 from datetime import datetime
 from pandas._libs.tslibs.timestamps import Timestamp
 from bson import ObjectId
+import numpy as np
+import math
 
 
 class NeoService():
@@ -35,8 +37,41 @@ class NeoService():
     def exec(self, sql):
         return self.graph.run(sql)
 
+    def update(self, label, **keywords):
+        for k,v in keywords.items():
+            if v is None:
+                keywords[k] = ""
+            if type(v) == np.float64:
+                if np.isnan(v):
+                    keywords[k] = ""
+
+            if type(v) == float:
+                if math.isnan(v):
+                    keywords[k] = ""
+            if type(v) == ObjectId:
+                keywords[k] = str(v)
+            elif type(v) == datetime:
+                keywords[k] = v.strftime('%Y-%m-%d %H:%M:%S')
+            elif type(v) == Timestamp:
+                keywords[k] = v.strftime('%Y-%m-%d %H:%M:%S')
+
+        node = Node(label, **keywords)
+        try:
+            self.graph.push(node)
+        except Exception as e:
+            print(e)
+
     def create(self, label, **keywords):
         for k,v in keywords.items():
+            if v is None:
+                keywords[k] = ""
+            if type(v) == np.float64:
+                if np.isnan(v):
+                    keywords[k] = ""
+
+            if type(v) == float:
+                if math.isnan(v):
+                    keywords[k] = ""
             if type(v) == ObjectId:
                 keywords[k] = str(v)
             elif type(v) == datetime:
@@ -50,4 +85,5 @@ class NeoService():
         except Exception as e:
             print(e)
             print(keywords)
+
 

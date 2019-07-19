@@ -92,6 +92,7 @@ class NLPService:
             result.extend(zip(words, tags))
         final_result = []
         temp_word = []
+        import ipdb; ipdb.set_trace()
         for word in result:
             if '-' not in word[1]:
                 continue

@@ -1,5 +1,6 @@
 from core.processors.company_processor import companyProcessor
 from core.base.BaseTask import BaseTask
+        # import pdb; pdb.set_trace()
 from data_access.controller.CommonController4Mongo import CommonController4Mongo
 from services.tool_services.neo_service import NeoService
 from services.data_services.CommonDataService import commonDataService
@@ -30,7 +31,6 @@ class ExtractTask(BaseTask):
         [self.save_company(x) for x in self.invests]
         [self.save_to_neo4j('member',x) for x in self.members if not self.if_exists('member', x['_id'])]
         [self.save_relation(x) for x in self.relations]
-        # import pdb; pdb.set_trace()
 
         self.members = []
         self.relations = []

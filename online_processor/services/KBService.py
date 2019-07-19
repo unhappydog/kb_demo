@@ -22,3 +22,9 @@ class KBService:
 
     def demo_entity(self, company, job, candidate, skill, limit):
         return self.kbcore.demo_entity(company, job, candidate, skill)
+
+    def paths_between_entitys(self, first_id, second_id, limit):
+        return self.kbcore.paths_between_nodes(first_id, second_id, limit)
+
+    def find_entity_by_name(self, name, label):
+        return self.kbcore.find_entity_by_name(name, label)

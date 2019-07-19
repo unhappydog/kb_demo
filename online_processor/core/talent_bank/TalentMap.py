@@ -34,11 +34,14 @@ class TalentMap:
         in_office_position_count = TalentMap.count_position(in_offices)
         off_office_position_count = TalentMap.count_position(off_offices)
 
+        in_office_map, in_office_ava_count = TalentMap.count_job_type(in_office_position_count)
+        off_office_map, off_office_ava_count = TalentMap.count_job_type(off_office_position_count)
+
         result = {
-            "in_offices":{"count":len(in_offices),
-                          "value": TalentMap.count_job_type(in_office_position_count)},
-            "off_offices":{"count":len(off_offices),
-                           "value":TalentMap.count_job_type(off_office_position_count)}
+            "in_offices":{"count":in_office_ava_count,
+                          "value": in_office_map},
+            "off_offices":{"count":off_office_ava_count,
+                           "value":off_office_map}
         }
         return result
 
@@ -77,14 +80,16 @@ class TalentMap:
                 result['通用销售']['count'] += counts
                 result['通用销售']['value'] += [{job_title:counts}]
 
+        avalibale_count = 0
         for type_name in type_names:
             value = result[type_name]['value']
             value = sorted(value, key=lambda x: list(x.values())[0], reverse=True)[:9]
             count = 0
             for item in value:
                 count += list(item.values())[0]
+            avalibale_count += count
             result[type_name] = {'value': value, 'count':count}
-        return result
+        return result, avalibale_count
 
 
     @classmethod

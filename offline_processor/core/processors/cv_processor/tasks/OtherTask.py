@@ -5,16 +5,18 @@ from services.tool_services.neo_service import NeoService
 from services.data_services.CommonDataService import commonDataService
 from utils.Constants import is_bad_column, is_replicate_column, cv_label
 from utils.Logger import logging
+from utils.Utils import convert_str_2_date
 from core.linker.Searcher import Searcher
 from core.linker.TerminologyLinker import TerminologyLinker
 from core.common.mixins.Neo4jMixin import Neo4jMixin
 import pandas as pd
+import datetime
 import re
 
 
 neoService = NeoService.instance()
 searcher = Searcher.instance()
-@cvProcessor.add_as_processors(order=11, stage=2, schema='kb_demo', table='kb_talent_bank')
+@cvProcessor.add_as_processors(order=11, stage=2, schema='kb_talent_banks', table='kb_talent_bank')
 class SaveTask(BaseTask):
     def __init__(self, schema, table):
         self.schema = schema
@@ -22,8 +24,54 @@ class SaveTask(BaseTask):
         self.controller = CommonController4Mongo(schema, table)
 
     def fit(self, data):
+        data = data.apply(lambda x: self._format(x), axis=1)
         self.controller.insert_datas_from_df(data)
         return data
+
+    def _format(self, x):
+        x['age'] = self.age_2_int(x['age'])
+        # import ipdb; ipdb.set_trace()
+
+        x['updateTime'] = self.parse_time(x.get('updateTime'))
+        x['birthday'] = convert_str_2_date(x.get('birthday'))
+        for educationExperience in x.get('educationExperience',[]):
+            educationExperience['educationStartTime'] = self.parse_time(educationExperience.get('educationStartTime'))
+            educationExperience['educationEndTime'] = self.parse_time(educationExperience.get('educationEndTime'))
+
+        for workExperience in x.get('workExperience',[]):
+            workExperience['workStartTime'] = self.parse_time(workExperience.get('workStartTime'))
+            workExperience['workEndTime'] = self.parse_time(workExperience.get('workEndTime'))
+            workExperience['workCompany'] = re.sub('(\(.+\)|（.+）|【.*】|\|).*$', '', workExperience.get('workCompany',''))
+            if x['updateTime'] is not None and workExperience['workEndTime'] == x['updateTime']:
+                workExperience['workEndTime'] = None
+
+        for projectExperience in x.get('projectExperience', []):
+            projectExperience['projectStartTime'] = self.parse_time(projectExperience.get('projectStartTime'))
+            projectExperience['projectEndTime'] = self.parse_time(projectExperience.get('projectEndTime'))
+        return x
+
+    def parse_time(self,date):
+        if date == '至今':
+            return None
+        elif date:
+            return convert_str_2_date(date)
+        else:
+            return None
+
+    def age_2_int(self, age):
+        if type(age) == int:
+            return age
+        elif re.match('[0-9]{2} 岁（[0-9]{4}年[0-9]{1,2}月）', age):
+            year = age.split('（')[1].split('年')[0]
+            month = age.split('（')[1].split('年')[1].split('月')[0]
+            age = int(age[:2])
+        elif re.match('[0-9]{1,3}', age):
+            age = int(age)
+        else:
+            age = 0
+            logging.error("unrecongized age format {0}".format(age))
+
+
 
 @cvProcessor.add_as_processors(order=12, stage=2, schema='kb_demo', table='kb_project_experience')
 class ExtractProjectExperience(BaseTask):
@@ -125,10 +173,11 @@ class ExtractTask(BaseTask, Neo4jMixin):
         education_experiences = x.get('educationExperience',[])
         update_time = x.get('updateTime', None)
         for education_experience in education_experiences:
-            self.extract_education_info(education_experience, x['_id'], update_time)
+            school_info = self.extract_education_info(education_experience, x['_id'], update_time)
             major = education_experience.get('educationMajor')
             if major:
-                self.extract_major_info(major, x['_id'])
+                major_info = self.extract_major_info(major, x['_id'])
+                self.school_majror_relation(school_info, major_info)
 
         work_experiences = x.get('workExperience',[])
         for work_experience in work_experiences:
@@ -157,9 +206,9 @@ class ExtractTask(BaseTask, Neo4jMixin):
             for skill_tag in skill_tags:
                 self.extract_skill_info(skill_tag, x['_id'], mastery)
 
-        # skills = self.terminology_linker.skill_tags(x)
-        # for skill in skills:
-        #     self.extract_skill_info(skill, x['_id'])
+        skills = self.terminology_linker.skill_tags(x)
+        for skill in skills:
+            self.extract_skill_info(skill, x['_id'])
 
         city = x.get("currentAddress")
         cities = city.split(" ")
@@ -168,6 +217,16 @@ class ExtractTask(BaseTask, Neo4jMixin):
             if city_info:
                 city_info['name'] = city
                 self.extract_city_info(city_info, x['_id'])
+
+
+    def school_majror_relation(self, school_info, major_info):
+        relation ={}
+        relation['to_id'] = major_info['_id']
+        relation['to_type'] = 'major'
+        relation['from_id'] = school_info['_id']
+        relation['from_type'] = 'school'
+        relation['name'] = '有专业'
+        self.relations.append(relation)
 
 
     def extract_major_info(self,major, cv_id):
@@ -184,6 +243,7 @@ class ExtractTask(BaseTask, Neo4jMixin):
         relation['from_type'] = 'candidate'
         relation['name'] = "就读专业"
         self.relations.append(relation)
+        return major_info
 
     def extract_job_info(self, position, cv_id, if_now_posisiton=False):
         if not re.match("^.*(师|主管|科学家|经理|专员)$", position):
@@ -272,6 +332,7 @@ class ExtractTask(BaseTask, Neo4jMixin):
         else:
             relation['name'] = '毕业于'
         self.relations.append(relation)
+        return school_info
 
     def extract_company_info(self, work_experience, cv_id, update_time):
         """抽取公司相关关系

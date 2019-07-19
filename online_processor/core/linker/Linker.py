@@ -2,6 +2,7 @@ from utils.Logger import logging
 import resources
 from data_access.controller.KBAcademyController4Mongo import KBAcademyController4Mongo
 from data_access.controller.KBCompanyController4Mongo import KBCompanyController4Mongo
+from core.linker.CompanyNameMapper import CompanyNameMapper
 
 import re
 
@@ -51,7 +52,7 @@ class Linker:
             companys.append(workExperience.workCompany)
         result = {}
         for company in companys:
-            data = self.company_controller.get_data_by_name(company)
+            data = self.company_controller.get_data_by_name(CompanyNameMapper.get_full_name(company))
             if ("大学" in company or "学院" in company) and not data:
                 data = self.academy_controller.get_data_by_name(company)
             # if company.

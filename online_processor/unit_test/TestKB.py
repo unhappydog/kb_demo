@@ -12,7 +12,7 @@ class TestKB(unittest.TestCase):
 
     def test_expand(self):
         print("testing expand ")
-        result = requests.get("http://{0}:18082/online/kb/expand_entity/{1}/{2}/{3}/{4}".format(host, "company", "华为技术有限公司", 'none', 10))
+        result = requests.get("http://{0}:18082/online/kb/expand_entity/{1}/{2}/{3}/{4}".format(host, "major", "英语", 'none', 100))
         self.assertEqual(result.status_code, 200)
 
     def test_demo(self):

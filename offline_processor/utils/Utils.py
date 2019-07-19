@@ -1,4 +1,32 @@
 from datasketch import MinHash
+import re
+import datetime
+from pandas._libs.tslibs.timestamps import Timestamp
+
+
+def convert_str_2_date(date):
+    if date is None:
+        return None
+    if type(date) == Timestamp:
+        return date.to_pydatetime()
+    if type(date) == datetime.datetime:
+        return date
+    if re.match('^[0-9]{4}\.[0-9]{2}$', date):
+        return datetime.datetime.strptime(date, "%Y.%m")
+    elif re.match('^[0-9]{2}-[0-9]{2}-[0-9]{2}$', date):
+        return datetime.datetime.strptime("20" + date, "%Y-%m-%d")
+    elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2}$', date):
+        return datetime.datetime.strptime(date, "%Y-%m-%d")
+    elif re.match('^[0-9]{1,2}月 [0-9]{1,2}日.*$', date):
+        month, day = date.split('日')[0].split('月 ')
+        return datetime.datetime(year=2019, month=int(month), day=int(day))
+    elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$', date):
+        return datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+    elif re.match('^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$', date):
+        return datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
+    else:
+        print("un recongize {0}".format(date))
+        return date
 
 
 def get_variable(name):

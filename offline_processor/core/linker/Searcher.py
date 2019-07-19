@@ -2,6 +2,7 @@ from utils.Logger import logging
 import resources
 from services.tool_services.MongoService import mgService
 from threading import Lock
+from core.linker.CompanyNameMapper import CompanyNameMapper
 
 import re
 
@@ -50,6 +51,7 @@ class Searcher:
         """
         linking companys in cv to data in databases
         """
+        company = CompanyNameMapper.get_full_name(company)
         data = mgService.query({"$or":[{"companyName":company}, {"entName":company}]},'kb_demo','kb_company',projection={
             "_id":1,
             "companyName":1,
@@ -61,7 +63,6 @@ class Searcher:
             'companyType':1,
             'regCapital':1
         })
-        # if company.
         if data:
             return data[0]
         return None
