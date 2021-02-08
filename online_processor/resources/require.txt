@@ -15,7 +15,7 @@ fabric==2.4.0
 Flask==1.0.2
 funcsigs==1.0.2
 future==0.17.1
-httplib2==0.12.3
+httplib2==0.19.0
 idna==2.8
 invoke==1.2.0
 ipaddress==1.0.22
